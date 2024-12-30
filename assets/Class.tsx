@@ -1,5 +1,5 @@
 // system import
-import React, { Component, ComponentType, useMemo, useRef, useState } from 'react';
+import React, { Component, ComponentType, useContext, useMemo, useRef, useState } from 'react';
 import { ImageBackground, Platform, SafeAreaView, StatusBar, Text, TextInput, TouchableOpacity, View, Image, ImageStyle, StatusBarStyle, ReturnKeyType, KeyboardType, FlatList, TextInputProps, Animated, Easing, TouchableOpacityProps, ViewProps, ViewStyle, TextStyle, FlexStyle, Keyboard, LayoutChangeEvent } from 'react-native';
 
 // style import
@@ -13,10 +13,11 @@ import { marginBottomForScrollView } from './component';
 import * as SVG from './svgXml';
 import clrStyle, { NGHIASTYLE } from './componentStyleSheet';
 import { useNavigation } from '@react-navigation/native';
-import { CurrentCache } from '../data/store';
+import { CurrentCache, RootContext } from '../data/store';
 import * as FormatData from '../data/interfaceFormat';
 import * as CTEXT from './CustomText';
 import { SvgXml } from 'react-native-svg';
+import { ColorTheme } from './ColorTheme';
 
 // other import
 
@@ -32,7 +33,7 @@ import { SvgXml } from 'react-native-svg';
  * @component
  * @example
  * // Usage:
- * <SaveViewWithColorStatusBar
+ * <SSBarWithColor
  *   StatusBarColor="#FF0000"
  *   StatusBarLightContent={true}
  *   SameColorBottom={true}
@@ -41,7 +42,7 @@ import { SvgXml } from 'react-native-svg';
  *   StatusBarTranslucent={false}
  * >
  *   // Content goes here
- * </SaveViewWithColorStatusBar>
+ * </SSBarWithColor>
  *
  * @param {React.ReactNode} children - The content to be rendered inside the component.
  * @param {string} StatusBarColor - The color of the status bar.
@@ -53,10 +54,12 @@ import { SvgXml } from 'react-native-svg';
  *
  * @returns {React.ReactNode} The rendered component.
  */
-export class SaveViewWithColorStatusBar extends Component<{ children?: React.ReactNode, StatusBarColor?: string, StatusBarLightContent?: boolean, SameColorBottom?: boolean, StatusBarMargin?: boolean, bgColor?: string, StatusBarTranslucent?: boolean }> {
+export class SSBarWithColor extends Component<{ COLORTHEME: ColorTheme, children?: React.ReactNode, StatusBarColor?: string, StatusBarLightContent?: boolean, SameColorBottom?: boolean, StatusBarMargin?: boolean, bgColor?: string, StatusBarTranslucent?: boolean }> {
     render() {
-        const { children, bgColor, SameColorBottom, StatusBarColor, StatusBarLightContent, StatusBarMargin, StatusBarTranslucent } = this.props;
+        let { COLORTHEME, children, bgColor, SameColorBottom, StatusBarColor, StatusBarLightContent, StatusBarMargin, StatusBarTranslucent } = this.props;
         let statusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight : 0
+        bgColor = bgColor ? bgColor : COLORTHEME.background
+
         return (
             <SafeAreaView style={[styles.flex1, { backgroundColor: SameColorBottom ? StatusBarColor : bgColor }]}>
                 {StatusBarColor ? <View style={[styles.w100vw, styles.h50vh, styles.positionAbsolute, { backgroundColor: StatusBarColor }]} /> : null}
@@ -219,16 +222,19 @@ export class ViewColStartBetween extends Component<{ children?: React.ReactNode,
  * 
  * @returns A React node containing the status bar and its content.
  */
-export class SSBar extends Component<{ barColor?: any, trans?: boolean, children?: React.ReactNode, bgColor?: any, barContentStyle?: StatusBarStyle, notMargin?: boolean }> {
+export class SSBar extends Component<{ COLORTHEME: ColorTheme, barColor?: any, trans?: boolean, children?: React.ReactNode, bgColor?: any, barContentStyle?: StatusBarStyle, notMargin?: boolean }> {
     render(): React.ReactNode {
         let statusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight : 0
+        let bgColor = this.props.bgColor ? this.props.bgColor : this.props.COLORTHEME.background
+        let barColor = this.props.barColor ? this.props.barColor : this.props.COLORTHEME.background
+        let barContentStyle = this.props.barContentStyle ? this.props.barContentStyle : this.props.COLORTHEME.barContent
         return (
-            <View style={[styles.flex1, { backgroundColor: this.props.bgColor ? this.props.bgColor : clrStyle.white }]}>
+            <View style={[styles.flex1, { backgroundColor: bgColor }]}>
                 <>
                     <StatusBar
-                        barStyle={this.props.barContentStyle ? this.props.barContentStyle : 'dark-content'}
+                        barStyle={barContentStyle}
                         translucent={this.props.trans ? true : false}
-                        backgroundColor={this.props.barColor ? this.props.barColor : 'white'} />
+                        backgroundColor={barColor} />
                     {Platform.OS === 'android' && !this.props.notMargin ? <View style={{ height: statusBarHeight * 1.5 }}></View> : null}
                 </>
                 {this.props.children}
@@ -237,15 +243,18 @@ export class SSBar extends Component<{ barColor?: any, trans?: boolean, children
     }
 }
 
-export class SSBarWithSaveArea extends Component<{ barColor?: any, trans?: boolean, children?: React.ReactNode, bgColor?: any, barContentStyle?: StatusBarStyle, margin?: boolean }> {
+export class SSBarWithSaveArea extends Component<{ COLORTHEME: ColorTheme, barColor?: any, trans?: boolean, children?: React.ReactNode, bgColor?: any, barContentStyle?: StatusBarStyle, margin?: boolean }> {
     render(): React.ReactNode {
         let statusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight : 0
+        let bgColor = this.props.bgColor ? this.props.bgColor : this.props.COLORTHEME.background
+        let barColor = this.props.barColor ? this.props.barColor : this.props.COLORTHEME.background
+        let barContentStyle = this.props.barContentStyle ? this.props.barContentStyle : this.props.COLORTHEME.barContent
         return (
-            <SafeAreaView style={[styles.flex1, { backgroundColor: this.props.bgColor ? this.props.bgColor : clrStyle.white }]}>
+            <SafeAreaView style={[styles.flex1, { backgroundColor: bgColor }]}>
                 <StatusBar
-                    barStyle={this.props.barContentStyle ? this.props.barContentStyle : 'dark-content'}
+                    barStyle={barContentStyle}
                     translucent={this.props.trans ? true : false}
-                    backgroundColor={this.props.barColor ? this.props.barColor : 'white'} />
+                    backgroundColor={barColor} />
                 {Platform.OS === 'android' && this.props.margin ? <View style={{ height: statusBarHeight }}></View> : null}
                 {this.props.children}
             </SafeAreaView>
@@ -395,6 +404,32 @@ interface SearchBoxState {
 
 /**
  * @textClass - use the RegularText component instead
+    * @param title: string,
+    * @param value: string | number,
+    * @param onChgText: (value: string | number) => void,
+    * @param placeholder?: string,
+
+    * @param supFncTitle?: string,
+    * @param supFncTitleColor?: string,
+    * @param supFnc?: () => void,
+    * @param subTitle?: string,
+
+    * @param isNumber?: boolean,
+    * @param contentType?: string,
+    * @param hideContent?: boolean,
+    * @param hideContentFnc?: (value: boolean) => void,
+    * @param autoCap?: 'none' | 'characters' | 'words' | 'sentences',
+    * @param maxLength?: number,
+
+    * @param CustomStyleClass?: ViewStyle[] | ImageStyle[] | FlexStyle[],
+    * @param CustomStyleText?: TextStyle[],
+    * @param CustomStyleInput?: ViewStyle[] | ImageStyle[] | FlexStyle[],
+
+    * @param activeColor?: string,
+    * @param passiveColor?: string,
+    * @param tileColor?: string,
+    * 
+    * @param textClass?: ComponentType<{ children: React.ReactNode }>
  */
 export class BoardingInput extends Component<{
     title: string,
@@ -1030,49 +1065,6 @@ export class LowBtn extends Component<{
 //     }
 // }
 
-export class TopNav extends Component<{
-    children?: React.ReactNode,
-    title?: string,
-    returnPreScreen?: boolean,
-    returnPreScreenFnc?: () => void,
-    rightIcon?: any,
-    rightFnc?: () => void,
-    hideChildren?: any,
-    leftIcon?: any,
-}> {
-    render() {
-        const { children, title, returnPreScreen, returnPreScreenFnc, rightIcon, rightFnc, hideChildren, leftIcon } = this.props;
-        return (
-            <>
-                <Animated.View style={[styles.paddingH4vw, styles.paddingBottom4vw, styles.paddingTop2vw, styles.overflowHidden, { zIndex: 1, borderBottomLeftRadius: vw(6), borderBottomRightRadius: vw(6), }]}>
-                    <View style={[styles.paddingTop2vw, styles.w100, styles.flexRowBetweenCenter]}>
-                        {returnPreScreen ?
-                            <TouchableOpacity
-                                style={[styles.padding2vw]}
-                                onPress={returnPreScreenFnc}>
-                                {leftIcon ? leftIcon(vw(6), vw(6), clrStyle.black) : SVG.sharpLeftArrow(vw(6), vw(6), clrStyle.black)}
-                            </TouchableOpacity>
-                            : <View style={[{ width: vw(10), height: vw(10), }]} />
-                        }
-                        {title ? <CTEXT.Title3 style={[styles.textCenter, styles.alignSelfCenter, { color: clrStyle.black }]}>{title}</CTEXT.Title3> : null}
-                        {rightIcon ?
-                            <TouchableOpacity
-                                style={[styles.padding2vw]}
-                                onPress={rightFnc}>
-                                {rightIcon}
-                            </TouchableOpacity>
-                            : <View style={[{ width: vw(10), height: vw(10), }]} />
-                        }
-                    </View>
-                    <Animated.View style={{ height: hideChildren, opacity: hideChildren }}>
-                        {children}
-                    </Animated.View>
-                </Animated.View >
-            </>
-        )
-    }
-}
-
 export class BannerSliderWithCenter extends Component<{
     data: any[],
     renderBanner: ({ item, index }: { item: any, index: number }) => React.ReactElement | null,
@@ -1187,6 +1179,8 @@ export class BannerSliderWithCenter extends Component<{
 // _______ NO REUSE CLASS SECTION _______
 
 export class TopBarWithThingInMiddleAllCustomable extends Component<{
+    COLORTHEME: ColorTheme;
+
     centerChildren?: React.ReactNode;
     leftItem?: React.ReactNode;
     rightItem?: React.ReactNode;
@@ -1197,7 +1191,7 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
     rightItemFnc?: () => void;
     rightItemIcon?: React.ReactNode;
 
-    title?: React.ReactNode;
+    centerTitle?: React.ReactNode;
     TitleTextClass?: React.ComponentType<{ children: React.ReactNode }>;
 
     style?: {
@@ -1228,12 +1222,12 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
     };
 
     render(): React.ReactNode {
-        const { centerChildren, leftItem, rightItem, returnPreScreenFnc, returnPreScreenIcon, rightItemFnc, rightItemIcon, title, TitleTextClass, style, bgColor, textColor, iconColor } = this.props
+        const { COLORTHEME, centerChildren, leftItem, rightItem, returnPreScreenFnc, returnPreScreenIcon, rightItemFnc, rightItemIcon, centerTitle, TitleTextClass, style, bgColor, textColor, iconColor } = this.props
         const { leftWidth, rightWidth } = this.state;
         const TitleClass = TitleTextClass || Text;
 
         return (
-            <ViewRow style={[{ backgroundColor: bgColor || 'white', zIndex: 10 }, styles.justifyContentSpaceBetween, styles.paddingH4vw, styles.paddingV2vw, styles.gap1vw, style?.container] as ViewStyle[] | FlexStyle[]}>
+            <ViewRow style={[{ backgroundColor: bgColor || 'transparent', zIndex: 10 }, styles.justifyContentSpaceBetween, styles.paddingH4vw, styles.paddingV2vw, styles.gap1vw, style?.container] as ViewStyle[] | FlexStyle[]}>
                 <View key={'TopBarWithThingInMiddleAllCustomable-left'}
                 // onLayout={this.onLayoutLeft}
                 >
@@ -1241,7 +1235,7 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
                         returnPreScreenFnc ? (
                             <TouchableOpacity onPress={returnPreScreenFnc}
                                 style={[style?.iconLeftStyle]}>
-                                {returnPreScreenIcon || SVG.sharpLeftArrow(style?.leftItemSize || vw(6), style?.leftItemSize || vw(6), iconColor || clrStyle.black)}
+                                {returnPreScreenIcon || SVG.sharpLeftArrow(style?.leftItemSize || vw(6), style?.leftItemSize || vw(6), iconColor || COLORTHEME.text)}
                             </TouchableOpacity>
                         ) : null
                     )}
@@ -1249,7 +1243,7 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
                 <View key={'TopBarWithThingInMiddleAllCustomable-center'} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     {centerChildren ?
                         centerChildren :
-                        <TitleClass style={[styles.flex1, styles.textCenter, { color: textColor }, style?.textStyle]}>{title}</TitleClass>
+                        <TitleClass style={[styles.flex1, styles.textCenter, { color: textColor }, style?.textStyle]}>{centerTitle}</TitleClass>
                     }
                 </View>
                 <View key={'TopBarWithThingInMiddleAllCustomable-right'}
@@ -1259,7 +1253,7 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
                         rightItemFnc ? (
                             <TouchableOpacity onPress={rightItemFnc}
                                 style={[style?.iconLeftStyle]}>
-                                {rightItemIcon || SVG.sharpRightArrow(style?.rightItemSize || vw(6), style?.rightItemSize || vw(6), iconColor || clrStyle.black)}
+                                {rightItemIcon || SVG.sharpRightArrow(style?.rightItemSize || vw(6), style?.rightItemSize || vw(6), iconColor || COLORTHEME.text)}
                             </TouchableOpacity>
                         ) : null
                     )}

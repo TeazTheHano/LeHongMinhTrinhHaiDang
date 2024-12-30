@@ -1,24 +1,66 @@
-import { View, Text } from 'react-native'
+import { View, Text, Alert } from 'react-native'
 import React, { useContext } from 'react'
-import { SSBarWithSaveArea, TopBarWithThingInMiddleAllCustomable, TopNav } from '../assets/Class'
+import { BoardingInput, RoundBtn, SSBarWithSaveArea, TopBarWithThingInMiddleAllCustomable, ViewCol, ViewColBetweenCenter } from '../assets/Class'
 import { useNavigation } from '@react-navigation/native'
-import { vw } from '../assets/stylesheet'
+import styles, { vw } from '../assets/stylesheet'
 import * as SVG from '../assets/svgXml'
 import { NGHIASTYLE } from '../assets/componentStyleSheet'
-import { RootContext } from '../data/store'
-import { NGT_Inter_HeaderMd_Reg } from '../assets/CustomText'
+import { currentSetUser, RootContext } from '../data/store'
+import { NGT_Inter_BodyLg_ExtraBold, NGT_Inter_DispLg_Bld, NGT_Inter_DispLg_Reg, NGT_Inter_DispLg_SemiBold, NGT_Inter_DispMd_SemiBold, NGT_Inter_HeaderLg_Bld, NGT_Inter_HeaderLg_ExtraBold, NGT_Inter_HeaderLg_SemiBold, NGT_Inter_HeaderMd_Reg, RobotoMonoReg14 } from '../assets/CustomText'
+import { storageSaveUser } from '../data/storageFunc'
 
 export default function NameCollect() {
     const navigation = useNavigation()
     const [CurrentCache, dispatch] = useContext(RootContext)
+    const [name, setName] = React.useState<string>('')
+
+    let COLOR = CurrentCache.colorScheme
+
     return (
-        <SSBarWithSaveArea bgColor={CurrentCache.colorScheme.background} barColor={CurrentCache.colorScheme.background} barContentStyle={CurrentCache.colorScheme.barContent}>
+        <SSBarWithSaveArea COLORTHEME={COLOR} bgColor={COLOR.background} barColor={COLOR.background} barContentStyle={COLOR.barContent}>
             <TopBarWithThingInMiddleAllCustomable
+                COLORTHEME={COLOR}
                 returnPreScreenFnc={() => { navigation.goBack() }}
-                returnPreScreenIcon={SVG.sharpLeftArrow(vw(6), vw(6), NGHIASTYLE.NghiaBrand700)}
+                bgColor='transparent'
+                returnPreScreenIcon={SVG.sharpLeftArrow(vw(6), vw(6), COLOR.textBrand)}
             />
 
-            <NGT_Inter_HeaderMd_Reg>heheheh</NGT_Inter_HeaderMd_Reg>
+            <ViewCol style={[styles.padding6vw, styles.justifyContentSpaceBetween, styles.flex1]}>
+                <View>
+                    <NGT_Inter_DispLg_Reg color={COLOR.textBrand} children='Trước khi bắt đầu,' />
+                    <NGT_Inter_DispLg_Reg color={COLOR.textBrand} children='hãy giới thiệu bản thân bạn' />
+                </View>
+                <BoardingInput
+                    title='Tên bạn là gì'
+                    placeholder='Tên của bạn'
+                    value={name}
+                    onChgText={(value) => { setName(value as string) }}
+                    textClass={NGT_Inter_DispLg_SemiBold}
+                    CustomStyleText={[{ color: COLOR.text }]}
+                    CustomStyleInput={[{ backgroundColor: COLOR.backgroundFade }]}
+                    activeColor={COLOR.textBrand}
+                    passiveColor={COLOR.text}
+                />
+                <RoundBtn
+                    title='Tiếp tục'
+                    onPress={() => {
+                        storageSaveUser({
+                            name: name,
+                        }).then((res) => {
+                            if (res) {
+                                dispatch(currentSetUser({ name: name }))
+                                navigation.navigate('BottomTab' as never)
+                            } else {
+                                Alert.alert('Có lỗi xảy ra', 'Vui lòng thử lại')
+                            }
+                        })
+                    }}
+                    bgColor={COLOR.brandMain}
+                    textColor={COLOR.background}
+                    textClass={NGT_Inter_HeaderLg_SemiBold}
+                    customStyle={[styles.justifyContentCenter]}
+                />
+            </ViewCol>
 
         </SSBarWithSaveArea>
     )

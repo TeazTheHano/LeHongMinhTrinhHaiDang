@@ -34,19 +34,6 @@ export const componentStyle = StyleSheet.create({
     },
 });
 
-export const defaultColorTheme = {
-    light: {
-        text: 'black',
-        background: 'white',
-        barContent: 'dark-content',
-    },
-    dark: {
-        text: 'white',
-        background: 'black',
-        barContent: 'light-content',
-    },
-}
-
 export const NGHIASTYLE = StyleSheet.create({
     // Brand 
     NghiaBrand900: '#42307D',

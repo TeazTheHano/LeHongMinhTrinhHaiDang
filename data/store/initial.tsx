@@ -12,11 +12,11 @@
 
 import { useColorScheme } from "react-native";
 import { StorageItem, UserFormat } from "../interfaceFormat";
-import { defaultColorTheme } from "../../assets/componentStyleSheet";
+import { ColorTheme, defaultColorTheme } from "../../assets/ColorTheme";
 
 export interface CurrentCache {
     user: UserFormat;
-    colorScheme: any;
+    colorScheme: ColorTheme;
 }
 
 export interface Action {
