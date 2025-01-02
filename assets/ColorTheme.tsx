@@ -3,6 +3,7 @@ import { StatusBarStyle } from "react-native";
 import { NGHIASTYLE } from "./componentStyleSheet";
 
 export interface ColorTheme {
+    type: 'light' | 'dark';
     barContent: StatusBarStyle;
     brandMain: string;
     brandSecond: string;
@@ -11,10 +12,13 @@ export interface ColorTheme {
     background: string;
     backgroundSecond: string;
     backgroundFade: string;
+    gray1: string;
+    gray2: string;
 }
 
 export const defaultColorTheme: { [key: string]: ColorTheme } = {
     light: {
+        type: 'light',
         barContent: `dark-content`,
         text: `#000010`,
         brandMain: NGHIASTYLE.NghiaBrand700 as string,
@@ -23,8 +27,11 @@ export const defaultColorTheme: { [key: string]: ColorTheme } = {
         background: `rgba(250, 250, 250, 1)`,
         backgroundSecond: `rgba(255, 255, 255, 1)`,
         backgroundFade: NGHIASTYLE.NghiaGray100 as string,
+        gray1: NGHIASTYLE.NghiaGray600 as string,
+        gray2: NGHIASTYLE.NghiaGray200 as string
     },
     dark: {
+        type: 'dark',
         barContent: `light-content`,
         brandMain: NGHIASTYLE.NghiaBrand400 as string,
         brandSecond: NGHIASTYLE.NghiaBrand600 as string,
@@ -33,5 +40,7 @@ export const defaultColorTheme: { [key: string]: ColorTheme } = {
         background: `rgba(20, 20, 20, 1)`,
         backgroundSecond: `rgba(30, 30, 30, 1)`,
         backgroundFade: NGHIASTYLE.NghiaTransparentWhite20 as string,
+        gray1: NGHIASTYLE.NghiaGray200 as string,
+        gray2: NGHIASTYLE.NghiaGray500 as string
     },
 }

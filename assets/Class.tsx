@@ -262,6 +262,100 @@ export class SSBarWithSaveArea extends Component<{ COLORTHEME: ColorTheme, barCo
     }
 }
 
+export class TopBarWithThingInMiddleAllCustomable extends Component<{
+    COLORTHEME: ColorTheme;
+
+    centerChildren?: React.ReactNode;
+    leftItem?: React.ReactNode;
+    rightItem?: React.ReactNode;
+
+    returnPreScreenFnc?: () => void;
+    returnPreScreenIcon?: React.ReactNode;
+
+    rightItemFnc?: () => void;
+    rightItemIcon?: React.ReactNode;
+
+    centerTitle?: React.ReactNode;
+    TitleTextClass?: React.ComponentType<{ children: React.ReactNode }>;
+
+    style?: {
+        isAlignItemCenter?: boolean
+        container?: ViewStyle[] | FlexStyle[],
+        leftItemSize?: number,
+        rightItemSize?: number
+        textStyle?: TextStyle[]
+        iconLeftStyle?: ViewStyle[] | FlexStyle[],
+        iconRightStyle?: ViewStyle[] | FlexStyle[],
+    }
+    bgColor?: string
+    textColor?: string
+    iconColor?: string
+}> {
+    state = {
+        leftWidth: 0,
+        rightWidth: 0,
+    };
+
+    onLayoutLeft = (event: LayoutChangeEvent) => {
+        const { width } = event.nativeEvent.layout;
+        this.setState({ leftWidth: width });
+    };
+
+    onLayoutRight = (event: LayoutChangeEvent) => {
+        const { width } = event.nativeEvent.layout;
+        this.setState({ rightWidth: width });
+    };
+
+    render(): React.ReactNode {
+        const { COLORTHEME, centerChildren, leftItem, rightItem, returnPreScreenFnc, returnPreScreenIcon, rightItemFnc, rightItemIcon, centerTitle, TitleTextClass, style, bgColor, textColor, iconColor } = this.props
+        const { leftWidth, rightWidth } = this.state;
+        const TitleClass = TitleTextClass || Text;
+
+        return (
+            <ViewRow style={[
+                { backgroundColor: bgColor || 'transparent', zIndex: 10 },
+                this.props.style?.isAlignItemCenter ? styles.alignItemsCenter : undefined,
+                styles.justifyContentSpaceBetween,
+                styles.paddingH4vw,
+                styles.paddingV2vw,
+                styles.gap1vw,
+                style?.container
+            ] as ViewStyle[] | FlexStyle[]}>
+                <View key={'TopBarWithThingInMiddleAllCustomable-left'}
+                // onLayout={this.onLayoutLeft}
+                >
+                    {leftItem || (
+                        returnPreScreenFnc ? (
+                            <TouchableOpacity onPress={returnPreScreenFnc}
+                                style={[style?.iconLeftStyle]}>
+                                {returnPreScreenIcon || SVG.sharpLeftArrow(style?.leftItemSize || vw(6), style?.leftItemSize || vw(6), iconColor || COLORTHEME.text)}
+                            </TouchableOpacity>
+                        ) : null
+                    )}
+                </View>
+                <View key={'TopBarWithThingInMiddleAllCustomable-center'} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                    {centerChildren ?
+                        centerChildren :
+                        <TitleClass style={[styles.flex1, styles.textCenter, { color: textColor }, style?.textStyle]}>{centerTitle}</TitleClass>
+                    }
+                </View>
+                <View key={'TopBarWithThingInMiddleAllCustomable-right'}
+                // onLayout={this.onLayoutRight}
+                >
+                    {rightItem || (
+                        rightItemFnc ? (
+                            <TouchableOpacity onPress={rightItemFnc}
+                                style={[style?.iconLeftStyle]}>
+                                {rightItemIcon || SVG.sharpRightArrow(style?.rightItemSize || vw(6), style?.rightItemSize || vw(6), iconColor || COLORTHEME.text)}
+                            </TouchableOpacity>
+                        ) : null
+                    )}
+                </View>
+            </ViewRow>
+        );
+    }
+}
+
 /**
  * A React component that renders a customizable round button.
  *
@@ -1178,88 +1272,14 @@ export class BannerSliderWithCenter extends Component<{
 
 // _______ NO REUSE CLASS SECTION _______
 
-export class TopBarWithThingInMiddleAllCustomable extends Component<{
-    COLORTHEME: ColorTheme;
-
-    centerChildren?: React.ReactNode;
-    leftItem?: React.ReactNode;
-    rightItem?: React.ReactNode;
-
-    returnPreScreenFnc?: () => void;
-    returnPreScreenIcon?: React.ReactNode;
-
-    rightItemFnc?: () => void;
-    rightItemIcon?: React.ReactNode;
-
-    centerTitle?: React.ReactNode;
-    TitleTextClass?: React.ComponentType<{ children: React.ReactNode }>;
-
-    style?: {
-        container?: ViewStyle[] | FlexStyle[],
-        leftItemSize?: number,
-        rightItemSize?: number
-        textStyle?: TextStyle[]
-        iconLeftStyle?: ViewStyle[] | FlexStyle[],
-        iconRightStyle?: ViewStyle[] | FlexStyle[],
-    }
-    bgColor?: string
-    textColor?: string
-    iconColor?: string
-}> {
-    state = {
-        leftWidth: 0,
-        rightWidth: 0,
-    };
-
-    onLayoutLeft = (event: LayoutChangeEvent) => {
-        const { width } = event.nativeEvent.layout;
-        this.setState({ leftWidth: width });
-    };
-
-    onLayoutRight = (event: LayoutChangeEvent) => {
-        const { width } = event.nativeEvent.layout;
-        this.setState({ rightWidth: width });
-    };
-
+export class CardCateRender extends React.Component<{ type: number }> {
     render(): React.ReactNode {
-        const { COLORTHEME, centerChildren, leftItem, rightItem, returnPreScreenFnc, returnPreScreenIcon, rightItemFnc, rightItemIcon, centerTitle, TitleTextClass, style, bgColor, textColor, iconColor } = this.props
-        const { leftWidth, rightWidth } = this.state;
-        const TitleClass = TitleTextClass || Text;
-
+        const data = ['Số học', 'Hình học', 'Lý thuyết', 'Công thức']
+        const type = this.props.type || 0
         return (
-            <ViewRow style={[{ backgroundColor: bgColor || 'transparent', zIndex: 10 }, styles.justifyContentSpaceBetween, styles.paddingH4vw, styles.paddingV2vw, styles.gap1vw, style?.container] as ViewStyle[] | FlexStyle[]}>
-                <View key={'TopBarWithThingInMiddleAllCustomable-left'}
-                // onLayout={this.onLayoutLeft}
-                >
-                    {leftItem || (
-                        returnPreScreenFnc ? (
-                            <TouchableOpacity onPress={returnPreScreenFnc}
-                                style={[style?.iconLeftStyle]}>
-                                {returnPreScreenIcon || SVG.sharpLeftArrow(style?.leftItemSize || vw(6), style?.leftItemSize || vw(6), iconColor || COLORTHEME.text)}
-                            </TouchableOpacity>
-                        ) : null
-                    )}
-                </View>
-                <View key={'TopBarWithThingInMiddleAllCustomable-center'} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                    {centerChildren ?
-                        centerChildren :
-                        <TitleClass style={[styles.flex1, styles.textCenter, { color: textColor }, style?.textStyle]}>{centerTitle}</TitleClass>
-                    }
-                </View>
-                <View key={'TopBarWithThingInMiddleAllCustomable-right'}
-                // onLayout={this.onLayoutRight}
-                >
-                    {rightItem || (
-                        rightItemFnc ? (
-                            <TouchableOpacity onPress={rightItemFnc}
-                                style={[style?.iconLeftStyle]}>
-                                {rightItemIcon || SVG.sharpRightArrow(style?.rightItemSize || vw(6), style?.rightItemSize || vw(6), iconColor || COLORTHEME.text)}
-                            </TouchableOpacity>
-                        ) : null
-                    )}
-                </View>
-            </ViewRow>
-        );
+            <View style={[styles.paddingV1vw, styles.paddingH2vw, { borderRadius: vw(1.5), backgroundColor: (type == 0 ? NGHIASTYLE.NghiaIndigo50 : type == 1 ? NGHIASTYLE.NghiaWarning50 : type == 2 ? NGHIASTYLE.NghiaSuccess50 : NGHIASTYLE.NghiaError50) as string }]}>
+                <CTEXT.NGT_Inter_BodyMd_Reg children={data[type]} color={(type == 0 ? NGHIASTYLE.NghiaIndigo800 : type == 1 ? NGHIASTYLE.NghiaWarning800 : type == 2 ? NGHIASTYLE.NghiaSuccess800 : NGHIASTYLE.NghiaError800) as string} />
+            </View>
+        )
     }
 }
-

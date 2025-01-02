@@ -1,5 +1,5 @@
 import { Appearance, StyleSheet } from 'react-native';
-import { vw, vh } from './stylesheet';
+import styles, { vw, vh } from './stylesheet';
 
 const clrStyle = {
     white: '#FFFFFF',
@@ -23,16 +23,6 @@ const clrStyle = {
 
 }
 export default clrStyle;
-
-export const componentStyle = StyleSheet.create({
-    // input 
-    textInput: {
-        borderRadius: vw(4),
-        flex: 1,
-        paddingVertical: vw(4),
-        fontSize: vw(4),
-    },
-});
 
 export const NGHIASTYLE = StyleSheet.create({
     // Brand 
@@ -182,6 +172,35 @@ export const NGHIASTYLE = StyleSheet.create({
         shadowRadius: vw(1),
         elevation: vw(1),
     }
-
-
 });
+
+export const componentStyleList = {
+    roundBorderBrand: [
+        styles.border1,
+        styles.padding3vw,
+        styles.borderRadius2vw,
+        { borderColor: NGHIASTYLE.NghiaBrand200, backgroundColor: NGHIASTYLE.NghiaBrand25 }
+    ],
+    roundBorderGray500: [
+        styles.border1,
+        styles.padding3vw,
+        styles.borderRadius2vw,
+        { borderColor: NGHIASTYLE.NghiaGray500 }
+    ],
+    roundBorderGray200: [
+        styles.border1,
+        styles.padding3vw,
+        styles.borderRadius2vw,
+        { borderColor: NGHIASTYLE.NghiaGray200 }
+    ],
+    roundFillBrand600: [
+        styles.padding3vw,
+        styles.borderRadius2vw,
+        { backgroundColor: NGHIASTYLE.NghiaBrand600 }
+    ],
+    roundFillBrand100: [
+        styles.padding3vw,
+        styles.borderRadius2vw,
+        { backgroundColor: NGHIASTYLE.NghiaBrand100 }
+    ],
+};

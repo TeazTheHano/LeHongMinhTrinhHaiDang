@@ -9,7 +9,7 @@ import { Dimensions } from "react-native";
 import styles from "./stylesheet";
 import { vw, vh, vmax, vmin } from './stylesheet';
 import Svg, { SvgXml } from 'react-native-svg';
-import clrStyle, { componentStyle } from "./componentStyleSheet";
+import clrStyle from "./componentStyleSheet";
 
 // SVG import
 import * as SVG from "./svgXml";
