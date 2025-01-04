@@ -11,7 +11,7 @@ import { marginBottomForScrollView } from './component';
 
 // svg import
 import * as SVG from './svgXml';
-import clrStyle, { NGHIASTYLE } from './componentStyleSheet';
+import clrStyle, { componentStyleList, NGHIASTYLE } from './componentStyleSheet';
 import { useNavigation } from '@react-navigation/native';
 import { CurrentCache, RootContext } from '../data/store';
 import * as FormatData from '../data/interfaceFormat';
@@ -336,7 +336,7 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
                 <View key={'TopBarWithThingInMiddleAllCustomable-center'} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     {centerChildren ?
                         centerChildren :
-                        <TitleClass style={[styles.flex1, styles.textCenter, { color: textColor }, style?.textStyle]}>{centerTitle}</TitleClass>
+                        <TitleClass style={[styles.flex1, styles.textCenter, { color: textColor || COLORTHEME.text }, style?.textStyle]}>{centerTitle}</TitleClass>
                     }
                 </View>
                 <View key={'TopBarWithThingInMiddleAllCustomable-right'}
@@ -1272,14 +1272,31 @@ export class BannerSliderWithCenter extends Component<{
 
 // _______ NO REUSE CLASS SECTION _______
 
-export class CardCateRender extends React.Component<{ type: number }> {
+export class CardCateRender extends React.Component<{ type: number, isSelected?: boolean }> {
     render(): React.ReactNode {
         const data = ['Số học', 'Hình học', 'Lý thuyết', 'Công thức']
+        const textColorDefault = [NGHIASTYLE.NghiaIndigo800, NGHIASTYLE.NghiaWarning800, NGHIASTYLE.NghiaSuccess800, NGHIASTYLE.NghiaError800]
+        const bgColorDefault = [NGHIASTYLE.NghiaIndigo50, NGHIASTYLE.NghiaWarning50, NGHIASTYLE.NghiaSuccess50, NGHIASTYLE.NghiaError50]
         const type = this.props.type || 0
         return (
-            <View style={[styles.paddingV1vw, styles.paddingH2vw, { borderRadius: vw(1.5), backgroundColor: (type == 0 ? NGHIASTYLE.NghiaIndigo50 : type == 1 ? NGHIASTYLE.NghiaWarning50 : type == 2 ? NGHIASTYLE.NghiaSuccess50 : NGHIASTYLE.NghiaError50) as string }]}>
-                <CTEXT.NGT_Inter_BodyMd_Reg children={data[type]} color={(type == 0 ? NGHIASTYLE.NghiaIndigo800 : type == 1 ? NGHIASTYLE.NghiaWarning800 : type == 2 ? NGHIASTYLE.NghiaSuccess800 : NGHIASTYLE.NghiaError800) as string} />
+            <View style={[styles.paddingV1vw, styles.paddingH2vw, { borderRadius: vw(1.5), backgroundColor: (this.props.isSelected ? textColorDefault[type] : bgColorDefault[type]) as string }]}>
+                <CTEXT.NGT_Inter_BodyMd_Reg children={data[type]} color={this.props.isSelected ? 'white' : textColorDefault[type] as string} />
             </View>
+        )
+    }
+}
+
+export class CardTitleRender extends React.Component<{ title: string, type: number }> {
+    render(): React.ReactNode {
+        const { title, type } = this.props
+        return (
+            <ViewCol style={[componentStyleList.roundFillBrand600 as any, styles.gap2vw]}>
+                <ViewRowBetweenCenter>
+                    <CTEXT.NGT_Inter_BodyMd_SemiBold color='white'>10 <CTEXT.NGT_Inter_BodyMd_Reg color='white' children='thẻ | Tiến độ: ' />0/10</CTEXT.NGT_Inter_BodyMd_SemiBold>
+                    <CardCateRender type={0} />
+                </ViewRowBetweenCenter>
+                <CTEXT.NGT_Inter_BodyLg_SemiBold color='white' children={'Phương trình bậc nhất một ẩn'} />
+            </ViewCol>
         )
     }
 }
@@ -1349,7 +1366,6 @@ export class ResultFiltedCard extends React.Component<ResultFiltedCardProps> {
         return (
             <FlatList
                 data={afterFilterData}
-                style={[styles.border1]}
                 scrollEnabled={false}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
@@ -1368,14 +1384,16 @@ export class ResultFiltedCard extends React.Component<ResultFiltedCardProps> {
 interface SelectListAndCardRenderProps {
     selectCateList: string[];
     COLORSCHEME: ColorTheme;
-    filterFnc?: (category: string) => Promise<any>;
+    filterFnc: (category: string) => Promise<any>;
     sourceData: any[];
+    selfRunFilterFnc?: boolean;
 }
 
 interface SelectListAndCardRenderState {
     isShowCategorySelection: boolean;
     selectedCategory: string;
     afterFilterData: any[];
+    isSelfRunFilterFncTrigged: boolean;
 }
 
 export class SelectListAndCardRender extends React.Component<SelectListAndCardRenderProps, SelectListAndCardRenderState> {
@@ -1383,8 +1401,9 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
         super(props);
         this.state = {
             isShowCategorySelection: false,
-            selectedCategory: this.props.selectCateList[0] ? this.props.selectCateList[0] : '',
+            selectedCategory: this.props.selectCateList[1] ? this.props.selectCateList[1] : '',
             afterFilterData: this.props.sourceData || [],
+            isSelfRunFilterFncTrigged: false
         };
     }
 
@@ -1410,9 +1429,26 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
         }
     };
 
+    componentDidMount() {
+        if (this.props.selfRunFilterFnc && !this.state.isSelfRunFilterFncTrigged) {
+            this.runFilterFunction();
+        }
+    }
+
+    async runFilterFunction() {
+        try {
+            const res = await this.props.filterFnc(this.state.selectedCategory);
+            if (res) {
+                this.setState({ afterFilterData: res, isSelfRunFilterFncTrigged: true });
+            }
+        } catch (error) {
+            console.error('Error during self-run filter function:', error);
+        }
+    }
+
     render() {
         return (
-            <View style={[styles.border1]}>
+            <>
                 <Selector
                     isShowCategorySelection={this.state.isShowCategorySelection}
                     selectedCategory={this.state.selectedCategory}
@@ -1426,7 +1462,7 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
                     isShowCategorySelection={this.state.isShowCategorySelection}
                     COLORSCHEME={this.props.COLORSCHEME}
                 />
-            </View>
+            </>
         );
     }
 }

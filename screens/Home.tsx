@@ -112,6 +112,7 @@ export default function Home() {
           filterFnc={async (item: string): Promise<string[] | false> => {
             return [item]
           }}
+          selfRunFilterFnc
         />
 
         <ViewCol style={[componentStyleList.roundFillBrand600 as any, styles.gap2vw]}>

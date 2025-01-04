@@ -5,3 +5,9 @@ export interface StorageItem {
 export interface UserFormat {
     name: string;
 }
+
+export interface CardFormat {
+    title: string;
+    status: 'done' | 'new' | 'progress';
+
+}

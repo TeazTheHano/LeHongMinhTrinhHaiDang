@@ -30,6 +30,18 @@ export default function Test() {
         }}
       />
       <ScrollView style={[styles.flex1, styles.flexCol, styles.paddingH4vw]} contentContainerStyle={[styles.gap4vw]}>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('FlashCard' as never)
+        }}
+        >
+          <CTEXT.NGT_Inter_DispMd_SemiBold children={`FlashCard`} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('MindMapShow' as never)
+        }}
+        >
+          <CTEXT.NGT_Inter_DispMd_SemiBold children={`MindMapShow`} />
+        </TouchableOpacity>
       </ScrollView>
     </SSBarWithSaveArea>
   )

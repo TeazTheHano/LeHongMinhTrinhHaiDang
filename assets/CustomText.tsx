@@ -8,29 +8,48 @@ const GetColor = () => {
     return CurrentCache.colorScheme.text;
 };
 
-const createTextComponent = (fontFamily: string, fontSize: number, lineHeight: number) => ({
+const createTextComponent = (
+    fontFamily: string,
+    fontSize: number,
+    lineHeight: number
+) => ({
     children,
     style,
-    lineNumber,
+    numberOfLines,
     color,
 }: {
     children: React.ReactNode;
-    style?: TextStyle | TextStyle[] | undefined;
-    lineNumber?: number;
+    style?: TextStyle | TextStyle[];
+    numberOfLines?: number;
     color?: string;
 }) => {
-    return (
-        <Text
-            numberOfLines={lineNumber}
-            style={[
-                { fontFamily, color: color || GetColor(), fontSize: vw(fontSize), lineHeight: vw(lineHeight) },
-                style,
-            ]}
-        >
-            {children}
-        </Text>
-    );
-};
+        const getFontWeight = (font: string): TextStyle['fontWeight'] => {
+            if (font.includes('Black')) return '900';
+            if (font.includes('ExtraBold')) return '800';
+            if (font.includes('Bold')) return '700';
+            if (font.includes('SemiBold')) return '600';
+            if (font.includes('Medium')) return '500';
+            if (font.includes('Regular')) return '400';
+            if (font.includes('Light')) return '300';
+            if (font.includes('ExtraLight')) return '200';
+            if (font.includes('Thin')) return '100';
+            return 'normal';
+        };
+
+        const textStyle: TextStyle = {
+            fontFamily,
+            color: color || GetColor(),
+            fontSize: vw(fontSize),
+            lineHeight: vw(lineHeight),
+            fontWeight: getFontWeight(fontFamily),
+        };
+
+        return (
+            <Text numberOfLines={numberOfLines} style={[textStyle, style]}>
+                {children}
+            </Text>
+        );
+    };
 
 export const NGT_Inter_DispLg_Reg = createTextComponent('Inter-Regular', 6, 8);
 export const NGT_Inter_DispLg_Med = createTextComponent('Inter-Medium', 6, 8);
