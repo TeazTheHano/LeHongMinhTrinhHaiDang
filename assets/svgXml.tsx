@@ -374,32 +374,20 @@ export const checkedBoxRound = (w: any = '100%', h: any = '100%', color?: any) =
 
 // >>>>>>>>>>>>>>>>>
 
-export const addBox = (w: any = '100%', h: any = '100%', color?: any) => {
-    const xml = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-  <path d="M19.5 1H5.5C3.29086 1 1.5 2.79086 1.5 5V19C1.5 21.2091 3.29086 23 5.5 23H19.5C21.7091 23 23.5 21.2091 23.5 19V5C23.5 2.79086 21.7091 1 19.5 1Z" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M12.5 16V8" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M16.5 12H8.5" stroke="#111111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`
-    return (
-        <SvgXml xml={xml} width={w} height={h} />
-    )
-}
-
-export const editBox = (w: any = '100%', h: any = '100%', color?: any) => {
-    const xml = `<svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-  <path d="M23.5 11V19C23.5 20.0609 23.0786 21.0783 22.3284 21.8284C21.5783 22.5786 20.5609 23 19.5 23H5.5C4.43913 23 3.42172 22.5786 2.67157 21.8284C1.92143 21.0783 1.5 20.0609 1.5 19V5C1.5 3.93913 1.92143 2.92172 2.67157 2.17157C3.42172 1.42143 4.43913 1 5.5 1H13.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M15.5995 12.58L13.9495 12.82C13.6409 12.8654 13.326 12.8381 13.0298 12.7401C12.7337 12.642 12.4646 12.4761 12.244 12.2555C12.0234 12.035 11.8575 11.7659 11.7595 11.4697C11.6615 11.1736 11.6341 10.8586 11.6795 10.55L11.9195 8.9C11.9849 8.47032 12.1886 8.07364 12.4995 7.77L18.3895 1.88C18.952 1.3182 19.7145 1.00264 20.5095 1.00264C21.3045 1.00264 22.067 1.3182 22.6295 1.88V1.88C23.1913 2.4425 23.5069 3.205 23.5069 4C23.5069 4.795 23.1913 5.5575 22.6295 6.12L16.7295 12C16.4259 12.311 16.0292 12.5146 15.5995 12.58Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`
-    return (
-        <SvgXml xml={xml} width={w} height={h} />
-    )
-}
-
 export const roundFillDownTriangle = (w: any = '100%', h: any = '100%', color?: any) => {
     const xml = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M11.69 8.67993H17.92C18.433 8.67993 18.6939 9.30178 18.3349 9.66788C18.3346 9.66825 18.3342 9.66863 18.3338 9.66901L15.1264 12.8764L13.1564 14.8464C12.5217 15.4811 11.4883 15.4811 10.8535 14.8464L5.67355 9.66638C5.3076 9.30043 5.56675 8.67993 6.07999 8.67993H11.69Z" fill=${color ? color : "#98A2B3"} stroke=${color ? color : "#98A2B3"}/>
 </svg>
 `
+    return (
+        <SvgXml xml={xml} width={w} height={h} />
+    )
+}
+
+export const addIcon = (w: any = '100%', h: any = '100%', color?: any) => {
+    const xml = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+  <path d="M19.75 11H12.5V3.75C12.5 3.33579 12.1642 3 11.75 3C11.3358 3 11 3.33579 11 3.75V11H3.75C3.33579 11 3 11.3358 3 11.75C3 12.1642 3.33579 12.5 3.75 12.5H11V19.75C11 20.1642 11.3358 20.5 11.75 20.5C12.1642 20.5 12.5 20.1642 12.5 19.75V12.5H19.75C20.1642 12.5 20.5 12.1642 20.5 11.75C20.5 11.3358 20.1642 11 19.75 11Z" fill=${color ? color : "#7F56D9"}/>
+</svg > `
     return (
         <SvgXml xml={xml} width={w} height={h} />
     )

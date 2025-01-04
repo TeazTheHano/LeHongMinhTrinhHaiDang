@@ -2,7 +2,7 @@ import { View, Text, Animated, ScrollView, TouchableOpacity, Platform, Image, Im
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { storageGetItem, storageGetList } from '../data/storageFunc'
-import { CardCateRender, RoundBtn, SelectorInput, SSBarWithSaveArea, TopBarWithThingInMiddleAllCustomable, ViewCol, ViewColStartBetween, ViewRow, ViewRowBetweenCenter } from '../assets/Class'
+import { CardCateRender, RoundBtn, SelectListAndCardRender, SelectorInput, SSBarWithSaveArea, TopBarWithThingInMiddleAllCustomable, ViewCol, ViewColStartBetween, ViewRow, ViewRowBetweenCenter } from '../assets/Class'
 import * as SVG from '../assets/svgXml'
 import styles, { vh, vw } from '../assets/stylesheet'
 import * as CTEXT from '../assets/CustomText'
@@ -88,56 +88,6 @@ export default function Home() {
     )
   }, [libGradeSelected, COLORSCHEME])
 
-  const toggleCategorySelection = useCallback(() => {
-    setIsShowCategorySelection(prev => !prev)
-  }, [])
-  const RenderCategorySelectionHeader = useMemo(() => {
-    return (
-      <ViewCol>
-        <TouchableOpacity
-          onPress={toggleCategorySelection}
-          style={[styles.flexRowCenter, styles.gap1vw, styles.alignSelfStart, styles.paddingV1vw]}
-        >
-          <CTEXT.NGT_Inter_HeaderMd_SemiBold children={selectedCategory} color={COLORSCHEME.brandSecond} />
-          {SVG.roundFillDownTriangle(vw(6), vw(6), COLORSCHEME.gray1)}
-        </TouchableOpacity>
-        {isShowCategorySelection && CATEGORY_LIST.map((item, index) => {
-          return (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                setSelectedCategory(item)
-                toggleCategorySelection()
-                // TODO: add data change fnc
-              }}
-              style={[styles.flexRowCenter, styles.gap1vw, styles.alignSelfStart, styles.paddingV1vw]}
-            >
-              <CTEXT.NGT_Inter_HeaderMd_Reg children={item} color={COLORSCHEME.gray1} />
-            </TouchableOpacity>
-          )
-        })}
-      </ViewCol>
-    )
-  }, [selectedCategory, isShowCategorySelection])
-  const RenderCategorySelection = useMemo(() => {
-    return (
-      <FlatList
-        scrollEnabled={false}
-        data={selectedCategoryData}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            onPress={() => { }}
-            style={[styles.flexRowCenter, styles.gap1vw, styles.alignSelfStart, styles.paddingV1vw]}
-          >
-            <CTEXT.NGT_Inter_HeaderMd_Reg children={item.name} color={COLORSCHEME.gray1} />
-          </TouchableOpacity>
-        )}
-      />
-    )
-  }, [selectedCategory])
-
-
   return (
     <SSBarWithSaveArea COLORTHEME={COLORSCHEME}>
       <TopBarWithThingInMiddleAllCustomable
@@ -154,9 +104,15 @@ export default function Home() {
 
         {RenderHeaderSection}
         {RenderLibChooseSection}
-        {RenderCategorySelectionHeader}
-        {RenderCategorySelection}
 
+        <SelectListAndCardRender
+          COLORSCHEME={COLORSCHEME}
+          selectCateList={CATEGORY_LIST}
+          sourceData={CATEGORY_LIST}
+          filterFnc={async (item: string): Promise<string[] | false> => {
+            return [item]
+          }}
+        />
 
         <ViewCol style={[componentStyleList.roundFillBrand600 as any, styles.gap2vw]}>
           <ViewRowBetweenCenter>
@@ -169,3 +125,6 @@ export default function Home() {
     </SSBarWithSaveArea>
   )
 }
+
+
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>

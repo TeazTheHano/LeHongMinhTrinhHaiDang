@@ -7,6 +7,7 @@ export interface ColorTheme {
     barContent: StatusBarStyle;
     brandMain: string;
     brandSecond: string;
+    brandThird: string;
     text: string;
     textBrand: string;
     background: string;
@@ -23,6 +24,7 @@ export const defaultColorTheme: { [key: string]: ColorTheme } = {
         text: `#000010`,
         brandMain: NGHIASTYLE.NghiaBrand700 as string,
         brandSecond: NGHIASTYLE.NghiaBrand500 as string,
+        brandThird: NGHIASTYLE.NghiaBrand100 as string,
         textBrand: NGHIASTYLE.NghiaBrand800 as string,
         background: `rgba(250, 250, 250, 1)`,
         backgroundSecond: `rgba(255, 255, 255, 1)`,
@@ -35,6 +37,7 @@ export const defaultColorTheme: { [key: string]: ColorTheme } = {
         barContent: `light-content`,
         brandMain: NGHIASTYLE.NghiaBrand400 as string,
         brandSecond: NGHIASTYLE.NghiaBrand600 as string,
+        brandThird: NGHIASTYLE.NghiaBrand900 as string,
         text: `#FFFFFF`,
         textBrand: NGHIASTYLE.NghiaBrand200 as string,
         background: `rgba(20, 20, 20, 1)`,

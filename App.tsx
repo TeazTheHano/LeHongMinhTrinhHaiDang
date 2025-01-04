@@ -11,6 +11,8 @@ import { ColorValue } from 'react-native';
 import BottomTab from './assets/BottomTab';
 import Home from './screens/Home';
 import Test from './screens/Test';
+import Mindmap from './screens/Mindmap';
+import Setting from './screens/Setting';
 // 
 import NameCollect from './screens/NameCollect';
 
@@ -27,6 +29,8 @@ function App(): React.JSX.Element {
 
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Test" component={Test} />
+          <Stack.Screen name='Mindmap' component={Mindmap} />
+          <Stack.Screen name='Setting' component={Setting} />
 
           {/* < */}
           <Stack.Screen name="NameCollect" component={NameCollect} />

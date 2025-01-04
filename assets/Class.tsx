@@ -407,7 +407,7 @@ export class RoundBtn extends Component<{
             <TouchableOpacity
                 onPress={onPress}
                 {...otherTouchProps}
-                style={[styles.flexRow, styles.alignItemsCenter, styles.padding4vw, styles.gap3vw, styles.borderRadius10, styles.overflowHidden, { backgroundColor: bgColor ? bgColor : undefined, borderWidth: border ? 1 : 0, }, customStyle]}>
+                style={[styles.flexRow, styles.alignItemsCenter, styles.padding4vw, styles.gap3vw, styles.borderRadius10, styles.overflowHidden, { backgroundColor: bgColor ? bgColor : undefined, borderWidth: border ? 1 : 0, borderColor: borderColor ? borderColor : undefined }, customStyle]}>
                 {icon ? icon : null}
                 <TextClass style={[{ color: textColor ? textColor : clrStyle.black as string }]}>{title}</TextClass>
             </TouchableOpacity>
@@ -1281,5 +1281,152 @@ export class CardCateRender extends React.Component<{ type: number }> {
                 <CTEXT.NGT_Inter_BodyMd_Reg children={data[type]} color={(type == 0 ? NGHIASTYLE.NghiaIndigo800 : type == 1 ? NGHIASTYLE.NghiaWarning800 : type == 2 ? NGHIASTYLE.NghiaSuccess800 : NGHIASTYLE.NghiaError800) as string} />
             </View>
         )
+    }
+}
+
+interface SelectorProps {
+    isShowCategorySelection: boolean;
+    selectedCategory: string;
+    selectCateList: string[];
+    COLORSCHEME: ColorTheme;
+    toggleCategorySelection: () => void;
+    setSelectedCategory: (category: string) => void;
+}
+
+export class Selector extends React.Component<SelectorProps> {
+    shouldComponentUpdate(nextProps: SelectorProps) {
+        return nextProps.isShowCategorySelection !== this.props.isShowCategorySelection;
+    }
+
+    render() {
+        console.log('render sel');
+        const { isShowCategorySelection, selectedCategory, selectCateList, COLORSCHEME, toggleCategorySelection, setSelectedCategory } = this.props;
+
+        return (
+            <View>
+                <View style={styles.flexCol}>
+                    <TouchableOpacity
+                        onPress={toggleCategorySelection}
+                        style={[styles.flexRowCenter, styles.gap1vw, styles.alignSelfStart, styles.paddingV1vw]}
+                    >
+                        <CTEXT.NGT_Inter_HeaderMd_SemiBold children={selectedCategory} color={COLORSCHEME.brandSecond} />
+                        {SVG.roundFillDownTriangle(vw(6), vw(6), COLORSCHEME.gray1)}
+                    </TouchableOpacity>
+                    {isShowCategorySelection && selectCateList.map((item, index) => {
+                        return (
+                            <TouchableOpacity
+                                key={index}
+                                onPress={() => setSelectedCategory(item)}
+                                style={[styles.flexRowCenter, styles.gap1vw, styles.alignSelfStart, styles.paddingV1vw]}
+                            >
+                                <CTEXT.NGT_Inter_HeaderMd_Reg children={item} color={COLORSCHEME.gray1} />
+                            </TouchableOpacity>
+                        )
+                    })}
+                </View>
+            </View>
+        );
+    }
+}
+
+interface ResultFiltedCardProps {
+    afterFilterData: string[];
+    isShowCategorySelection: boolean;
+    COLORSCHEME: ColorTheme;
+}
+
+export class ResultFiltedCard extends React.Component<ResultFiltedCardProps> {
+    shouldComponentUpdate(nextProps: ResultFiltedCardProps) {
+        return (
+            nextProps.afterFilterData !== this.props.afterFilterData
+        );
+    }
+
+    render() {
+        console.log('render Res');
+        const { afterFilterData, COLORSCHEME } = this.props;
+
+        return (
+            <FlatList
+                data={afterFilterData}
+                style={[styles.border1]}
+                scrollEnabled={false}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <TouchableOpacity
+                        onPress={() => { }}
+                        style={[styles.flexRowCenter, styles.gap1vw, styles.alignSelfStart, styles.paddingV1vw]}
+                    >
+                        <CTEXT.NGT_Inter_HeaderMd_Reg children={item} color={COLORSCHEME.gray1} />
+                    </TouchableOpacity>
+                )}
+            />
+        );
+    }
+}
+
+interface SelectListAndCardRenderProps {
+    selectCateList: string[];
+    COLORSCHEME: ColorTheme;
+    filterFnc?: (category: string) => Promise<any>;
+    sourceData: any[];
+}
+
+interface SelectListAndCardRenderState {
+    isShowCategorySelection: boolean;
+    selectedCategory: string;
+    afterFilterData: any[];
+}
+
+export class SelectListAndCardRender extends React.Component<SelectListAndCardRenderProps, SelectListAndCardRenderState> {
+    constructor(props: SelectListAndCardRenderProps) {
+        super(props);
+        this.state = {
+            isShowCategorySelection: false,
+            selectedCategory: this.props.selectCateList[0] ? this.props.selectCateList[0] : '',
+            afterFilterData: this.props.sourceData || [],
+        };
+    }
+
+    toggleCategorySelection = () => {
+        this.setState((prevState) => ({
+            isShowCategorySelection: !prevState.isShowCategorySelection
+        }));
+    };
+
+    setSelectedCategory = async (item: string) => {
+        try {
+            this.setState({ selectedCategory: item });
+            this.toggleCategorySelection();
+
+            if (this.props.filterFnc) {
+                const res = await this.props.filterFnc(item);
+                if (res) {
+                    this.setState({ afterFilterData: res });
+                }
+            }
+        } catch (error) {
+            console.error('Error filtering data:', error);
+        }
+    };
+
+    render() {
+        return (
+            <View style={[styles.border1]}>
+                <Selector
+                    isShowCategorySelection={this.state.isShowCategorySelection}
+                    selectedCategory={this.state.selectedCategory}
+                    selectCateList={this.props.selectCateList}
+                    COLORSCHEME={this.props.COLORSCHEME}
+                    toggleCategorySelection={this.toggleCategorySelection}
+                    setSelectedCategory={this.setSelectedCategory}
+                />
+                <ResultFiltedCard
+                    afterFilterData={this.state.afterFilterData}
+                    isShowCategorySelection={this.state.isShowCategorySelection}
+                    COLORSCHEME={this.props.COLORSCHEME}
+                />
+            </View>
+        );
     }
 }
