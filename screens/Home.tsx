@@ -2,14 +2,15 @@ import { View, Text, Animated, ScrollView, TouchableOpacity, Platform, Image, Im
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { storageGetItem, storageGetList } from '../data/storageFunc'
-import { CardCateRender, RoundBtn, SelectListAndCardRender, SelectorInput, SSBarWithSaveArea, TopBarWithThingInMiddleAllCustomable, ViewCol, ViewColStartBetween, ViewRow, ViewRowBetweenCenter } from '../assets/Class'
-import * as SVG from '../assets/svgXml'
 import styles, { vh, vw } from '../assets/stylesheet'
-import * as CTEXT from '../assets/CustomText'
-import { DATAmonthList } from '../data/factoryData'
 import clrStyle, { componentStyleList, NGHIASTYLE } from '../assets/componentStyleSheet'
 import { RootContext } from '../data/store'
+import * as CLASS from '../assets/Class'
+import * as SVG from '../assets/svgXml'
+import * as CTEXT from '../assets/CustomText'
 import * as Progress from 'react-native-progress'
+import { demoCardTitleData } from '../data/factoryData'
+import { CardTitleFormat } from '../data/interfaceFormat'
 
 export default function Home() {
   // Sentinal variable <<<<<<<<<<<<<<
@@ -20,19 +21,15 @@ export default function Home() {
   // State variable <<<<<<<<<<<<<<
   const [libGradeSelected, setLibGradeSelected] = useState<number>(9)
 
-  const [isShowCategorySelection, setIsShowCategorySelection] = useState<boolean>(false)
-  const [selectedCategory, setSelectedCategory] = useState<string>('Tất cả')
-  const [selectedCategoryData, setSelectedCategoryData] = useState<any[]>([])
-
   // Local variable <<<<<<<<<<<<<<
   const CATEGORY_LIST = ['Tất cả', 'Mới', 'Chưa hoàn thành', 'Đã hoàn thành']
 
   // Render section <<<<<<<<<<<<<<
   const RenderHeaderSection = useMemo(() => {
     return (
-      <ViewRowBetweenCenter style={[componentStyleList.roundBorderBrand as any, styles.gap4vw, COLORSCHEME.type === 'dark' ? { backgroundColor: NGHIASTYLE.NghiaBrand900 } : null]}>
-        <ViewCol style={[styles.justifyContentSpaceBetween, { minHeight: vw(30) }, styles.gap2vw, styles.flex1,]}>
-          <ViewRow style={[styles.gap2vw]}>
+      <CLASS.ViewRowBetweenCenter style={[componentStyleList.roundBorderBrand as any, styles.gap4vw, COLORSCHEME.type === 'dark' ? { backgroundColor: NGHIASTYLE.NghiaBrand900 } : null]}>
+        <CLASS.ViewCol style={[styles.justifyContentSpaceBetween, { minHeight: vw(30) }, styles.gap2vw, styles.flex1,]}>
+          <CLASS.ViewRow style={[styles.gap2vw]}>
             <Progress.Circle
               progress={0.5}
               size={vw(11)}
@@ -42,12 +39,12 @@ export default function Home() {
               unfilledColor={NGHIASTYLE.NghiaBrand200 as string}
               color={NGHIASTYLE.NghiaBrand600 as string}
             />
-            <ViewCol style={[styles.flex1,]}>
+            <CLASS.ViewCol style={[styles.flex1,]}>
               <CTEXT.NGT_Inter_BodyMd_Reg >7/10 đã hoàn thành</CTEXT.NGT_Inter_BodyMd_Reg>
               <CTEXT.NGT_Inter_BodyLg_SemiBold>Phương trình bậc nhất một ẩn</CTEXT.NGT_Inter_BodyLg_SemiBold>
-            </ViewCol>
-          </ViewRow>
-          <RoundBtn
+            </CLASS.ViewCol>
+          </CLASS.ViewRow>
+          <CLASS.RoundBtn
             title='Hoàn thành ngay'
             onPress={() => { }}
             textClass={CTEXT.NGT_Inter_BodyMd_SemiBold}
@@ -55,15 +52,15 @@ export default function Home() {
             bgColor={COLORSCHEME.brandMain}
             customStyle={[styles.wfit, { paddingHorizontal: vw(4), paddingVertical: vw(1.5), borderRadius: vw(1.5) }]}
           />
-        </ViewCol>
+        </CLASS.ViewCol>
         <Image source={require('../assets/photos/home1.png')} resizeMethod='resize' resizeMode='contain' style={[styles.w30vw, styles.h30vw] as ImageStyle} />
-      </ViewRowBetweenCenter>
+      </CLASS.ViewRowBetweenCenter>
     )
   }, [COLORSCHEME])
 
   const RenderLibChooseSection = useMemo(() => {
     return (
-      <ViewCol style={[styles.positionSticky, styles.top0, styles.gap4vw,]}>
+      <CLASS.ViewCol style={[styles.positionSticky, styles.top0, styles.gap4vw,]}>
         <CTEXT.NGT_Inter_DispMd_SemiBold children={'Thư viện'} />
         <FlatList
           scrollEnabled={false}
@@ -84,14 +81,13 @@ export default function Home() {
             )
           }}
         />
-      </ViewCol>
+      </CLASS.ViewCol>
     )
   }, [libGradeSelected, COLORSCHEME])
 
   return (
-    <SSBarWithSaveArea COLORTHEME={COLORSCHEME}>
-      <TopBarWithThingInMiddleAllCustomable
-        COLORTHEME={COLORSCHEME}
+    <CLASS.SSBarWithSaveAreaWithColorScheme>
+      <CLASS.TopBarWithThingInMiddleAllCustomableWithColorScheme
         leftItem={<CTEXT.NGT_Inter_DispMd_SemiBold children={`Numbunnies`} />}
         rightItemFnc={() => { }}
         rightItemIcon={SVG.optionIcon(vw(6), vw(6), COLORSCHEME.text)}
@@ -105,25 +101,34 @@ export default function Home() {
         {RenderHeaderSection}
         {RenderLibChooseSection}
 
-        <SelectListAndCardRender
-          COLORSCHEME={COLORSCHEME}
+        <CLASS.SelectListAndCardRender
           selectCateList={CATEGORY_LIST}
-          sourceData={CATEGORY_LIST}
-          filterFnc={async (item: string): Promise<string[] | false> => {
-            return [item]
+          sourceData={demoCardTitleData}
+          filterFnc={async (item: string, sourceData: any): Promise<any[] | false> => {
+            function filfnc(status: number) {
+              const res = sourceData.filter((item: any) => item.status === status);
+              return res.length > 0 ? res : null;
+            }
+            switch (item) {
+              case 'Mới':
+                return filfnc(0);
+              case 'Chưa hoàn thành':
+                return filfnc(1);
+              case 'Đã hoàn thành':
+                return filfnc(2);
+              case 'Tất cả':
+                return sourceData;
+              default:
+                return [];
+            }
           }}
           selfRunFilterFnc
+          renderFnc={(item: CardTitleFormat[]) => {
+            return <CLASS.CardTitleRenderWithColorScheme data={item} onPressFnc={() => { }} />
+          }}
         />
-
-        <ViewCol style={[componentStyleList.roundFillBrand600 as any, styles.gap2vw]}>
-          <ViewRowBetweenCenter>
-            <CTEXT.NGT_Inter_BodyMd_SemiBold color='white'>10 <CTEXT.NGT_Inter_BodyMd_Reg color='white' children='thẻ | Tiến độ: ' />0/10</CTEXT.NGT_Inter_BodyMd_SemiBold>
-            <CardCateRender type={0} />
-          </ViewRowBetweenCenter>
-          <CTEXT.NGT_Inter_BodyLg_SemiBold color='white' children={'Phương trình bậc nhất một ẩn'} />
-        </ViewCol>
       </ScrollView>
-    </SSBarWithSaveArea>
+    </CLASS.SSBarWithSaveAreaWithColorScheme>
   )
 }
 

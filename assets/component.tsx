@@ -6,10 +6,11 @@ import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from "react-native";
 
 // style import
+import { ColorTheme } from "./ColorTheme";
 import styles from "./stylesheet";
 import { vw, vh, vmax, vmin } from './stylesheet';
 import Svg, { SvgXml } from 'react-native-svg';
-import clrStyle from "./componentStyleSheet";
+import clrStyle, { componentStyleList, NGHIASTYLE } from "./componentStyleSheet";
 
 // SVG import
 import * as SVG from "./svgXml";
@@ -17,6 +18,8 @@ import * as SVG from "./svgXml";
 import * as FORMATDATA from '../data/interfaceFormat'
 import * as CUSTOMCACHE from '../data/store'
 import * as STORAGEFNC from '../data/storageFunc'
+import * as CLASS from "./Class";
+import * as CTEXT from "./CustomText";
 
 // font import 
 

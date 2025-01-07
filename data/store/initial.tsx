@@ -26,6 +26,7 @@ export interface Action {
 
 export const initialState: CurrentCache = {
     user: {
+        lang: 'vi',
         name: '',
     },
     colorScheme: defaultColorTheme.light

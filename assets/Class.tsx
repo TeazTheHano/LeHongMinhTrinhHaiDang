@@ -13,11 +13,12 @@ import { marginBottomForScrollView } from './component';
 import * as SVG from './svgXml';
 import clrStyle, { componentStyleList, NGHIASTYLE } from './componentStyleSheet';
 import { useNavigation } from '@react-navigation/native';
-import { CurrentCache, RootContext } from '../data/store';
+import { Action, CurrentCache, initialState, RootContext } from '../data/store';
 import * as FormatData from '../data/interfaceFormat';
 import * as CTEXT from './CustomText';
 import { SvgXml } from 'react-native-svg';
 import { ColorTheme } from './ColorTheme';
+import * as FactoryData from '../data/factoryData';
 
 // other import
 
@@ -243,12 +244,12 @@ export class SSBar extends Component<{ COLORTHEME: ColorTheme, barColor?: any, t
     }
 }
 
-export class SSBarWithSaveArea extends Component<{ COLORTHEME: ColorTheme, barColor?: any, trans?: boolean, children?: React.ReactNode, bgColor?: any, barContentStyle?: StatusBarStyle, margin?: boolean }> {
+export class SSBarWithSaveArea extends Component<{ colorScheme: ColorTheme, barColor?: any, trans?: boolean, children?: React.ReactNode, bgColor?: any, barContentStyle?: StatusBarStyle, margin?: boolean }> {
     render(): React.ReactNode {
         let statusBarHeight = StatusBar.currentHeight ? StatusBar.currentHeight : 0
-        let bgColor = this.props.bgColor ? this.props.bgColor : this.props.COLORTHEME.background
-        let barColor = this.props.barColor ? this.props.barColor : this.props.COLORTHEME.background
-        let barContentStyle = this.props.barContentStyle ? this.props.barContentStyle : this.props.COLORTHEME.barContent
+        let bgColor = this.props.bgColor ? this.props.bgColor : this.props.colorScheme.background
+        let barColor = this.props.barColor ? this.props.barColor : this.props.colorScheme.background
+        let barContentStyle = this.props.barContentStyle ? this.props.barContentStyle : this.props.colorScheme.barContent
         return (
             <SafeAreaView style={[styles.flex1, { backgroundColor: bgColor }]}>
                 <StatusBar
@@ -262,8 +263,10 @@ export class SSBarWithSaveArea extends Component<{ COLORTHEME: ColorTheme, barCo
     }
 }
 
+export const SSBarWithSaveAreaWithColorScheme = withColorScheme(SSBarWithSaveArea)
+
 export class TopBarWithThingInMiddleAllCustomable extends Component<{
-    COLORTHEME: ColorTheme;
+    colorScheme: ColorTheme;
 
     centerChildren?: React.ReactNode;
     leftItem?: React.ReactNode;
@@ -307,7 +310,7 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
     };
 
     render(): React.ReactNode {
-        const { COLORTHEME, centerChildren, leftItem, rightItem, returnPreScreenFnc, returnPreScreenIcon, rightItemFnc, rightItemIcon, centerTitle, TitleTextClass, style, bgColor, textColor, iconColor } = this.props
+        const { colorScheme, centerChildren, leftItem, rightItem, returnPreScreenFnc, returnPreScreenIcon, rightItemFnc, rightItemIcon, centerTitle, TitleTextClass, style, bgColor, textColor, iconColor } = this.props
         const { leftWidth, rightWidth } = this.state;
         const TitleClass = TitleTextClass || Text;
 
@@ -328,7 +331,7 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
                         returnPreScreenFnc ? (
                             <TouchableOpacity onPress={returnPreScreenFnc}
                                 style={[style?.iconLeftStyle]}>
-                                {returnPreScreenIcon || SVG.sharpLeftArrow(style?.leftItemSize || vw(6), style?.leftItemSize || vw(6), iconColor || COLORTHEME.text)}
+                                {returnPreScreenIcon || SVG.sharpLeftArrow(style?.leftItemSize || vw(6), style?.leftItemSize || vw(6), iconColor || colorScheme.text)}
                             </TouchableOpacity>
                         ) : null
                     )}
@@ -336,7 +339,7 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
                 <View key={'TopBarWithThingInMiddleAllCustomable-center'} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                     {centerChildren ?
                         centerChildren :
-                        <TitleClass style={[styles.flex1, styles.textCenter, { color: textColor || COLORTHEME.text }, style?.textStyle]}>{centerTitle}</TitleClass>
+                        <TitleClass style={[styles.flex1, styles.textCenter, { color: textColor || colorScheme.text }, style?.textStyle]}>{centerTitle}</TitleClass>
                     }
                 </View>
                 <View key={'TopBarWithThingInMiddleAllCustomable-right'}
@@ -346,7 +349,7 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
                         rightItemFnc ? (
                             <TouchableOpacity onPress={rightItemFnc}
                                 style={[style?.iconLeftStyle]}>
-                                {rightItemIcon || SVG.sharpRightArrow(style?.rightItemSize || vw(6), style?.rightItemSize || vw(6), iconColor || COLORTHEME.text)}
+                                {rightItemIcon || SVG.sharpRightArrow(style?.rightItemSize || vw(6), style?.rightItemSize || vw(6), iconColor || colorScheme.text)}
                             </TouchableOpacity>
                         ) : null
                     )}
@@ -355,6 +358,8 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
         );
     }
 }
+
+export const TopBarWithThingInMiddleAllCustomableWithColorScheme = withColorScheme(TopBarWithThingInMiddleAllCustomable)
 
 /**
  * A React component that renders a customizable round button.
@@ -1272,40 +1277,134 @@ export class BannerSliderWithCenter extends Component<{
 
 // _______ NO REUSE CLASS SECTION _______
 
-export class CardCateRender extends React.Component<{ type: number, isSelected?: boolean }> {
+export function withColorScheme<T extends { colorScheme: ColorTheme }>(Component: React.ComponentType<T>) {
+    return (props: any) => {
+        const [CurrentCache, dispatch] = useContext<[CurrentCache, React.Dispatch<Action>]>(RootContext)
+        const colorScheme = CurrentCache.colorScheme
+
+        return (
+            <Component {...props} colorScheme={colorScheme} />
+        )
+    }
+}
+
+
+export class CardCateRender extends React.Component<{ type: number, isSelected?: boolean, colorScheme: ColorTheme }> {
+
     render(): React.ReactNode {
-        const data = ['Số học', 'Hình học', 'Lý thuyết', 'Công thức']
+        const { colorScheme } = this.props
         const textColorDefault = [NGHIASTYLE.NghiaIndigo800, NGHIASTYLE.NghiaWarning800, NGHIASTYLE.NghiaSuccess800, NGHIASTYLE.NghiaError800]
         const bgColorDefault = [NGHIASTYLE.NghiaIndigo50, NGHIASTYLE.NghiaWarning50, NGHIASTYLE.NghiaSuccess50, NGHIASTYLE.NghiaError50]
+
+        // TODO: change systax in future
+        const defaultLang = 'vi-VN'
+
         const type = this.props.type || 0
+        const data = FactoryData.CARD_CATE_TYPE_CODE.filter((item) => item.code == type)[0].name.filter((item) => item.lang == defaultLang)[0].value
         return (
             <View style={[styles.paddingV1vw, styles.paddingH2vw, { borderRadius: vw(1.5), backgroundColor: (this.props.isSelected ? textColorDefault[type] : bgColorDefault[type]) as string }]}>
-                <CTEXT.NGT_Inter_BodyMd_Reg children={data[type]} color={this.props.isSelected ? 'white' : textColorDefault[type] as string} />
+                <CTEXT.NGT_Inter_BodyMd_Reg children={data} color={this.props.isSelected ? 'white' : textColorDefault[type] as string} />
             </View>
         )
     }
 }
 
-export class CardTitleRender extends React.Component<{ title: string, type: number }> {
+export const CardCateRenderWithColorScheme = withColorScheme(CardCateRender)
+
+export class CardTitleRender extends React.Component<{ data: FormatData.CardTitleFormat[], colorScheme: ColorTheme, onPressFnc?: (value: any) => void }> {
     render(): React.ReactNode {
-        const { title, type } = this.props
+        const { data, colorScheme, onPressFnc } = this.props
+
+        const styleC: { [key: string]: { class: any[], textBoldColor: string, textRegColor: string, titleColor: string, progressBorder: boolean } } = {
+            newLight: {
+                class: componentStyleList.roundFillBrand600,
+                textBoldColor: 'white',
+                textRegColor: 'white',
+                titleColor: 'white',
+                progressBorder: false,
+            },
+            progressLight: {
+                class: componentStyleList.roundFillBrand100,
+                textBoldColor: NGHIASTYLE.NghiaBrand600 as string,
+                textRegColor: NGHIASTYLE.NghiaGray500 as string,
+                titleColor: 'black',
+                progressBorder: false,
+            },
+            doneLight: {
+                class: componentStyleList.roundBorderGray200,
+                textBoldColor: 'white',
+                textRegColor: 'white',
+                titleColor: 'black',
+                progressBorder: true,
+            },
+            newDark: {
+                class: componentStyleList.roundFillBrand600,
+                textBoldColor: 'white',
+                textRegColor: 'white',
+                titleColor: 'white',
+                progressBorder: false,
+            },
+            progressDark: {
+                class: componentStyleList.roundFillBrand100,
+                textBoldColor: NGHIASTYLE.NghiaBrand600 as string,
+                textRegColor: NGHIASTYLE.NghiaGray500 as string,
+                titleColor: 'black',
+                progressBorder: false,
+            },
+            doneDark: {
+                class: componentStyleList.roundBorderGray200,
+                textBoldColor: NGHIASTYLE.NghiaBrand600 as string,
+                textRegColor: NGHIASTYLE.NghiaGray500 as string,
+                titleColor: 'black',
+                progressBorder: true,
+            }
+        }
+
         return (
-            <ViewCol style={[componentStyleList.roundFillBrand600 as any, styles.gap2vw]}>
-                <ViewRowBetweenCenter>
-                    <CTEXT.NGT_Inter_BodyMd_SemiBold color='white'>10 <CTEXT.NGT_Inter_BodyMd_Reg color='white' children='thẻ | Tiến độ: ' />0/10</CTEXT.NGT_Inter_BodyMd_SemiBold>
-                    <CardCateRender type={0} />
-                </ViewRowBetweenCenter>
-                <CTEXT.NGT_Inter_BodyLg_SemiBold color='white' children={'Phương trình bậc nhất một ẩn'} />
-            </ViewCol>
+            <FlatList
+                data={data}
+                scrollEnabled={false}
+                keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={[styles.gap3vw]}
+                renderItem={({ item, index }) => {
+                    const kind = (() => {
+                        switch (item.status) {
+                            case 0:
+                                return colorScheme.type == 'light' ? 'newLight' : 'newDark';
+                            case 1:
+                                return colorScheme.type == 'light' ? 'progressLight' : 'progressDark';
+                            case 2:
+                                return colorScheme.type == 'light' ? 'doneLight' : 'doneDark';
+                            default:
+                                return 'newLight';
+                        }
+                    })();
+                    return (
+                        <TouchableOpacity onPress={() => { onPressFnc && onPressFnc(item) }}>
+                            <ViewCol style={[styleC[kind].class as any, styles.gap2vw]}>
+                                <ViewRowBetweenCenter>
+                                    <View style={styleC[kind].progressBorder ? { paddingHorizontal: vw(1.5), paddingVertical: vw(0.5), borderRadius: vw(1.5), backgroundColor: NGHIASTYLE.NghiaBrand600 as string } : null}>
+                                        <CTEXT.NGT_Inter_BodyMd_SemiBold color={styleC[kind].textBoldColor}>{item.length} <CTEXT.NGT_Inter_BodyMd_Reg color={styleC[kind].textRegColor} children='thẻ | Tiến độ: ' />{item.process}/{item.length}</CTEXT.NGT_Inter_BodyMd_SemiBold>
+                                    </View>
+                                    <CardCateRenderWithColorScheme type={item.type} />
+                                </ViewRowBetweenCenter>
+                                <CTEXT.NGT_Inter_BodyLg_SemiBold color={styleC[kind].titleColor} children={item.title} />
+                            </ViewCol>
+                        </TouchableOpacity>
+                    )
+                }}
+            />
         )
     }
 }
+
+export const CardTitleRenderWithColorScheme = withColorScheme(CardTitleRender)
 
 interface SelectorProps {
     isShowCategorySelection: boolean;
     selectedCategory: string;
     selectCateList: string[];
-    COLORSCHEME: ColorTheme;
+    colorScheme: ColorTheme;
     toggleCategorySelection: () => void;
     setSelectedCategory: (category: string) => void;
 }
@@ -1317,7 +1416,7 @@ export class Selector extends React.Component<SelectorProps> {
 
     render() {
         console.log('render sel');
-        const { isShowCategorySelection, selectedCategory, selectCateList, COLORSCHEME, toggleCategorySelection, setSelectedCategory } = this.props;
+        const { isShowCategorySelection, selectedCategory, selectCateList, colorScheme, toggleCategorySelection, setSelectedCategory } = this.props;
 
         return (
             <View>
@@ -1326,8 +1425,8 @@ export class Selector extends React.Component<SelectorProps> {
                         onPress={toggleCategorySelection}
                         style={[styles.flexRowCenter, styles.gap1vw, styles.alignSelfStart, styles.paddingV1vw]}
                     >
-                        <CTEXT.NGT_Inter_HeaderMd_SemiBold children={selectedCategory} color={COLORSCHEME.brandSecond} />
-                        {SVG.roundFillDownTriangle(vw(6), vw(6), COLORSCHEME.gray1)}
+                        <CTEXT.NGT_Inter_HeaderMd_SemiBold children={selectedCategory} color={colorScheme.brandSecond} />
+                        {SVG.roundFillDownTriangle(vw(6), vw(6), colorScheme.gray1)}
                     </TouchableOpacity>
                     {isShowCategorySelection && selectCateList.map((item, index) => {
                         return (
@@ -1336,7 +1435,7 @@ export class Selector extends React.Component<SelectorProps> {
                                 onPress={() => setSelectedCategory(item)}
                                 style={[styles.flexRowCenter, styles.gap1vw, styles.alignSelfStart, styles.paddingV1vw]}
                             >
-                                <CTEXT.NGT_Inter_HeaderMd_Reg children={item} color={COLORSCHEME.gray1} />
+                                <CTEXT.NGT_Inter_HeaderMd_Reg children={item} color={colorScheme.gray1} />
                             </TouchableOpacity>
                         )
                     })}
@@ -1346,10 +1445,13 @@ export class Selector extends React.Component<SelectorProps> {
     }
 }
 
+export const SelectorWithColorScheme = withColorScheme(Selector);
+
 interface ResultFiltedCardProps {
     afterFilterData: string[];
     isShowCategorySelection: boolean;
-    COLORSCHEME: ColorTheme;
+    colorScheme: ColorTheme;
+    renderFnc?: (item: string[]) => React.ReactNode;
 }
 
 export class ResultFiltedCard extends React.Component<ResultFiltedCardProps> {
@@ -1361,32 +1463,36 @@ export class ResultFiltedCard extends React.Component<ResultFiltedCardProps> {
 
     render() {
         console.log('render Res');
-        const { afterFilterData, COLORSCHEME } = this.props;
+        const { afterFilterData, colorScheme } = this.props;
 
         return (
-            <FlatList
-                data={afterFilterData}
-                scrollEnabled={false}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({ item }) => (
-                    <TouchableOpacity
-                        onPress={() => { }}
-                        style={[styles.flexRowCenter, styles.gap1vw, styles.alignSelfStart, styles.paddingV1vw]}
-                    >
-                        <CTEXT.NGT_Inter_HeaderMd_Reg children={item} color={COLORSCHEME.gray1} />
-                    </TouchableOpacity>
-                )}
-            />
-        );
+            this.props.renderFnc ? this.props.renderFnc(afterFilterData) : (
+                <FlatList
+                    data={afterFilterData}
+                    scrollEnabled={false}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <TouchableOpacity
+                            onPress={() => { }}
+                            style={[styles.flexRowCenter, styles.gap1vw, styles.alignSelfStart, styles.paddingV1vw]}
+                        >
+                            <CTEXT.NGT_Inter_HeaderMd_Reg children={JSON.stringify(item)} color={colorScheme.gray1} />
+                        </TouchableOpacity>
+                    )}
+                />
+            )
+        )
     }
 }
 
+export const ResultFiltedCardWithColorScheme = withColorScheme(ResultFiltedCard);
+
 interface SelectListAndCardRenderProps {
     selectCateList: string[];
-    COLORSCHEME: ColorTheme;
-    filterFnc: (category: string) => Promise<any>;
+    filterFnc: (category: string, sourceData: any) => Promise<any>;
     sourceData: any[];
     selfRunFilterFnc?: boolean;
+    renderFnc?: (item: any[]) => React.ReactNode;
 }
 
 interface SelectListAndCardRenderState {
@@ -1419,7 +1525,7 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
             this.toggleCategorySelection();
 
             if (this.props.filterFnc) {
-                const res = await this.props.filterFnc(item);
+                const res = await this.props.filterFnc(item, this.props.sourceData);
                 if (res) {
                     this.setState({ afterFilterData: res });
                 }
@@ -1437,7 +1543,7 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
 
     async runFilterFunction() {
         try {
-            const res = await this.props.filterFnc(this.state.selectedCategory);
+            const res = await this.props.filterFnc(this.state.selectedCategory, this.props.sourceData);
             if (res) {
                 this.setState({ afterFilterData: res, isSelfRunFilterFncTrigged: true });
             }
@@ -1449,18 +1555,17 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
     render() {
         return (
             <>
-                <Selector
+                <SelectorWithColorScheme
                     isShowCategorySelection={this.state.isShowCategorySelection}
                     selectedCategory={this.state.selectedCategory}
                     selectCateList={this.props.selectCateList}
-                    COLORSCHEME={this.props.COLORSCHEME}
                     toggleCategorySelection={this.toggleCategorySelection}
                     setSelectedCategory={this.setSelectedCategory}
                 />
-                <ResultFiltedCard
+                <ResultFiltedCardWithColorScheme
                     afterFilterData={this.state.afterFilterData}
                     isShowCategorySelection={this.state.isShowCategorySelection}
-                    COLORSCHEME={this.props.COLORSCHEME}
+                    renderFnc={this.props.renderFnc}
                 />
             </>
         );

@@ -2,11 +2,10 @@ import { View, Text, Animated, ScrollView, TouchableOpacity, Platform, Image, Im
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { storageGetItem, storageGetList } from '../data/storageFunc'
-import { RoundBtn, SelectorInput, SSBarWithSaveArea, TopBarWithThingInMiddleAllCustomable, ViewCol, ViewColStartBetween, ViewRow, ViewRowBetweenCenter } from '../assets/Class'
+import { RoundBtn, SelectorInput, SSBarWithSaveArea, SSBarWithSaveAreaWithColorScheme, TopBarWithThingInMiddleAllCustomable, TopBarWithThingInMiddleAllCustomableWithColorScheme, ViewCol, ViewColStartBetween, ViewRow, ViewRowBetweenCenter } from '../assets/Class'
 import * as SVG from '../assets/svgXml'
 import styles, { vh, vw } from '../assets/stylesheet'
 import * as CTEXT from '../assets/CustomText'
-import { DATAmonthList } from '../data/factoryData'
 import clrStyle, { componentStyleList, NGHIASTYLE } from '../assets/componentStyleSheet'
 import { RootContext } from '../data/store'
 import * as Progress from 'react-native-progress'
@@ -18,9 +17,8 @@ export default function Setting() {
   let COLORSCHEME = CurrentCache.colorScheme
 
   return (
-    <SSBarWithSaveArea COLORTHEME={COLORSCHEME}>
-      <TopBarWithThingInMiddleAllCustomable
-        COLORTHEME={COLORSCHEME}
+    <SSBarWithSaveAreaWithColorScheme>
+      <TopBarWithThingInMiddleAllCustomableWithColorScheme
         leftItem={<CTEXT.NGT_Inter_DispMd_SemiBold children={`Numbunnies`} />}
         rightItemFnc={() => { }}
         rightItemIcon={SVG.optionIcon(vw(6), vw(6), COLORSCHEME.text)}
@@ -31,6 +29,6 @@ export default function Setting() {
       />
       <ScrollView style={[styles.flex1, styles.flexCol, styles.paddingH4vw]} contentContainerStyle={[styles.gap4vw]}>
       </ScrollView>
-    </SSBarWithSaveArea>
+    </SSBarWithSaveAreaWithColorScheme>
   )
 }

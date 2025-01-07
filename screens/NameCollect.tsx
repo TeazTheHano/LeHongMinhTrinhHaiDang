@@ -1,6 +1,6 @@
 import { View, Text, Alert } from 'react-native'
 import React, { useContext } from 'react'
-import { BoardingInput, RoundBtn, SSBarWithSaveArea, TopBarWithThingInMiddleAllCustomable, ViewCol, ViewColBetweenCenter } from '../assets/Class'
+import { BoardingInput, RoundBtn, SSBarWithSaveArea, SSBarWithSaveAreaWithColorScheme, TopBarWithThingInMiddleAllCustomable, TopBarWithThingInMiddleAllCustomableWithColorScheme, ViewCol, ViewColBetweenCenter } from '../assets/Class'
 import { useNavigation } from '@react-navigation/native'
 import styles, { vw } from '../assets/stylesheet'
 import * as SVG from '../assets/svgXml'
@@ -17,9 +17,8 @@ export default function NameCollect() {
     let COLOR = CurrentCache.colorScheme
 
     return (
-        <SSBarWithSaveArea COLORTHEME={COLOR} bgColor={COLOR.background} barColor={COLOR.background} barContentStyle={COLOR.barContent}>
-            <TopBarWithThingInMiddleAllCustomable
-                COLORTHEME={COLOR}
+        <SSBarWithSaveAreaWithColorScheme>
+            <TopBarWithThingInMiddleAllCustomableWithColorScheme
                 returnPreScreenFnc={() => { navigation.goBack() }}
                 bgColor='transparent'
                 returnPreScreenIcon={SVG.sharpLeftArrow(vw(6), vw(6), COLOR.textBrand)}
@@ -46,9 +45,10 @@ export default function NameCollect() {
                     onPress={() => {
                         storageSaveUser({
                             name: name,
+                            lang: 'vi-VN',
                         }).then((res) => {
                             if (res) {
-                                dispatch(currentSetUser({ name: name }))
+                                dispatch(currentSetUser({ name: name, lang: 'vi-VN' }))
                                 navigation.navigate('BottomTab' as never)
                             } else {
                                 Alert.alert('Có lỗi xảy ra', 'Vui lòng thử lại')
@@ -62,6 +62,6 @@ export default function NameCollect() {
                 />
             </ViewCol>
 
-        </SSBarWithSaveArea>
+        </SSBarWithSaveAreaWithColorScheme>
     )
 }
