@@ -25,3 +25,16 @@ export interface CardCateTypeCodeFormat {
     code: CardTitleFormat['type'];
     name: { lang: string, value: string }[];
 }
+
+export interface MindMapTitleFormat {
+    title: string;
+    type: (0 | 1 | 2 | 3)[];
+    createTime: Date;
+}
+
+export interface MindMapDataFormat {
+    id: number;
+    label: MindMapTitleFormat;
+    content: string[] | [string, string[]];
+    children?: MindMapDataFormat[];
+}

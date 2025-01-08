@@ -294,24 +294,24 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
     textColor?: string
     iconColor?: string
 }> {
-    state = {
-        leftWidth: 0,
-        rightWidth: 0,
-    };
+    // state = {
+    //     leftWidth: 0,
+    //     rightWidth: 0,
+    // };
 
-    onLayoutLeft = (event: LayoutChangeEvent) => {
-        const { width } = event.nativeEvent.layout;
-        this.setState({ leftWidth: width });
-    };
+    // onLayoutLeft = (event: LayoutChangeEvent) => {
+    //     const { width } = event.nativeEvent.layout;
+    //     this.setState({ leftWidth: width });
+    // };
 
-    onLayoutRight = (event: LayoutChangeEvent) => {
-        const { width } = event.nativeEvent.layout;
-        this.setState({ rightWidth: width });
-    };
+    // onLayoutRight = (event: LayoutChangeEvent) => {
+    //     const { width } = event.nativeEvent.layout;
+    //     this.setState({ rightWidth: width });
+    // };
 
     render(): React.ReactNode {
         const { colorScheme, centerChildren, leftItem, rightItem, returnPreScreenFnc, returnPreScreenIcon, rightItemFnc, rightItemIcon, centerTitle, TitleTextClass, style, bgColor, textColor, iconColor } = this.props
-        const { leftWidth, rightWidth } = this.state;
+        // const { leftWidth, rightWidth } = this.state;
         const TitleClass = TitleTextClass || Text;
 
         return (
@@ -336,10 +336,10 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
                         ) : null
                     )}
                 </View>
-                <View key={'TopBarWithThingInMiddleAllCustomable-center'} style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <View key={'TopBarWithThingInMiddleAllCustomable-center'} style={[styles.flex1, styles.justifyContentCenter, styles.alignContentCenter, styles.alignItemsCenter, {}]}>
                     {centerChildren ?
                         centerChildren :
-                        <TitleClass style={[styles.flex1, styles.textCenter, { color: textColor || colorScheme.text }, style?.textStyle]}>{centerTitle}</TitleClass>
+                        <TitleClass style={[styles.textCenter, { color: textColor || colorScheme.text }, style?.textStyle]}>{centerTitle}</TitleClass>
                     }
                 </View>
                 <View key={'TopBarWithThingInMiddleAllCustomable-right'}
@@ -1278,12 +1278,12 @@ export class BannerSliderWithCenter extends Component<{
 // _______ NO REUSE CLASS SECTION _______
 
 export function withColorScheme<T extends { colorScheme: ColorTheme }>(Component: React.ComponentType<T>) {
-    return (props: any) => {
+    return function EnhancedComponent(props: Omit<T, 'colorScheme'>) {
         const [CurrentCache, dispatch] = useContext<[CurrentCache, React.Dispatch<Action>]>(RootContext)
         const colorScheme = CurrentCache.colorScheme
 
         return (
-            <Component {...props} colorScheme={colorScheme} />
+            <Component {...props as T} colorScheme={colorScheme} />
         )
     }
 }

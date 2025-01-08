@@ -37,7 +37,7 @@ export default function Mindmap() {
             style={[styles.flex1, styles.flexRowCenter]}
           >
             <RoundBtn title='Tạo Mindmap mới'
-              onPress={() => { }}
+              onPress={() => { navigation.navigate('MindmapCreate' as never) }}
               textClass={CTEXT.NGT_Inter_HeaderLg_Med}
               border
               borderColor={COLORSCHEME.brandMain as string}
