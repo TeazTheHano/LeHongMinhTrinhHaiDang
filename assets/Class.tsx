@@ -265,7 +265,8 @@ export class SSBarWithSaveArea extends Component<{ colorScheme: ColorTheme, barC
 
 export const SSBarWithSaveAreaWithColorScheme = withColorScheme(SSBarWithSaveArea)
 
-export class TopBarWithThingInMiddleAllCustomable extends Component<{
+
+export interface TopBarWithThingInMiddleAllCustomableProps {
     colorScheme: ColorTheme;
 
     centerChildren?: React.ReactNode;
@@ -293,7 +294,8 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
     bgColor?: string
     textColor?: string
     iconColor?: string
-}> {
+}
+export class TopBarWithThingInMiddleAllCustomable extends Component<TopBarWithThingInMiddleAllCustomableProps> {
     // state = {
     //     leftWidth: 0,
     //     rightWidth: 0,
@@ -309,21 +311,44 @@ export class TopBarWithThingInMiddleAllCustomable extends Component<{
     //     this.setState({ rightWidth: width });
     // };
 
+    shouldComponentUpdate(
+        nextProps: Readonly<TopBarWithThingInMiddleAllCustomableProps>,
+        nextState: Readonly<{}>,
+        nextContext: any
+    ): boolean {
+        return (
+            nextProps.centerChildren !== this.props.centerChildren ||
+            nextProps.leftItem !== this.props.leftItem ||
+            nextProps.rightItem !== this.props.rightItem ||
+            nextProps.returnPreScreenFnc !== this.props.returnPreScreenFnc ||
+            nextProps.returnPreScreenIcon !== this.props.returnPreScreenIcon ||
+            nextProps.rightItemFnc !== this.props.rightItemFnc ||
+            nextProps.rightItemIcon !== this.props.rightItemIcon ||
+            nextProps.centerTitle !== this.props.centerTitle ||
+            nextProps.TitleTextClass !== this.props.TitleTextClass ||
+            nextProps.style !== this.props.style ||
+            nextProps.bgColor !== this.props.bgColor ||
+            nextProps.textColor !== this.props.textColor ||
+            nextProps.iconColor !== this.props.iconColor
+        );
+    }
+
     render(): React.ReactNode {
         const { colorScheme, centerChildren, leftItem, rightItem, returnPreScreenFnc, returnPreScreenIcon, rightItemFnc, rightItemIcon, centerTitle, TitleTextClass, style, bgColor, textColor, iconColor } = this.props
         // const { leftWidth, rightWidth } = this.state;
         const TitleClass = TitleTextClass || Text;
 
         return (
-            <ViewRow style={[
-                { backgroundColor: bgColor || 'transparent', zIndex: 10 },
-                this.props.style?.isAlignItemCenter ? styles.alignItemsCenter : undefined,
-                styles.justifyContentSpaceBetween,
-                styles.paddingH4vw,
-                styles.paddingV2vw,
-                styles.gap1vw,
-                style?.container
-            ] as ViewStyle[] | FlexStyle[]}>
+            <ViewRow
+                style={[
+                    { backgroundColor: bgColor || 'transparent', zIndex: 10 },
+                    this.props.style?.isAlignItemCenter ? styles.alignItemsCenter : undefined,
+                    styles.justifyContentSpaceBetween,
+                    styles.paddingH4vw,
+                    styles.paddingV2vw,
+                    styles.gap1vw,
+                    style?.container
+                ] as ViewStyle[] | FlexStyle[]}>
                 <View key={'TopBarWithThingInMiddleAllCustomable-left'}
                 // onLayout={this.onLayoutLeft}
                 >

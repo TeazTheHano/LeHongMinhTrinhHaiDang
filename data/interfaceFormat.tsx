@@ -1,5 +1,7 @@
 export interface StorageItem {
     user: UserFormat,
+    mindmap: MindMapDataFormat,
+
 }
 
 export interface UserFormat {
@@ -33,7 +35,7 @@ export interface MindMapTitleFormat {
 }
 
 export interface MindMapDataFormat {
-    id: number;
+    id: string;
     label: MindMapTitleFormat;
     content: string[] | [string, string[]];
     children?: MindMapDataFormat[];
