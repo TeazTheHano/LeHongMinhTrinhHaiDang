@@ -93,11 +93,7 @@ export default function Mindmap() {
           style={[componentStyleList.roundBorderGray200 as any]}>
           <ViewRowBetweenCenter>
             <CTEXT.NGT_Inter_BodyMd_Med children={dayAgoStr} color={COLORSCHEME.gray1} />
-            <ViewRow style={[styles.gap1vw]}>
-              {item.type.map((type, index) => (
-                <CardCateRenderWithColorScheme type={type} key={index} />
-              ))}
-            </ViewRow>
+            <CardCateRenderWithColorScheme type={item.type} />
           </ViewRowBetweenCenter>
           <ViewRow style={[styles.gap3vw, styles.paddingTop2vw]}>
             {SVG.mindMapIcon(vw(6), vw(6), COLORSCHEME.brandMain)}

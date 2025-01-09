@@ -170,9 +170,8 @@ export default function MindmapCreate({ route }: any) {
                     <>
                         <CTEXT.NGT_Inter_DispLg_SemiBold children={mindMapData.label.title} />
                         <ViewRow style={[styles.gap2vw]}>
-                            {mindMapData.label.type.length ? mindMapData.label.type.map((item: number, index: number) => (
-                                <CardCateRenderWithColorScheme type={item} key={index} />
-                            ))
+                            {mindMapData.label.type.length ?
+                                <CardCateRenderWithColorScheme type={mindMapData.label.type} />
                                 : <CTEXT.NGT_Inter_BodyLg_Reg children='Chưa phân loại thẻ' key={0} color={COLORSCHEME.gray1} />
                             }
                         </ViewRow>
@@ -201,7 +200,7 @@ export default function MindmapCreate({ route }: any) {
                                             dispatchMm({ type: 'SET_CATEGORY', payload: [...mindMapData.label.type, item] });
                                         }
                                     }}
-                                    children={<CardCateRenderWithColorScheme type={item} isSelected={mindMapData.label.type.includes(item)} />}
+                                    children={<CardCateRenderWithColorScheme type={[item]} isSelected={mindMapData.label.type.includes(item)} />}
                                 />
                             }}
                         />

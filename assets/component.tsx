@@ -20,6 +20,7 @@ import * as CUSTOMCACHE from '../data/store'
 import * as STORAGEFNC from '../data/storageFunc'
 import * as CLASS from "./Class";
 import * as CTEXT from "./CustomText";
+import { flashCardList } from "../data/factoryData";
 
 // font import 
 
@@ -465,3 +466,31 @@ export const showInDeverlopFnc = () => {
 //     }
 // }
 // END OF UNIVERSE FUNCTION________________________________________
+
+export async function getInitialCardTitleList(): Promise<FORMATDATA.CardTitleFormat[] | false> {
+    try {
+        const storedData = await STORAGEFNC.storageGetList('cardTitle');
+
+        if (storedData && storedData.length > 0) {
+            return storedData;
+        } else {
+            flashCardList.forEach((flashCard) => {
+                const cardTitleData: FORMATDATA.CardTitleFormat = {
+                    title: flashCard.label.chapterTitle,
+                    type: flashCard.label.type || [],
+                    length: flashCard.front.length,
+                    process: 0,
+                    dataID: flashCard.label.id.toString(),
+                    status: 0,
+                    grade: flashCard.label.grade
+                }
+                STORAGEFNC.storageSaveAndOverwrite('cardTitle', cardTitleData, cardTitleData.dataID);
+            });
+        }
+        return false;
+    } catch (error) {
+        console.error('Error retrieving card title list:', error);
+        return false;
+    }
+}
+

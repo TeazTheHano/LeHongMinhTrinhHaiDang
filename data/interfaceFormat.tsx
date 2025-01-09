@@ -2,6 +2,8 @@ export interface StorageItem {
     user: UserFormat,
     mindmap: MindMapDataFormat,
     mindmapTitle: MindMapTitleFormat,
+    cardTitle: CardTitleFormat,
+    lastTouchID: any,
 }
 
 export interface UserFormat {
@@ -15,7 +17,8 @@ export interface CardTitleFormat {
     length: number;
     process: number;
     dataID: string;
-    type: 0 | 1 | 2 | 3;
+    type: (0 | 1 | 2 | 3)[];
+    grade: number;
 }
 
 export interface CardStatusTypeCodeFormat {
@@ -24,7 +27,7 @@ export interface CardStatusTypeCodeFormat {
 }
 
 export interface CardCateTypeCodeFormat {
-    code: CardTitleFormat['type'];
+    code: number;
     name: { lang: string, value: string }[];
 }
 
@@ -41,11 +44,15 @@ export interface MindMapDataFormat {
     content: string[] | [string, string[]];
     children?: MindMapDataFormat[];
 }
-
-export interface QuizFormat {
+export interface InteractDataTitleFormat {
     id: number,
     chapterTitle: string,
     grade: number,
+    type?: (0 | 1 | 2 | 3)[]
+}
+
+export interface QuizFormat {
+    label: InteractDataTitleFormat,
     data: {
         ques: string[],
         ansA: string[],
@@ -57,17 +64,22 @@ export interface QuizFormat {
 }
 
 export interface FlashCardFormat {
-    id: number,
-    grade: number,
-    chapterTitle: string,
+    label: InteractDataTitleFormat,
     front: string[],
     back: string[],
 }
 
-export interface FillInTheBlank {
-    id: number,
-    grade: number,
-    chapterTitle: string,
+export interface FillInTheBlankFormat {
+    label: InteractDataTitleFormat,
     ques: string[],
     ans: string[],
+}
+
+export interface chapterTitleFormat {
+    id: number,
+    chapterTitle: string
+    quizID?: number,
+    fillInTheBlankID?: number
+    quizStatus?: [number, number],
+    fillInTheBlankStatus?: [number, number]
 }

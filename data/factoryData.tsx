@@ -1,40 +1,5 @@
 import * as FORMATDATA from "./interfaceFormat";
 
-export const demoCardTitleData: FORMATDATA.CardTitleFormat[] = [
-    {
-        title: "Card Title",
-        status: 2,
-        length: 10,
-        process: 10,
-        dataID: "123456789",
-        type: 0,
-    },
-    {
-        title: "Card Title 2",
-        status: 0,
-        length: 20,
-        process: 0,
-        dataID: "123456780",
-        type: 2,
-    },
-    {
-        title: "Card Title 3",
-        status: 1,
-        length: 30,
-        process: 20,
-        dataID: "123456781",
-        type: 1,
-    },
-    {
-        title: "Card Title 4",
-        status: 2,
-        length: 30,
-        process: 20,
-        dataID: "123456781",
-        type: 1,
-    }
-]
-
 export const CARD_STATUS_TYPE_CODE: FORMATDATA.CardStatusTypeCodeFormat[] = [
     {
         code: 0,
@@ -92,9 +57,11 @@ export const CARD_CATE_TYPE_CODE: FORMATDATA.CardCateTypeCodeFormat[] = [
 
 export const quizDataList: FORMATDATA.QuizFormat[] = [
     {
-        id: 1,
-        grade: 6,
-        chapterTitle: 'Chương 1: Tập hợp các số tự nhiên',
+        label: {
+            id: 1,
+            grade: 6,
+            chapterTitle: 'Chương 1: Tập hợp các số tự nhiên',
+        },
         data: {
             ques: [
                 `Tập hợp A = {0; 1; 2; 3; 4; 5; 6; 7; 8; 9; 10}. Phát biểu nào sau đây là đúng?`,
@@ -159,9 +126,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 2,
-        grade: 6,
-        chapterTitle: 'Chương 2: Tính chia hết trong tập hợp các số TN',
+        label: {
+            id: 2,
+            grade: 6,
+            chapterTitle: 'Chương 2: Tính chia hết trong tập hợp các số TN',
+        },
         data: {
             ques: [
                 `Tìm x là bội của 50 và thỏa mãn 200 < x < 300.`,
@@ -322,9 +291,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 3,
-        grade: 6,
-        chapterTitle: 'Chương 3: Số nguyên',
+        label: {
+            id: 3,
+            grade: 6,
+            chapterTitle: 'Chương 3: Số nguyên',
+        },
         data: {
             ques: [
                 `Ông M đang nợ ngân hàng 200 triệu đồng. Số nguyên nào sau đây biểu diễn số tiền ông M đang có?`,
@@ -485,9 +456,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 4,
-        grade: 6,
-        chapterTitle: 'Chương 7: Số thập phân',
+        label: {
+            id: 4,
+            grade: 6,
+            chapterTitle: 'Chương 7: Số thập phân',
+        },
         data: {
             ques: [
                 `Viết các số sau theo thứ tự giảm dần: −120,341; 36,095; 36,1; −120,34.`,
@@ -600,9 +573,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 5,
-        grade: 7,
-        chapterTitle: 'Chương 1',
+        label: {
+            id: 5,
+            grade: 7,
+            chapterTitle: 'Chương 1',
+        },
         data: {
             ques: [
                 `Tập hợp số hữu tỉ được kí hiệu là`,
@@ -661,9 +636,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 6,
-        grade: 7,
-        chapterTitle: 'Chương 2',
+        label: {
+            id: 6,
+            grade: 7,
+            chapterTitle: 'Chương 2',
+        },
         data: {
             ques: [
                 `Tìm chữ số thập phân thứ sáu của số thập phân 4,4(62)?`,
@@ -726,9 +703,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 7,
-        grade: 7,
-        chapterTitle: 'Chương 3',
+        label: {
+            id: 7,
+            grade: 7,
+            chapterTitle: 'Chương 3',
+        },
         data: {
             ques: [
                 `Chọn đáp án đúng. Tính chất của hai góc kề bù là:`,
@@ -786,9 +765,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 8,
-        grade: 7,
-        chapterTitle: 'Chương 4',
+        label: {
+            id: 8,
+            grade: 7,
+            chapterTitle: 'Chương 4',
+        },
         data: {
             ques: [
                 `Tổng ba góc trong một tam giác bằng`,
@@ -847,9 +828,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 9,
-        grade: 7,
-        chapterTitle: 'Chương 5',
+        label: {
+            id: 9,
+            grade: 7,
+            chapterTitle: 'Chương 5',
+        },
         data: {
             ques: [
                 `Trong các dãy dữ liệu sau, đâu là dãy số liệu?`,
@@ -908,9 +891,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 10,
-        grade: 7,
-        chapterTitle: 'Chương 6',
+        label: {
+            id: 10,
+            grade: 7,
+            chapterTitle: 'Chương 6',
+        },
         data: {
             ques: [
                 `Thay tỉ số 1,2 : 1,35 bằng tỉ số giữa các số nguyên ta được:`,
@@ -969,9 +954,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 11,
-        grade: 7,
-        chapterTitle: 'Chương 7',
+        label: {
+            id: 11,
+            grade: 7,
+            chapterTitle: 'Chương 7',
+        },
         data: {
             ques: [
                 `Chọn đáp án đúng nhất: “Biểu thức đại số là biểu thức…..”`,
@@ -1030,9 +1017,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 12,
-        grade: 7,
-        chapterTitle: 'Chương 8',
+        label: {
+            id: 12,
+            grade: 7,
+            chapterTitle: 'Chương 8',
+        },
         data: {
             ques: [
                 `Các hiện tượng, sự kiện trong tự nhiên, cuộc sống được gọi chung là`,
@@ -1091,9 +1080,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 13,
-        grade: 7,
-        chapterTitle: 'Chương 9',
+        label: {
+            id: 13,
+            grade: 7,
+            chapterTitle: 'Chương 9',
+        },
         data: {
             ques: [
                 `Chọn khẳng định đúng ?`,
@@ -1152,9 +1143,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 14,
-        grade: 7,
-        chapterTitle: 'Chương 10',
+        label: {
+            id: 14,
+            grade: 7,
+            chapterTitle: 'Chương 10',
+        },
         data: {
             ques: [
                 `Khẳng định nào sau đây là đúng ?`,
@@ -1213,9 +1206,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 15,
-        grade: 8,
-        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 8',
+        label: {
+            id: 15,
+            grade: 8,
+            chapterTitle: 'Tổng hợp kiến thức Đại số lớp 8',
+        },
         data: {
             ques: [
                 `assets/photos/Multiple Choice/Lop 8/Dai So/1.png`,
@@ -1262,9 +1257,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 16,
-        grade: 8,
-        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 8',
+        label: {
+            id: 16,
+            grade: 8,
+            chapterTitle: 'Tổng hợp kiến thức Hình học lớp 8',
+        },
         data: {
             ques: [
                 `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/1.png`,
@@ -1311,9 +1308,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 17,
-        grade: 9,
-        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 9',
+        label: {
+            id: 17,
+            grade: 9,
+            chapterTitle: 'Tổng hợp kiến thức Đại số lớp 9',
+        },
         data: {
             ques: [
                 `assets/photos/Multiple Choice/Lop 9/Dai So/1.png`,
@@ -1360,9 +1359,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
         }
     },
     {
-        id: 18,
-        grade: 9,
-        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 9',
+        label: {
+            id: 18,
+            grade: 9,
+            chapterTitle: 'Tổng hợp kiến thức Hình học lớp 9',
+        },
         data: {
             ques: [
                 `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/1.png`,
@@ -1412,9 +1413,12 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
 
 export const flashCardList: FORMATDATA.FlashCardFormat[] = [
     {
-        id: 1,
-        grade: 7,
-        chapterTitle: 'Chương 1',
+        label: {
+            id: 1,
+            grade: 7,
+            type: [2],
+            chapterTitle: 'Chương 1',
+        },
         front: [
             `Số hữu tỉ là gì`,
             `Tập hợp số hữu tỉ được kí hiệu là`,
@@ -1432,9 +1436,12 @@ export const flashCardList: FORMATDATA.FlashCardFormat[] = [
         ]
     },
     {
-        id: 2,
-        grade: 7,
-        chapterTitle: 'Chương 2',
+        label: {
+            id: 2,
+            grade: 7,
+            type: [2],
+            chapterTitle: 'Chương 2',
+        },
         front: [
             `Số vô tỉ là gì?`,
             `Thập phân vô hạn tuần hoàn là gì?`,
@@ -1449,9 +1456,12 @@ export const flashCardList: FORMATDATA.FlashCardFormat[] = [
         ]
     },
     {
-        id: 3,
-        grade: 7,
-        chapterTitle: 'Chương 3',
+        label: {
+            id: 3,
+            grade: 7,
+            type: [2],
+            chapterTitle: 'Chương 3',
+        },
         front: [
             `Tính chất của hai góc kề bù là`,
             `Hai góc đối đỉnh là`,
@@ -1468,9 +1478,12 @@ export const flashCardList: FORMATDATA.FlashCardFormat[] = [
         ]
     },
     {
-        id: 4,
-        grade: 7,
-        chapterTitle: 'Chương 4',
+        label: {
+            id: 4,
+            grade: 7,
+            type: [2],
+            chapterTitle: 'Chương 4',
+        },
         front: [
             `Tổng ba góc trong một tam giác bằng`,
             `Đường trung trực của một đoạn thẳng là`,
@@ -1487,9 +1500,12 @@ export const flashCardList: FORMATDATA.FlashCardFormat[] = [
         ]
     },
     {
-        id: 5,
-        grade: 8,
-        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 8',
+        label: {
+            id: 5,
+            grade: 8,
+            type: [0, 2],
+            chapterTitle: 'Tổng hợp kiến thức Đại số lớp 8',
+        },
         front: [
             `assets/photos/Flashcard/8/Dai So/1.1.png`,
             `assets/photos/Flashcard/8/Dai So/2.1.png`,
@@ -1526,9 +1542,12 @@ export const flashCardList: FORMATDATA.FlashCardFormat[] = [
         ]
     },
     {
-        id: 6,
-        grade: 8,
-        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 8',
+        label: {
+            id: 6,
+            grade: 8,
+            type: [1, 2],
+            chapterTitle: 'Tổng hợp kiến thức Hình học lớp 8',
+        },
         front: [
             `assets/photos/Flashcard/8/Hinh Hoc/1.1.png`,
             `assets/photos/Flashcard/8/Hinh Hoc/2.1.png`,
@@ -1565,9 +1584,12 @@ export const flashCardList: FORMATDATA.FlashCardFormat[] = [
         ]
     },
     {
-        id: 7,
-        grade: 9,
-        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 9',
+        label: {
+            id: 7,
+            grade: 9,
+            type: [0, 2],
+            chapterTitle: 'Tổng hợp kiến thức Đại số lớp 9',
+        },
         front: [
             `assets/photos/Flashcard/9/Dai So/1.1.png`,
             `assets/photos/Flashcard/9/Dai So/2.1.png`,
@@ -1604,9 +1626,12 @@ export const flashCardList: FORMATDATA.FlashCardFormat[] = [
         ]
     },
     {
-        id: 8,
-        grade: 9,
-        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 9',
+        label: {
+            id: 8,
+            grade: 9,
+            type: [1, 2],
+            chapterTitle: 'Tổng hợp kiến thức Hình học lớp 9',
+        },
         front: [
             `assets/photos/Flashcard/9/Hinh Hoc/1.1 (2).png`,
             `assets/photos/Flashcard/9/Hinh Hoc/2.1 (2).png`,
@@ -1634,11 +1659,13 @@ export const flashCardList: FORMATDATA.FlashCardFormat[] = [
     }
 ]
 
-export const fillInTheBlankList: FORMATDATA.FillInTheBlank[] = [
+export const fillInTheBlankList: FORMATDATA.FillInTheBlankFormat[] = [
     {
-        id: 1,
-        grade: 7,
-        chapterTitle: 'Chương 1: Số hữu tỉ',
+        label: {
+            id: 1,
+            grade: 7,
+            chapterTitle: 'Chương 1: Số hữu tỉ',
+        },
         ques: [
             `Số đối của số hữu tỉ m là số hữu tỉ ________`,
             `Trên trục số, nếu a < b thì điểm a ________ điểm b.`,
@@ -1655,9 +1682,11 @@ export const fillInTheBlankList: FORMATDATA.FillInTheBlank[] = [
         ]
     },
     {
-        id: 2,
-        grade: 7,
-        chapterTitle: 'Chương 2: Số vô tỉ',
+        label: {
+            id: 2,
+            grade: 7,
+            chapterTitle: 'Chương 2: Số vô tỉ',
+        },
         ques: [
             `Số thập phân vô hạn tuần hoàn là số thập phân có phần thập phân lặp lại và phần lặp lại ________`,
             `Mọi số hữu tỉ đều viết được dưới dạng số thập phân hữu hạn hoặc ________`,
@@ -1676,9 +1705,11 @@ export const fillInTheBlankList: FORMATDATA.FillInTheBlank[] = [
         ]
     },
     {
-        id: 3,
-        grade: 7,
-        chapterTitle: 'Chương 3: Thu thập và biểu diễn dữ liệu ',
+        label: {
+            id: 3,
+            grade: 7,
+            chapterTitle: 'Chương 3: Thu thập và biểu diễn dữ liệu ',
+        },
         ques: [
             `Dữ liệu được phân thành ________ loại`,
             `Dữ liệu là số còn gọi là dữ liệu ________`,
@@ -1691,9 +1722,11 @@ export const fillInTheBlankList: FORMATDATA.FillInTheBlank[] = [
         ]
     },
     {
-        id: 4,
-        grade: 8,
-        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 8',
+        label: {
+            id: 4,
+            grade: 8,
+            chapterTitle: 'Tổng hợp kiến thức Đại số lớp 8',
+        },
         ques: [
             `assets/photos/Fill in the blank/Lop 8/Dai So/1.1.png`,
             `assets/photos/Fill in the blank/Lop 8/Dai So/2.1.png`,
@@ -1710,9 +1743,11 @@ export const fillInTheBlankList: FORMATDATA.FillInTheBlank[] = [
         ]
     },
     {
-        id: 5,
-        grade: 8,
-        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 8',
+        label: {
+            id: 5,
+            grade: 8,
+            chapterTitle: 'Tổng hợp kiến thức Hình học lớp 8',
+        },
         ques: [
             `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/1.1.png`,
             `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/2.1.png`,
@@ -1729,9 +1764,11 @@ export const fillInTheBlankList: FORMATDATA.FillInTheBlank[] = [
         ]
     },
     {
-        id: 6,
-        grade: 9,
-        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 9',
+        label: {
+            id: 6,
+            grade: 9,
+            chapterTitle: 'Tổng hợp kiến thức Đại số lớp 9',
+        },
         ques: [
             `assets/photos/Fill in the blank/Lop 9/Dai so/1.1.png`,
             `assets/photos/Fill in the blank/Lop 9/Dai so/2.1.png`,
@@ -1748,9 +1785,11 @@ export const fillInTheBlankList: FORMATDATA.FillInTheBlank[] = [
         ]
     },
     {
-        id: 7,
-        grade: 9,
-        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 9',
+        label: {
+            id: 7,
+            grade: 9,
+            chapterTitle: 'Tổng hợp kiến thức Hình học lớp 9',
+        },
         ques: [
             `assets/photos/Fill in the blank/Lop 9/Hinh hoc/1.1.png`,
             `assets/photos/Fill in the blank/Lop 9/Hinh hoc/2.1.png`,
@@ -1767,3 +1806,4 @@ export const fillInTheBlankList: FORMATDATA.FillInTheBlank[] = [
         ]
     }
 ]
+

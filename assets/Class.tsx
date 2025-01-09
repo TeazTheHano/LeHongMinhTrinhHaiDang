@@ -1314,23 +1314,29 @@ export function withColorScheme<T extends { colorScheme: ColorTheme }>(Component
 }
 
 
-export class CardCateRender extends React.Component<{ type: number, isSelected?: boolean, colorScheme: ColorTheme }> {
+export class CardCateRender extends React.Component<{ type: number[]; isSelected?: boolean; colorScheme: ColorTheme }> {
 
     render(): React.ReactNode {
-        const { colorScheme } = this.props
-        const textColorDefault = [NGHIASTYLE.NghiaIndigo800, NGHIASTYLE.NghiaWarning800, NGHIASTYLE.NghiaSuccess800, NGHIASTYLE.NghiaError800]
-        const bgColorDefault = [NGHIASTYLE.NghiaIndigo50, NGHIASTYLE.NghiaWarning50, NGHIASTYLE.NghiaSuccess50, NGHIASTYLE.NghiaError50]
+        const { type, isSelected, colorScheme } = this.props;
+        const textColorDefault = [NGHIASTYLE.NghiaIndigo800, NGHIASTYLE.NghiaWarning800, NGHIASTYLE.NghiaSuccess800, NGHIASTYLE.NghiaError800];
+        const bgColorDefault = [NGHIASTYLE.NghiaIndigo50, NGHIASTYLE.NghiaWarning50, NGHIASTYLE.NghiaSuccess50, NGHIASTYLE.NghiaError50];
 
-        // TODO: change systax in future
-        const defaultLang = 'vi-VN'
+        const defaultLang = 'vi-VN';
 
-        const type = this.props.type || 0
-        const data = FactoryData.CARD_CATE_TYPE_CODE.filter((item) => item.code == type)[0].name.filter((item) => item.lang == defaultLang)[0].value
         return (
-            <View style={[styles.paddingV1vw, styles.paddingH2vw, { borderRadius: vw(1.5), backgroundColor: (this.props.isSelected ? textColorDefault[type] : bgColorDefault[type]) as string }]}>
-                <CTEXT.NGT_Inter_BodyMd_Reg children={data} color={this.props.isSelected ? 'white' : textColorDefault[type] as string} />
-            </View>
-        )
+            <ViewRow style={[styles.gap2vw]}>
+                {type.map((item) => {
+                    const categoryData = FactoryData.CARD_CATE_TYPE_CODE.find(cat => cat.code === item);
+                    const categoryName = categoryData?.name.find(n => n.lang === defaultLang)?.value || '';
+
+                    return (
+                        <View key={item} style={[styles.paddingV1vw, styles.paddingH2vw, { borderRadius: vw(1.5), backgroundColor: (isSelected ? textColorDefault[item] : bgColorDefault[item]) as string }]}>
+                            <CTEXT.NGT_Inter_BodyMd_Reg children={categoryName} color={isSelected ? 'white' : textColorDefault[item] as string} />
+                        </View>
+                    );
+                })}
+            </ViewRow>
+        );
     }
 }
 
@@ -1559,6 +1565,12 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
             console.error('Error filtering data:', error);
         }
     };
+
+    componentDidUpdate(prevProps: SelectListAndCardRenderProps) {
+        if (prevProps.sourceData !== this.props.sourceData) {
+            this.setState({ afterFilterData: this.props.sourceData || [] });
+        }
+    }
 
     componentDidMount() {
         if (this.props.selfRunFilterFnc && !this.state.isSelfRunFilterFncTrigged) {

@@ -9,8 +9,8 @@ import * as CLASS from '../assets/Class'
 import * as SVG from '../assets/svgXml'
 import * as CTEXT from '../assets/CustomText'
 import * as Progress from 'react-native-progress'
-import { demoCardTitleData } from '../data/factoryData'
 import { CardTitleFormat } from '../data/interfaceFormat'
+import { getInitialCardTitleList, marginBottomForScrollView } from '../assets/component'
 
 export default function Home() {
   // Sentinal variable <<<<<<<<<<<<<<
@@ -20,9 +20,25 @@ export default function Home() {
 
   // State variable <<<<<<<<<<<<<<
   const [libGradeSelected, setLibGradeSelected] = useState<number>(9)
+  const [cardTitleData, setCardTitleData] = useState<CardTitleFormat[]>([])
+  const [cardTitleDataFiltered, setCardTitleDataFiltered] = useState<CardTitleFormat[]>([])
 
   // Local variable <<<<<<<<<<<<<<
   const CATEGORY_LIST = ['Tất cả', 'Mới', 'Chưa hoàn thành', 'Đã hoàn thành']
+
+  // Effect <<<<<<<<<<<<<<
+  useEffect(() => {
+    const fetchInitialCardTitles = async () => {
+      const initialCardTitles = await getInitialCardTitleList()
+      setCardTitleData(initialCardTitles || [])
+    }
+    fetchInitialCardTitles()
+  }, [])
+
+  useEffect(() => {
+    let cardTitleDataWithGrade = cardTitleData.filter((cardTitle) => cardTitle.grade === libGradeSelected)
+    setCardTitleDataFiltered(cardTitleDataWithGrade)
+  }, [libGradeSelected, navigation])
 
   // Render section <<<<<<<<<<<<<<
   const RenderHeaderSection = useMemo(() => {
@@ -61,7 +77,7 @@ export default function Home() {
   const RenderLibChooseSection = useMemo(() => {
     return (
       <CLASS.ViewCol style={[styles.positionSticky, styles.top0, styles.gap4vw,]}>
-        <CTEXT.NGT_Inter_DispMd_SemiBold children={'Thư viện'} />
+        <CTEXT.NGT_Inter_DispMd_SemiBold children={'Thư viện của bạn'} />
         <FlatList
           scrollEnabled={false}
           style={[styles.w100, componentStyleList.roundBorderGray200 as any, styles.padding1vw,]}
@@ -101,36 +117,38 @@ export default function Home() {
         {RenderHeaderSection}
         {RenderLibChooseSection}
 
-        <CLASS.SelectListAndCardRender
-          selectCateList={CATEGORY_LIST}
-          sourceData={demoCardTitleData}
-          filterFnc={async (item: string, sourceData: any): Promise<any[] | false> => {
-            function filfnc(status: number) {
-              const res = sourceData.filter((item: any) => item.status === status);
-              return res.length > 0 ? res : null;
-            }
-            switch (item) {
-              case 'Mới':
-                return filfnc(0);
-              case 'Chưa hoàn thành':
-                return filfnc(1);
-              case 'Đã hoàn thành':
-                return filfnc(2);
-              case 'Tất cả':
-                return sourceData;
-              default:
-                return [];
-            }
-          }}
-          selfRunFilterFnc
-          renderFnc={(item: CardTitleFormat[]) => {
-            return <CLASS.CardTitleRenderWithColorScheme data={item} onPressFnc={() => { }} />
-          }}
-        />
+        {
+          cardTitleDataFiltered.length > 0 ?
+            <CLASS.SelectListAndCardRender
+              selectCateList={CATEGORY_LIST}
+              sourceData={cardTitleDataFiltered}
+              filterFnc={async (item: string, sourceData: CardTitleFormat[]): Promise<any[] | false> => {
+                const filterByStatus = (status: number) =>
+                  sourceData.filter((card) => card.status === status);
+                switch (item) {
+                  case 'Mới':
+                    return filterByStatus(0);
+                  case 'Chưa hoàn thành':
+                    return filterByStatus(1);
+                  case 'Đã hoàn thành':
+                    return filterByStatus(2);
+                  case 'Tất cả':
+                    return sourceData;
+                  default:
+                    return [];
+                }
+              }}
+              selfRunFilterFnc
+              renderFnc={(item: CardTitleFormat[]) => {
+                return <CLASS.CardTitleRenderWithColorScheme data={item} onPressFnc={() => { }} />
+              }}
+            /> :
+            <CTEXT.NGT_Inter_HeaderMd_SemiBold children='Tải dữ liệu lỗi hoặc không có dữ liệu' />
+        }
+
+
+        {marginBottomForScrollView()}
       </ScrollView>
     </CLASS.SSBarWithSaveAreaWithColorScheme>
   )
 }
-
-
-// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
