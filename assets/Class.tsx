@@ -424,22 +424,23 @@ export class RoundBtn extends Component<{
     bgColor?: string
     textClass?: React.ComponentType<any>
     textColor?: string
-    iconColor?: string
     border?: boolean
     borderColor?: string
     customStyle?: any
     otherTouchProps?: TouchableOpacityProps
+    iconOnRightSide?: boolean
 }> {
     render() {
-        const { icon, title, onPress, bgColor, textClass, textColor, iconColor, border, borderColor, customStyle, otherTouchProps } = this.props;
+        const { icon, title, onPress, bgColor, textClass, textColor, border, borderColor, customStyle, otherTouchProps, iconOnRightSide } = this.props;
         let TextClass = textClass ? textClass : Text
         return (
             <TouchableOpacity
                 onPress={onPress}
                 {...otherTouchProps}
                 style={[styles.flexRow, styles.alignItemsCenter, styles.padding4vw, styles.gap3vw, styles.borderRadius10, styles.overflowHidden, { backgroundColor: bgColor ? bgColor : undefined, borderWidth: border ? 1 : 0, borderColor: borderColor ? borderColor : undefined }, customStyle]}>
-                {icon ? icon : null}
+                {icon && !iconOnRightSide ? icon : null}
                 <TextClass style={[{ color: textColor ? textColor : clrStyle.black as string }]}>{title}</TextClass>
+                {icon && iconOnRightSide ? icon : null}
             </TouchableOpacity>
         );
     }
@@ -1411,7 +1412,7 @@ export class CardTitleRender extends React.Component<{ data: FormatData.CardTitl
                         }
                     })();
                     return (
-                        <TouchableOpacity onPress={() => { onPressFnc && onPressFnc(item) }}>
+                        <TouchableOpacity onPress={() => { onPressFnc && onPressFnc(item)}}>
                             <ViewCol style={[styleC[kind].class as any, styles.gap2vw]}>
                                 <ViewRowBetweenCenter>
                                     <View style={styleC[kind].progressBorder ? { paddingHorizontal: vw(1.5), paddingVertical: vw(0.5), borderRadius: vw(1.5), backgroundColor: NGHIASTYLE.NghiaBrand600 as string } : null}>

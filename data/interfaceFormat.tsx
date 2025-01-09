@@ -3,6 +3,7 @@ export interface StorageItem {
     mindmap: MindMapDataFormat,
     mindmapTitle: MindMapTitleFormat,
     cardTitle: CardTitleFormat,
+    flashCard: FlashCardFormat,
     lastTouchID: any,
 }
 

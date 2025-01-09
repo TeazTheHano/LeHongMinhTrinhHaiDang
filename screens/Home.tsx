@@ -28,17 +28,20 @@ export default function Home() {
 
   // Effect <<<<<<<<<<<<<<
   useEffect(() => {
-    const fetchInitialCardTitles = async () => {
-      const initialCardTitles = await getInitialCardTitleList()
-      setCardTitleData(initialCardTitles || [])
-    }
-    fetchInitialCardTitles()
+    const unsub = navigation.addListener('focus', () => {
+      const fetchInitialCardTitles = async () => {
+        const initialCardTitles = await getInitialCardTitleList()
+        setCardTitleData(initialCardTitles || [])
+      }
+      fetchInitialCardTitles()
+    })
+    return unsub
   }, [])
 
   useEffect(() => {
     let cardTitleDataWithGrade = cardTitleData.filter((cardTitle) => cardTitle.grade === libGradeSelected)
     setCardTitleDataFiltered(cardTitleDataWithGrade)
-  }, [libGradeSelected, navigation])
+  }, [cardTitleData, libGradeSelected])
 
   // Render section <<<<<<<<<<<<<<
   const RenderHeaderSection = useMemo(() => {
@@ -140,7 +143,7 @@ export default function Home() {
               }}
               selfRunFilterFnc
               renderFnc={(item: CardTitleFormat[]) => {
-                return <CLASS.CardTitleRenderWithColorScheme data={item} onPressFnc={() => { }} />
+                return <CLASS.CardTitleRenderWithColorScheme data={item} onPressFnc={(par: CardTitleFormat) => { navigation.navigate('FlashCard' as never, { item: par }) }} />
               }}
             /> :
             <CTEXT.NGT_Inter_HeaderMd_SemiBold children='Tải dữ liệu lỗi hoặc không có dữ liệu' />
