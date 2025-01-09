@@ -1,7 +1,7 @@
-import { View, Text, Animated, ScrollView, TouchableOpacity, Platform, Image, ImageStyle, FlatList } from 'react-native'
+import { View, Text, Animated, ScrollView, TouchableOpacity, Platform, Image, ImageStyle, FlatList, Alert } from 'react-native'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { storageGetItem, storageGetList } from '../data/storageFunc'
+import { storageGetItem, storageGetList, storageRemove } from '../data/storageFunc'
 import { CardCateRenderWithColorScheme, RoundBtn, SelectorInput, SSBarWithSaveArea, SSBarWithSaveAreaWithColorScheme, TopBarWithThingInMiddleAllCustomable, TopBarWithThingInMiddleAllCustomableWithColorScheme, ViewCol, ViewColStartBetween, ViewRow, ViewRowBetweenCenter } from '../assets/Class'
 import * as SVG from '../assets/svgXml'
 import styles, { vh, vw } from '../assets/stylesheet'
@@ -61,6 +61,35 @@ export default function Mindmap() {
       return (
         <TouchableOpacity
           onPress={() => { navigation.navigate('MindmapCreate', { type: 'view', id: item.id }) }}
+          onLongPress={() => {
+            Alert.alert(
+              'Bạn có muốn xoá Mindmap này không?',
+              'Hành động này không thể hoàn tác',
+              [
+                {
+                  text: 'Xoá',
+                  style: 'destructive',
+                  onPress: async () => {
+                    const [mindmapRemoved, titleRemoved] = await Promise.all([
+                      storageRemove('mindmap', item.id),
+                      storageRemove('mindmapTitle', item.id),
+                    ]);
+
+                    if (mindmapRemoved && titleRemoved) {
+                      const data = await storageGetList('mindmapTitle');
+                      if (data) {
+                        setMindMapTitle(data);
+                      }
+                      Alert.alert('Mindmap đã được xoá thành công');
+                    }
+                  },
+                },
+                {
+                  text: 'Huỷ',
+                },
+              ]
+            );
+          }}
           style={[componentStyleList.roundBorderGray200 as any]}>
           <ViewRowBetweenCenter>
             <CTEXT.NGT_Inter_BodyMd_Med children={dayAgoStr} color={COLORSCHEME.gray1} />

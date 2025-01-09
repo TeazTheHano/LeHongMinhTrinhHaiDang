@@ -2,7 +2,7 @@ import { View, Text, Animated, ScrollView, TouchableOpacity, Platform, Image, Im
 import React, { useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import { storageGetItem, storageGetList, storageSaveAndOverwrite } from '../data/storageFunc';
-import { CardCateRenderWithColorScheme, LowBtn, RoundBtn, SelectorInput, SSBarWithSaveArea, SSBarWithSaveAreaWithColorScheme, TopBarWithThingInMiddleAllCustomable, TopBarWithThingInMiddleAllCustomableWithColorScheme, ViewCol, ViewColStartBetween, ViewRow, ViewRowBetweenCenter } from '../assets/Class';
+import { CardCateRenderWithColorScheme, LowBtn, RoundBtn, SelectorInput, SSBarWithSaveArea, SSBarWithSaveAreaWithColorScheme, TopBarWithThingInMiddleAllCustomable, TopBarWithThingInMiddleAllCustomableWithColorScheme, ViewCol, ViewColStartBetween, ViewRow, ViewRowBetweenCenter, ViewRowCenter } from '../assets/Class';
 import * as SVG from '../assets/svgXml';
 import styles, { vh, vw } from '../assets/stylesheet';
 import * as CTEXT from '../assets/CustomText';
@@ -111,19 +111,30 @@ export default function MindmapCreate({ route }: any) {
                     <View style={[styles.positionAbsolute, styles.alignSelfCenter, styles.padding1vw, { backgroundColor: COLORSCHEME.background, left: vw(8), top: vw(0.5), zIndex: 1 }]}>
                         <CTEXT.NGT_Inter_BodyLg_Med>Nhánh {(index || 0) + 1}</CTEXT.NGT_Inter_BodyLg_Med>
                     </View>
-                    <TextInput
-                        editable={screenState == 'view' ? false : true}
-                        onLayout={onLayout}
-                        placeholder="Nhập tại đây"
-                        value={mindMapData.data.content[index || 0]}
-                        multiline
-                        onChangeText={(value) => {
-                            const updatedContent = [...mindMapData.data.content];
-                            updatedContent[index || 0] = value;
-                            dispatchMm({ type: 'SET_CONTENT', payload: updatedContent });
-                        }}
-                        style={[styles.flex1, styles.paddingH2vw, styles.paddingV4vw, styles.borderRadius2vw, styles.border1, { marginLeft: vw(4), color: COLORSCHEME.text, borderColor: screenState == 'view' ? COLORSCHEME.brandMain : COLORSCHEME.text }]}
-                    />
+                    <ViewRowCenter>
+                        <TextInput
+                            editable={screenState == 'view' ? false : true}
+                            onLayout={onLayout}
+                            placeholder="Nhập tại đây"
+                            value={mindMapData.data.content[index || 0]}
+                            multiline
+                            onChangeText={(value) => {
+                                const updatedContent = [...mindMapData.data.content];
+                                updatedContent[index || 0] = value;
+                                dispatchMm({ type: 'SET_CONTENT', payload: updatedContent });
+                            }}
+                            style={[styles.flex1, styles.paddingH2vw, styles.paddingV4vw, styles.borderRadius2vw, styles.border1, { marginLeft: vw(4), color: COLORSCHEME.text, borderColor: screenState == 'view' ? COLORSCHEME.brandMain : COLORSCHEME.text }]}
+                        />
+                        <TouchableOpacity
+                            onPress={() => {
+                                const updatedContent = [...mindMapData.data.content];
+                                updatedContent.splice(index, 1);
+                                dispatchMm({ type: 'SET_CONTENT', payload: updatedContent });
+                            }}
+                            style={[styles.padding1vw]}>
+                            {SVG.sharpXIcon(vw(4), vw(4))}
+                        </TouchableOpacity>
+                    </ViewRowCenter>
                     {index < mindMapData.data.content.length - 1 && itemHeight[index] !== 0 && (
                         <View style={[styles.positionAbsolute, { top: vw(8) }]}>
                             <CurvedLine color={COLORSCHEME.text} height={itemHeight[index] + vw(4)} />
@@ -140,12 +151,12 @@ export default function MindmapCreate({ route }: any) {
                 returnPreScreenFnc={() => { navigation.goBack() }}
                 returnPreScreenIcon={SVG.sharpLeftArrow(vw(6), vw(6), COLORSCHEME.gray1)}
                 rightItemFnc={() => {
-                    screenState == 'edit' ? saveMindmap() : screenState == 'view' ? setScreenState('edit') : null
+                    screenState == 'edit' ? setScreenState('view') : screenState == 'view' ? setScreenState('edit') : null
                 }}
                 rightItemIcon={
                     screenState == 'new' ? <View style={{ width: vw(6), height: vw(6) }} /> :
                         screenState == 'view' ? SVG.editIcon(vw(6), vw(6)) :
-                            SVG.bunnybookmark(vw(6), vw(6), COLORSCHEME.gray1)
+                            SVG.xIcon(vw(6), vw(6), COLORSCHEME.gray1)
                 }
                 centerTitle={screenState == 'new' ? 'Tạo một Mindmap mới' : 'Mindmap'}
                 TitleTextClass={CTEXT.NGT_Inter_DispMd_SemiBold}
@@ -228,8 +239,14 @@ export default function MindmapCreate({ route }: any) {
                     elevation: vw(1),
                 }]}>
                 <RoundBtn title='Lưu Mindmap'
+                    otherTouchProps={{
+                        disabled: !(mindMapData.data.content.length > 0 && mindMapData.data.content[0].trim() && mindMapData.label.title)
+                    }}
                     icon={<SvgXml xml={`<svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2.95667 7.77998V17.51C2.95667 19.41 4.30667 20.19 5.94667 19.25L8.29667 17.91C8.80667 17.62 9.65667 17.59 10.1867 17.86L15.4367 20.49C15.9667 20.75 16.8167 20.73 17.3267 20.44L21.6567 17.96C22.2067 17.64 22.6667 16.86 22.6667 16.22V6.48998C22.6667 4.58998 21.3167 3.80998 19.6767 4.74998L17.3267 6.08998C16.8167 6.37998 15.9667 6.40998 15.4367 6.13998L10.1867 3.51998C9.65667 3.25998 8.80667 3.27998 8.29667 3.56998L3.96667 6.04998C3.40667 6.36998 2.95667 7.14998 2.95667 7.77998Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.22668 4V17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.3967 6.62012V20.0001" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`} />}
-                    onPress={saveMindmap} bgColor={NGHIASTYLE.NghiaBrand600 as string} textColor='white' textClass={CTEXT.NGT_Inter_HeaderMd_SemiBold} customStyle={[styles.padding3vw, styles.justifyContentCenter,]} />
+                    onPress={saveMindmap} bgColor={NGHIASTYLE.NghiaBrand600 as string}
+                    textColor='white'
+                    textClass={CTEXT.NGT_Inter_HeaderMd_SemiBold}
+                    customStyle={[styles.padding3vw, styles.justifyContentCenter, { filter: !(mindMapData.data.content.length > 0 && mindMapData.data.content[0].trim() && mindMapData.label.title) ? [{ opacity: 0.3 }, { blur: 5 }] : null }]} />
             </View>
         </SSBarWithSaveAreaWithColorScheme >
     );
