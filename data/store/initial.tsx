@@ -11,12 +11,13 @@
 // };
 
 import { useColorScheme } from "react-native";
-import { StorageItem, UserFormat } from "../interfaceFormat";
+import { MindMapTitleFormat, StorageItem, UserFormat } from "../interfaceFormat";
 import { ColorTheme, defaultColorTheme } from "../../assets/ColorTheme";
 
 export interface CurrentCache {
     user: UserFormat;
     colorScheme: ColorTheme;
+    mindmapTitle: MindMapTitleFormat[];
 }
 
 export interface Action {
@@ -29,5 +30,6 @@ export const initialState: CurrentCache = {
         lang: 'vi',
         name: '',
     },
-    colorScheme: defaultColorTheme.light
+    colorScheme: defaultColorTheme.light,
+    mindmapTitle: [],
 };
