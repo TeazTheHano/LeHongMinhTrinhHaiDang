@@ -41,3 +41,33 @@ export interface MindMapDataFormat {
     content: string[] | [string, string[]];
     children?: MindMapDataFormat[];
 }
+
+export interface QuizFormat {
+    id: number,
+    chapterTitle: string,
+    grade: number,
+    data: {
+        ques: string[],
+        ansA: string[],
+        ansB: string[],
+        ansC: string[],
+        ansD: string[],
+        rightAns: ('A' | 'B' | 'C' | 'D')[]
+    }
+}
+
+export interface FlashCardFormat {
+    id: number,
+    grade: number,
+    chapterTitle: string,
+    front: string[],
+    back: string[],
+}
+
+export interface FillInTheBlank {
+    id: number,
+    grade: number,
+    chapterTitle: string,
+    ques: string[],
+    ans: string[],
+}
