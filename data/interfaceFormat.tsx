@@ -52,7 +52,7 @@ export interface QuizFormat {
         ansB: string[],
         ansC: string[],
         ansD: string[],
-        rightAns: ('A' | 'B' | 'C' | 'D')[]
+        rightAns: ('A' | 'B' | 'C' | 'D' | string)[]
     }
 }
 

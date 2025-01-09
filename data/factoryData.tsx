@@ -1212,6 +1212,202 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
             ],
         }
     },
+    {
+        id: 15,
+        grade: 8,
+        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 8',
+        data: {
+            ques: [
+                `assets/photos/Multiple Choice/Lop 8/Dai So/1.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/2.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/3.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/4.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/5.png`,
+            ],
+            ansA: [
+                `assets/photos/Multiple Choice/Lop 8/Dai So/1.1 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/2.1.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/3.1 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/4.1.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/5.1.png`,
+            ],
+            ansB: [
+                `assets/photos/Multiple Choice/Lop 8/Dai So/1.2.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/2.2.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/3.2.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/4.2.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/5.2.png`,
+            ],
+            ansC: [
+                `assets/photos/Multiple Choice/Lop 8/Dai So/1.3.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/2.3.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/3.3.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/4.3.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/5.3.png`,
+            ],
+            ansD: [
+                `assets/photos/Multiple Choice/Lop 8/Dai So/1.4.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/2.4 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/3.4.png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/4.4 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/5.4 (AC).png`,
+            ],
+            rightAns: [
+                `assets/photos/Multiple Choice/Lop 8/Dai So/1.1 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/2.4 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/3.1 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/4.4 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Dai So/5.4 (AC).png`,
+            ]
+        }
+    },
+    {
+        id: 16,
+        grade: 8,
+        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 8',
+        data: {
+            ques: [
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/1.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/2.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/3.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/4.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/5.png`,
+            ],
+            ansA: [
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/1.1.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/2.1.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/3.1.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/4.1.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/5.1.png`,
+            ],
+            ansB: [
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/1.2 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/2.2.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/3.2.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/4.2.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/5.2 (AC).png`,
+            ],
+            ansC: [
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/1.3.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/2.3 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/3.3.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/4.3.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/5.3.png`,
+            ],
+            ansD: [
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/1.4.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/2.4.png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/3.4 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/4.4 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/5.4.png`,
+            ],
+            rightAns: [
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/1.2 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/2.3 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/3.4 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/4.4 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 8/Hinh Hoc/5.2 (AC).png`,
+            ]
+        }
+    },
+    {
+        id: 17,
+        grade: 9,
+        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 9',
+        data: {
+            ques: [
+                `assets/photos/Multiple Choice/Lop 9/Dai So/1.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/2.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/3.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/4.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/5.png`,
+            ],
+            ansA: [
+                `assets/photos/Multiple Choice/Lop 9/Dai So/1.1.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/2.1.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/3.1.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/4.1.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/5.1.png`,
+            ],
+            ansB: [
+                `assets/photos/Multiple Choice/Lop 9/Dai So/1.2.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/2.2.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/3.2.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/4.2 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/5.2 (AC).png`,
+            ],
+            ansC: [
+                `assets/photos/Multiple Choice/Lop 9/Dai So/1.3.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/2.3 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/3.3 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/4.3.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/5.3.png`,
+            ],
+            ansD: [
+                `assets/photos/Multiple Choice/Lop 9/Dai So/1.4 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/2.4.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/3.4.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/4.4.png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/5.4.png`,
+            ],
+            rightAns: [
+                `assets/photos/Multiple Choice/Lop 9/Dai So/1.4 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/2.3 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/3.3 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/4.2 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Dai So/5.2 (AC).png`,
+            ]
+        }
+    },
+    {
+        id: 18,
+        grade: 9,
+        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 9',
+        data: {
+            ques: [
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/1.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/2.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/3.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/4.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/5.png`,
+            ],
+            ansA: [
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/1.1.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/2.1 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/3.1 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/4.1 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/5.1.png`,
+            ],
+            ansB: [
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/1.2.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/2.2.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/3.2.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/4.2.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/5.2(AC).png`,
+            ],
+            ansC: [
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/1.3 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/2.3.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/3.3.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/4.3.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/5.3.png`,
+            ],
+            ansD: [
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/1.4.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/2.4.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/3.4.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/4.4.png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/5.4.png`,
+            ],
+            rightAns: [
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/1.3 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/2.1 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/3.1 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/4.1 (AC).png`,
+                `assets/photos/Multiple Choice/Lop 9/Hinh Hoc/5.2(AC).png`,
+            ]
+        }
+    }
 ]
 
 export const flashCardList: FORMATDATA.FlashCardFormat[] = [
@@ -1270,7 +1466,8 @@ export const flashCardList: FORMATDATA.FlashCardFormat[] = [
             `Tia phân giác của một góc là tia nằm trong góc và tạo với hai cạnh của góc đó hai góc bằng nhau`,
             `a // b`,
         ]
-    }, {
+    },
+    {
         id: 4,
         grade: 7,
         chapterTitle: 'Chương 4',
@@ -1288,7 +1485,8 @@ export const flashCardList: FORMATDATA.FlashCardFormat[] = [
             `AB = AC`,
             `đường thẳng vuông góc với đoạn thẳng đó tại trung điểm`,
         ]
-    }, {
+    },
+    {
         id: 5,
         grade: 8,
         chapterTitle: 'Tổng hợp kiến thức Đại số lớp 8',
@@ -1492,4 +1690,80 @@ export const fillInTheBlankList: FORMATDATA.FillInTheBlank[] = [
             `định tính.`,
         ]
     },
+    {
+        id: 4,
+        grade: 8,
+        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 8',
+        ques: [
+            `assets/photos/Fill in the blank/Lop 8/Dai So/1.1.png`,
+            `assets/photos/Fill in the blank/Lop 8/Dai So/2.1.png`,
+            `assets/photos/Fill in the blank/Lop 8/Dai So/3.1.png`,
+            `assets/photos/Fill in the blank/Lop 8/Dai So/4.1.png`,
+            `assets/photos/Fill in the blank/Lop 8/Dai So/5.1.png`,
+        ],
+        ans: [
+            `assets/photos/Fill in the blank/Lop 8/Dai So/1.2.png`,
+            `assets/photos/Fill in the blank/Lop 8/Dai So/2.2.png`,
+            `assets/photos/Fill in the blank/Lop 8/Dai So/3.2.png`,
+            `assets/photos/Fill in the blank/Lop 8/Dai So/4.2.png`,
+            `assets/photos/Fill in the blank/Lop 8/Dai So/5.2.png`,
+        ]
+    },
+    {
+        id: 5,
+        grade: 8,
+        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 8',
+        ques: [
+            `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/1.1.png`,
+            `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/2.1.png`,
+            `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/3.1.png`,
+            `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/4.1.png`,
+            `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/5.1.png`,
+        ],
+        ans: [
+            `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/1.2.png`,
+            `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/2.2.png`,
+            `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/3.2.png`,
+            `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/4.2.png`,
+            `assets/photos/Fill in the blank/Lop 8/Hinh Hoc/5.2.png`,
+        ]
+    },
+    {
+        id: 6,
+        grade: 9,
+        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 9',
+        ques: [
+            `assets/photos/Fill in the blank/Lop 9/Dai so/1.1.png`,
+            `assets/photos/Fill in the blank/Lop 9/Dai so/2.1.png`,
+            `assets/photos/Fill in the blank/Lop 9/Dai so/3.1.png`,
+            `assets/photos/Fill in the blank/Lop 9/Dai so/4.1.png`,
+            `assets/photos/Fill in the blank/Lop 9/Dai so/5.1.png`,
+        ],
+        ans: [
+            `assets/photos/Fill in the blank/Lop 9/Dai so/1.2.png`,
+            `assets/photos/Fill in the blank/Lop 9/Dai so/2.2.png`,
+            `assets/photos/Fill in the blank/Lop 9/Dai so/3.2.png`,
+            `assets/photos/Fill in the blank/Lop 9/Dai so/4.2.png`,
+            `assets/photos/Fill in the blank/Lop 9/Dai so/5.2.png`,
+        ]
+    },
+    {
+        id: 7,
+        grade: 9,
+        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 9',
+        ques: [
+            `assets/photos/Fill in the blank/Lop 9/Hinh hoc/1.1.png`,
+            `assets/photos/Fill in the blank/Lop 9/Hinh hoc/2.1.png`,
+            `assets/photos/Fill in the blank/Lop 9/Hinh hoc/3.1.png`,
+            `assets/photos/Fill in the blank/Lop 9/Hinh hoc/4.1.png`,
+            `assets/photos/Fill in the blank/Lop 9/Hinh hoc/5.1.png`,
+        ],
+        ans: [
+            `assets/photos/Fill in the blank/Lop 9/Hinh hoc/1.2.png`,
+            `assets/photos/Fill in the blank/Lop 9/Hinh hoc/2.2.png`,
+            `assets/photos/Fill in the blank/Lop 9/Hinh hoc/3.2.png`,
+            `assets/photos/Fill in the blank/Lop 9/Hinh hoc/4.2.png`,
+            `assets/photos/Fill in the blank/Lop 9/Hinh hoc/5.2.png`,
+        ]
+    }
 ]
