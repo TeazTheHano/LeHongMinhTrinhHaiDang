@@ -2,7 +2,7 @@ import { View, Text, Animated, ScrollView, TouchableOpacity, Platform, Image, Im
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { CommonActions, useNavigation } from '@react-navigation/native'
 import { storageGetItem, storageGetList, storageSaveAndOverwrite } from '../data/storageFunc'
-import { RoundBtn, SelectorInput, SSBarWithSaveArea, SSBarWithSaveAreaWithColorScheme, TopBarWithThingInMiddleAllCustomable, TopBarWithThingInMiddleAllCustomableWithColorScheme, ViewCol, ViewColBetweenCenter, ViewColCenter, ViewColStartBetween, ViewRow, ViewRowBetweenCenter } from '../assets/Class'
+import { NavigationButtonRowWithColorScheme, ProgressRowWithColorScheme, RoundBtn, SelectorInput, SSBarWithSaveArea, SSBarWithSaveAreaWithColorScheme, TopBarWithThingInMiddleAllCustomable, TopBarWithThingInMiddleAllCustomableWithColorScheme, ViewCol, ViewColBetweenCenter, ViewColCenter, ViewColStartBetween, ViewRow, ViewRowBetweenCenter } from '../assets/Class'
 import * as SVG from '../assets/svgXml'
 import styles, { vh, vw } from '../assets/stylesheet'
 import * as CTEXT from '../assets/CustomText'
@@ -13,10 +13,12 @@ import { CardTitleFormat, FlashCardFormat } from '../data/interfaceFormat'
 import { flashCardList } from '../data/factoryData'
 
 export default function FlashCard({ route }: any) {
+    // Sentinal variable <<<<<<<<<<<<<<
     const navigation = useNavigation()
     const [CurrentCache, dispatch] = useContext(RootContext)
-
     let COLORSCHEME = CurrentCache.colorScheme
+
+    // State variable <<<<<<<<<<<<<<
     const routeParamsItem = route.params?.item as CardTitleFormat | undefined
 
     const [subTitle, setSubTitle] = useState<string>(routeParamsItem?.title || '')
@@ -24,6 +26,7 @@ export default function FlashCard({ route }: any) {
     const [flashCardData, setFlashCardData] = useState<FlashCardFormat>()
     const [isFront, setIsFront] = useState<boolean>(true)
 
+    // Effect <<<<<<<<<<<<<<
     useEffect(() => {
         if (routeParamsItem) {
             setSubTitle(routeParamsItem.title)
@@ -70,13 +73,7 @@ export default function FlashCard({ route }: any) {
                 }}
             />
             <ViewColBetweenCenter style={[styles.flex1, styles.flexCol, styles.paddingH4vw, styles.gap4vw]}>
-                <ViewRowBetweenCenter style={[styles.gap1vw, styles.paddingV2vw]}>
-                    {routeParamsItem?.length ? (
-                        Array.from({ length: routeParamsItem.length }, (_, index) => index + 1).map((item, index) => (
-                            <View key={index} style={[styles.flex1, styles.borderRadius100, { height: vw(1), backgroundColor: currentIndex >= index ? COLORSCHEME.brandMain : COLORSCHEME.gray2 }]} />
-                        ))
-                    ) : null}
-                </ViewRowBetweenCenter>
+                <ProgressRowWithColorScheme length={routeParamsItem?.length || 1} currentIndex={currentIndex} />
 
                 <TouchableOpacity
                     onPress={() => { setIsFront(!isFront) }}
@@ -104,28 +101,14 @@ export default function FlashCard({ route }: any) {
                     </ViewColCenter>
                 </TouchableOpacity>
 
-                <ViewRowBetweenCenter style={[styles.gap4vw, styles.padding4vw]}>
-                    <RoundBtn title='Thẻ trước'
-                        onPress={() => {
-                            if (currentIndex > 0) {
-                                setCurrentIndex(currentIndex - 1)
-                                setIsFront(true)
-                            }
-                        }}
-                        textClass={CTEXT.NGT_Inter_HeaderMd_SemiBold} textColor='white' bgColor={COLORSCHEME.brandMain} icon={SVG.sharpLeftArrow(vw(6), vw(6), 'white')} customStyle={[styles.paddingH4vw, styles.paddingV2vw, styles.flex1, styles.justifyContentCenter]}
-                    />
-                    <RoundBtn title={currentIndex < (flashCardData?.front.length as number) - 1 ? 'Thẻ sau' : 'Kết thúc'}
-                        iconOnRightSide
-                        onPress={() => {
-                            if (currentIndex < (flashCardData?.front.length as number) - 1) {
-                                setCurrentIndex(currentIndex + 1)
-                                setIsFront(true)
-                            } else {
-                                navigation.goBack()
-                            }
-                        }} textClass={CTEXT.NGT_Inter_HeaderMd_SemiBold} textColor='white' bgColor={COLORSCHEME.brandMain} icon={SVG.sharpRightArrow(vw(6), vw(6), 'white')} customStyle={[styles.paddingH4vw, styles.paddingV2vw, styles.flex1, styles.justifyContentCenter]}
-                    />
-                </ViewRowBetweenCenter>
+                <NavigationButtonRowWithColorScheme
+                    currentIndex={currentIndex}
+                    setCurrentIndex={setCurrentIndex}
+                    setIsFront={setIsFront}
+                    navigation={navigation}
+                    LENGTH={routeParamsItem?.length || 1}
+                    displayType='Thẻ'
+                />
             </ViewColBetweenCenter>
         </SSBarWithSaveAreaWithColorScheme>
     )

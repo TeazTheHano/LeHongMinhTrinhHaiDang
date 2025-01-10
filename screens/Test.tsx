@@ -29,10 +29,10 @@ export default function Test() {
       />
       <ScrollView style={[styles.flex1, styles.flexCol, styles.paddingH4vw]} contentContainerStyle={[styles.gap4vw]}>
         <TouchableOpacity onPress={() => {
-          navigation.navigate('FlashCard' as never)
+          navigation.navigate('Quiz', { id: 1, title: 'asdfasdf' })
         }}
         >
-          <CTEXT.NGT_Inter_DispMd_SemiBold children={`FlashCard`} />
+          <CTEXT.NGT_Inter_DispMd_SemiBold children={`Quiz`} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {
           navigation.navigate('MindMapShow' as never)

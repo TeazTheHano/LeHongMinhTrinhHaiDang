@@ -18,6 +18,7 @@ import NameCollect from './screens/NameCollect';
 import FlashCard from './screens/FlashCard';
 import MindMapShow from './screens/MindmapShow';
 import MindmapCreate from './screens/MindmapCreate';
+import Quiz from './screens/Quiz';
 
 // ____________________END OF IMPORT_______________________
 
@@ -40,6 +41,7 @@ function App(): React.JSX.Element {
           <Stack.Screen name="FlashCard" component={FlashCard} />
           <Stack.Screen name="MindMapShow" component={MindMapShow} />
           <Stack.Screen name="MindmapCreate" component={MindmapCreate} />
+          <Stack.Screen name="Quiz" component={Quiz} />
           
         </Stack.Navigator>
       </NavigationContainer>

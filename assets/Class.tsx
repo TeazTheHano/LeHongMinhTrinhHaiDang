@@ -1385,9 +1385,9 @@ export class CardTitleRender extends React.Component<{ data: FormatData.CardTitl
             },
             doneDark: {
                 class: componentStyleList.roundBorderGray200,
-                textBoldColor: NGHIASTYLE.NghiaBrand600 as string,
-                textRegColor: NGHIASTYLE.NghiaGray500 as string,
-                titleColor: 'black',
+                textBoldColor: 'white',
+                textRegColor: 'white',
+                titleColor: 'white',
                 progressBorder: true,
             }
         }
@@ -1539,7 +1539,7 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
         super(props);
         this.state = {
             isShowCategorySelection: false,
-            selectedCategory: this.props.selectCateList[1] ? this.props.selectCateList[1] : '',
+            selectedCategory: this.props.selectCateList[0] ? this.props.selectCateList[0] : '',
             afterFilterData: this.props.sourceData || [],
             isSelfRunFilterFncTrigged: false
         };
@@ -1611,3 +1611,72 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
         );
     }
 }
+
+export class ProgressRow extends React.Component<{ length: number, currentIndex: number, colorScheme: any }> {
+    shouldComponentUpdate(nextProps: Readonly<{ length: number; currentIndex: number; colorScheme: any; }>, nextState: Readonly<{}>, nextContext: any): boolean {
+        return (
+            nextProps.length !== this.props.length ||
+            nextProps.currentIndex !== this.props.currentIndex ||
+            nextProps.colorScheme !== this.props.colorScheme
+        );
+    }
+    render() {
+        const { length, currentIndex, colorScheme } = this.props;
+
+        return (
+            <ViewRowBetweenCenter style={[styles.gap1vw, styles.paddingV2vw]}>
+                {length ? (
+                    Array.from({ length: length }, (_, index) => index + 1).map((item, index) => (
+                        <View key={index} style={[styles.flex1, styles.borderRadius100, { height: vw(1), backgroundColor: currentIndex >= index ? colorScheme.brandMain : colorScheme.gray2 }]} />
+                    ))
+                ) : null}
+            </ViewRowBetweenCenter>
+        );
+    }
+}
+
+export const ProgressRowWithColorScheme = withColorScheme(ProgressRow);
+
+export class NavigationButtonRow extends React.Component<{ currentIndex: number, setCurrentIndex: (arg0: number) => void, setIsFront?: (arg0: boolean) => void, navigation: any, LENGTH: number, colorScheme: any, displayType?: string }> {
+    shouldComponentUpdate(nextProps: Readonly<{ currentIndex: number; setCurrentIndex: (arg0: number) => void; setIsFront?: (arg0: boolean) => void; navigation: any; LENGTH: number; colorScheme: any; displayType?: string; }>, nextState: Readonly<{}>, nextContext: any): boolean {
+        return (
+            nextProps.currentIndex !== this.props.currentIndex ||
+            nextProps.setCurrentIndex !== this.props.setCurrentIndex ||
+            nextProps.setIsFront !== this.props.setIsFront ||
+            nextProps.navigation !== this.props.navigation ||
+            nextProps.LENGTH !== this.props.LENGTH ||
+            nextProps.colorScheme !== this.props.colorScheme ||
+            nextProps.displayType !== this.props.displayType
+        );
+    }
+    render() {
+        const { currentIndex, setCurrentIndex, setIsFront, navigation, LENGTH, colorScheme, displayType } = this.props;
+
+        return (
+            <ViewRowBetweenCenter style={[styles.gap4vw, styles.padding4vw]}>
+                <RoundBtn title={`${displayType} trước`}
+                    onPress={() => {
+                        if (currentIndex > 0) {
+                            setCurrentIndex(pre => pre - 1)
+                            setIsFront && setIsFront(true)
+                        }
+                    }}
+                    textClass={CTEXT.NGT_Inter_HeaderMd_SemiBold} textColor='white' bgColor={colorScheme.brandMain} icon={SVG.sharpLeftArrow(vw(6), vw(6), 'white')} customStyle={[styles.paddingH4vw, styles.paddingV2vw, styles.flex1, styles.justifyContentCenter]}
+                />
+                <RoundBtn title={currentIndex < LENGTH - 1 ? 'Tiếp theo' : 'Hoàn tất'}
+                    iconOnRightSide
+                    onPress={() => {
+                        if (currentIndex < LENGTH - 1) {
+                            setCurrentIndex(currentIndex + 1)
+                            setIsFront && setIsFront(true)
+                        } else {
+                            navigation.goBack()
+                        }
+                    }} textClass={CTEXT.NGT_Inter_HeaderMd_SemiBold} textColor='white' bgColor={colorScheme.brandMain} icon={SVG.sharpRightArrow(vw(6), vw(6), 'white')} customStyle={[styles.paddingH4vw, styles.paddingV2vw, styles.flex1, styles.justifyContentCenter]}
+                />
+            </ViewRowBetweenCenter>
+        );
+    }
+}
+
+export const NavigationButtonRowWithColorScheme = withColorScheme(NavigationButtonRow);

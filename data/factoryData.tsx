@@ -1806,4 +1806,3 @@ export const fillInTheBlankList: FORMATDATA.FillInTheBlankFormat[] = [
         ]
     }
 ]
-
