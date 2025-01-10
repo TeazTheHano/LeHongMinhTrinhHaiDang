@@ -15,6 +15,8 @@ export interface ColorTheme {
     backgroundFade: string;
     gray1: string;
     gray2: string;
+    correct: string;
+    wrong: string;
 }
 
 export const defaultColorTheme: { [key: string]: ColorTheme } = {
@@ -30,7 +32,9 @@ export const defaultColorTheme: { [key: string]: ColorTheme } = {
         backgroundSecond: `rgba(255, 255, 255, 1)`,
         backgroundFade: NGHIASTYLE.NghiaGray100 as string,
         gray1: NGHIASTYLE.NghiaGray600 as string,
-        gray2: NGHIASTYLE.NghiaGray200 as string
+        gray2: NGHIASTYLE.NghiaGray200 as string,
+        correct: NGHIASTYLE.NghiaSuccess200 as string,
+        wrong: NGHIASTYLE.NghiaError100 as string
     },
     dark: {
         type: 'dark',
@@ -44,6 +48,8 @@ export const defaultColorTheme: { [key: string]: ColorTheme } = {
         backgroundSecond: `rgba(30, 30, 30, 1)`,
         backgroundFade: NGHIASTYLE.NghiaTransparentWhite20 as string,
         gray1: NGHIASTYLE.NghiaGray200 as string,
-        gray2: NGHIASTYLE.NghiaGray500 as string
+        gray2: NGHIASTYLE.NghiaGray500 as string,
+        correct: NGHIASTYLE.NghiaSuccess900 as string,
+        wrong: NGHIASTYLE.NghiaError800 as string
     },
 }

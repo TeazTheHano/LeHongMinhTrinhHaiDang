@@ -9,7 +9,7 @@ import * as CLASS from '../assets/Class'
 import * as SVG from '../assets/svgXml'
 import * as CTEXT from '../assets/CustomText'
 import * as Progress from 'react-native-progress'
-import { CardTitleFormat } from '../data/interfaceFormat'
+import { CardTitleFormat, QuestTitleFormat } from '../data/interfaceFormat'
 import { getInitialCardTitleList, marginBottomForScrollView } from '../assets/component'
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
   const [cardTitleData, setCardTitleData] = useState<CardTitleFormat[]>([])
   const [cardTitleDataFiltered, setCardTitleDataFiltered] = useState<CardTitleFormat[]>([])
   const [lastTouchItem, setLastTouchItem] = useState<{ id: string, type: string }>({ id: '', type: '' })
-  const [lastTouchData, setLastTouchData] = useState<{ id: string, navigateTo: string, process: number, length: number, title: string }>()
+  const [lastTouchData, setLastTouchData] = useState<{ id: string, navigateTo: string, process: number, length: number, title: string, data: CardTitleFormat | any }>()
 
   // Local variable <<<<<<<<<<<<<<
   const CATEGORY_LIST = ['Tất cả', 'Mới', 'Chưa hoàn thành', 'Đã hoàn thành']
@@ -57,11 +57,28 @@ export default function Home() {
           navigateTo: 'FlashCard',
           process: initLastTouchData.process,
           length: initLastTouchData.length,
-          title: initLastTouchData.title
+          title: initLastTouchData.title,
+          data: initLastTouchData
+        })
+      } else if (lastTouchItem.type === 'quiz') {
+        console.log(lastTouchItem);
+
+        const initLastTouchData = await storageGetItem('questTitle', lastTouchItem.id)
+        initLastTouchData && setLastTouchData({
+          id: initLastTouchData.id,
+          navigateTo: 'Quiz',
+          process: initLastTouchData.process,
+          length: initLastTouchData.length,
+          title: initLastTouchData.chapterTitle,
+          data: { id: initLastTouchData.questID, title: initLastTouchData.chapterTitle }
         })
       }
     }
+
+    const unsub = navigation.addListener('focus', fetchLastTouch)
     fetchLastTouch()
+
+    return () => unsub()
   }, [lastTouchItem.id, navigation])
 
   // Render section <<<<<<<<<<<<<<
@@ -86,7 +103,9 @@ export default function Home() {
           </CLASS.ViewRow>
           <CLASS.RoundBtn
             title='Hoàn thành ngay'
-            onPress={() => { }}
+            onPress={() => {
+              navigation.navigate(lastTouchData?.navigateTo, { item: lastTouchData?.data, current: lastTouchData?.process - 1 })
+            }}
             textClass={CTEXT.NGT_Inter_BodyMd_SemiBold}
             textColor={COLORSCHEME.background as string}
             bgColor={COLORSCHEME.brandMain}
@@ -96,7 +115,7 @@ export default function Home() {
         <Image source={require('../assets/photos/home1.png')} resizeMethod='resize' resizeMode='contain' style={[styles.w30vw, styles.h30vw] as ImageStyle} />
       </CLASS.ViewRowBetweenCenter>
     )
-  }, [COLORSCHEME, lastTouchData])
+  }, [COLORSCHEME, lastTouchData, navigation])
 
   const RenderLibChooseSection = useMemo(() => {
     return (

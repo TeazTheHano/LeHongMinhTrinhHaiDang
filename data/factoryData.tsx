@@ -1248,11 +1248,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
                 require(`../assets/photos/Multiple_Choice/Lop_8/Dai_So/5.4_(AC).png`),
             ],
             rightAns: [
-                require(`../assets/photos/Multiple_Choice/Lop_8/Dai_So/1.1_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_8/Dai_So/2.4_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_8/Dai_So/3.1_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_8/Dai_So/4.4_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_8/Dai_So/5.4_(AC).png`),
+                'A',
+                'D',
+                'A',
+                'D',
+                'D',
             ]
         }
     },
@@ -1299,11 +1299,11 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
                 require(`../assets/photos/Multiple_Choice/Lop_8/Hinh_Hoc/5.4.png`),
             ],
             rightAns: [
-                require(`../assets/photos/Multiple_Choice/Lop_8/Hinh_Hoc/1.2_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_8/Hinh_Hoc/2.3_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_8/Hinh_Hoc/3.4_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_8/Hinh_Hoc/4.4_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_8/Hinh_Hoc/5.2_(AC).png`),
+                'B',
+                'C',
+                'D',
+                'D',
+                'B',
             ]
         }
     },
@@ -1350,11 +1350,7 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
                 require(`../assets/photos/Multiple_Choice/Lop_9/Dai_So/5.4.png`),
             ],
             rightAns: [
-                require(`../assets/photos/Multiple_Choice/Lop_9/Dai_So/1.4_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_9/Dai_So/2.3_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_9/Dai_So/3.3_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_9/Dai_So/4.2_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_9/Dai_So/5.2_(AC).png`),
+                `D`, `C`, `C`, `B`, 'B'
             ]
         }
     },
@@ -1401,11 +1397,7 @@ export const quizDataList: FORMATDATA.QuizFormat[] = [
                 require(`../assets/photos/Multiple_Choice/Lop_9/Hinh_Hoc/5.4.png`),
             ],
             rightAns: [
-                require(`../assets/photos/Multiple_Choice/Lop_9/Hinh_Hoc/1.3_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_9/Hinh_Hoc/2.1_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_9/Hinh_Hoc/3.1_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_9/Hinh_Hoc/4.1_(AC).png`),
-                require(`../assets/photos/Multiple_Choice/Lop_9/Hinh_Hoc/5.2(AC).png`),
+                `C`, `A`, `A`, `A`, `B`,
             ]
         }
     }

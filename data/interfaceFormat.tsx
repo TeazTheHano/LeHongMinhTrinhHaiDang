@@ -4,7 +4,8 @@ export interface StorageItem {
     mindmapTitle: MindMapTitleFormat,
     cardTitle: CardTitleFormat,
     flashCard: FlashCardFormat,
-    lastTouchItem: {id: string, type: string, },
+    lastTouchItem: { id: string, type: string, },
+    questTitle: QuestTitleFormat,
 }
 
 export interface UserFormat {
@@ -83,4 +84,14 @@ export interface chapterTitleFormat {
     fillInTheBlankID?: number
     quizStatus?: [number, number],
     fillInTheBlankStatus?: [number, number]
+}
+
+export interface QuestTitleFormat {
+    id: string,
+    chapterTitle: string
+    questID: number,
+    length: number,
+    process: number,
+    status: number
+    kind: 'quiz' | 'fillInTheBlank',
 }

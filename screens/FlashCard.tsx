@@ -32,6 +32,7 @@ export default function FlashCard({ route }: any) {
             setSubTitle(routeParamsItem.title)
             setFlashCardData(flashCardList.find((item) => item.label.chapterTitle === routeParamsItem.title))
             storageSaveAndOverwrite('lastTouchItem', { id: routeParamsItem.dataID, type: 'cardTitle' })
+            setCurrentIndex(route.params?.current || 0)
         }
     }, [routeParamsItem])
 

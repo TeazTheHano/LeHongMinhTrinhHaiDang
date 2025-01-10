@@ -1612,22 +1612,28 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
     }
 }
 
-export class ProgressRow extends React.Component<{ length: number, currentIndex: number, colorScheme: any }> {
-    shouldComponentUpdate(nextProps: Readonly<{ length: number; currentIndex: number; colorScheme: any; }>, nextState: Readonly<{}>, nextContext: any): boolean {
+export class ProgressRow extends React.Component<{ length: number, currentIndex: number, colorScheme: any, activeColor?: string, inactiveColor?: string, activeValue?: number[], answerArray?: string[] }> {
+    shouldComponentUpdate(nextProps: Readonly<{ length: number; currentIndex: number; colorScheme: any; activeColor?: string; inactiveColor?: string; activeValue?: number[], answerArray?: string[] }>, nextState: Readonly<{}>, nextContext: any): boolean {
         return (
             nextProps.length !== this.props.length ||
             nextProps.currentIndex !== this.props.currentIndex ||
-            nextProps.colorScheme !== this.props.colorScheme
+            nextProps.colorScheme !== this.props.colorScheme ||
+            nextProps.activeColor !== this.props.activeColor ||
+            nextProps.inactiveColor !== this.props.inactiveColor ||
+            nextProps.activeValue !== this.props.activeValue ||
+            nextProps.answerArray !== this.props.answerArray
         );
     }
     render() {
-        const { length, currentIndex, colorScheme } = this.props;
+        const { length, currentIndex, colorScheme, activeColor, inactiveColor, activeValue, answerArray } = this.props;
 
         return (
-            <ViewRowBetweenCenter style={[styles.gap1vw, styles.paddingV2vw]}>
+            <ViewRowBetweenCenter style={[styles.gap1vw, styles.paddingV2vw, { flexWrap: answerArray ? 'wrap' : 'nowrap', }]}>
                 {length ? (
                     Array.from({ length: length }, (_, index) => index + 1).map((item, index) => (
-                        <View key={index} style={[styles.flex1, styles.borderRadius100, { height: vw(1), backgroundColor: currentIndex >= index ? colorScheme.brandMain : colorScheme.gray2 }]} />
+                        <View key={index} style={[styles.borderRadius100, { minHeight: vw(1), backgroundColor: (activeColor && inactiveColor && activeValue) ? (activeValue[index] ? activeColor : inactiveColor) : (currentIndex >= index ? colorScheme.brandMain : colorScheme.gray2), flexWrap: answerArray ? 'wrap' : 'nowrap', flex: !answerArray ? 1 : undefined, }]} >
+                            {answerArray && answerArray[index] ? <View style={[styles.paddingH6vw]}><CTEXT.NGT_Inter_HeaderMd_Bld children={answerArray[index]} style={[styles.textCenter]} color='white' /></View> : null}
+                        </View>
                     ))
                 ) : null}
             </ViewRowBetweenCenter>
@@ -1637,8 +1643,8 @@ export class ProgressRow extends React.Component<{ length: number, currentIndex:
 
 export const ProgressRowWithColorScheme = withColorScheme(ProgressRow);
 
-export class NavigationButtonRow extends React.Component<{ currentIndex: number, setCurrentIndex: (arg0: number) => void, setIsFront?: (arg0: boolean) => void, navigation: any, LENGTH: number, colorScheme: any, displayType?: string }> {
-    shouldComponentUpdate(nextProps: Readonly<{ currentIndex: number; setCurrentIndex: (arg0: number) => void; setIsFront?: (arg0: boolean) => void; navigation: any; LENGTH: number; colorScheme: any; displayType?: string; }>, nextState: Readonly<{}>, nextContext: any): boolean {
+export class NavigationButtonRow extends React.Component<{ currentIndex: number, setCurrentIndex: (arg0: number) => void, onSubmit?: () => void, setIsFront?: (arg0: boolean) => void, navigation: any, LENGTH: number, colorScheme: any, displayType?: string }> {
+    shouldComponentUpdate(nextProps: Readonly<{ currentIndex: number; setCurrentIndex: (arg0: number) => void; onSubmit?: () => void; setIsFront?: (arg0: boolean) => void; navigation: any; LENGTH: number; colorScheme: any; displayType?: string; }>, nextState: Readonly<{}>, nextContext: any): boolean {
         return (
             nextProps.currentIndex !== this.props.currentIndex ||
             nextProps.setCurrentIndex !== this.props.setCurrentIndex ||
@@ -1646,18 +1652,19 @@ export class NavigationButtonRow extends React.Component<{ currentIndex: number,
             nextProps.navigation !== this.props.navigation ||
             nextProps.LENGTH !== this.props.LENGTH ||
             nextProps.colorScheme !== this.props.colorScheme ||
-            nextProps.displayType !== this.props.displayType
+            nextProps.displayType !== this.props.displayType ||
+            nextProps.onSubmit !== this.props.onSubmit
         );
     }
     render() {
-        const { currentIndex, setCurrentIndex, setIsFront, navigation, LENGTH, colorScheme, displayType } = this.props;
+        const { currentIndex, setCurrentIndex, setIsFront, navigation, LENGTH, colorScheme, displayType, onSubmit } = this.props;
 
         return (
             <ViewRowBetweenCenter style={[styles.gap4vw, styles.padding4vw]}>
                 <RoundBtn title={`${displayType} trước`}
                     onPress={() => {
                         if (currentIndex > 0) {
-                            setCurrentIndex(pre => pre - 1)
+                            setCurrentIndex(currentIndex - 1)
                             setIsFront && setIsFront(true)
                         }
                     }}
@@ -1670,7 +1677,7 @@ export class NavigationButtonRow extends React.Component<{ currentIndex: number,
                             setCurrentIndex(currentIndex + 1)
                             setIsFront && setIsFront(true)
                         } else {
-                            navigation.goBack()
+                            onSubmit ? onSubmit() : navigation.goBack()
                         }
                     }} textClass={CTEXT.NGT_Inter_HeaderMd_SemiBold} textColor='white' bgColor={colorScheme.brandMain} icon={SVG.sharpRightArrow(vw(6), vw(6), 'white')} customStyle={[styles.paddingH4vw, styles.paddingV2vw, styles.flex1, styles.justifyContentCenter]}
                 />

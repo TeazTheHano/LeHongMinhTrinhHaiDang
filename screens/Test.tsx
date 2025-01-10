@@ -29,7 +29,7 @@ export default function Test() {
       />
       <ScrollView style={[styles.flex1, styles.flexCol, styles.paddingH4vw]} contentContainerStyle={[styles.gap4vw]}>
         <TouchableOpacity onPress={() => {
-          navigation.navigate('Quiz', { id: 1, title: 'asdfasdf' })
+          navigation.navigate('Quiz', { item: { id: 1, title: 'asdfasdf' } })
         }}
         >
           <CTEXT.NGT_Inter_DispMd_SemiBold children={`Quiz`} />
