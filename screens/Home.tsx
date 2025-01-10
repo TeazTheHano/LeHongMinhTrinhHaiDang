@@ -22,6 +22,8 @@ export default function Home() {
   const [libGradeSelected, setLibGradeSelected] = useState<number>(9)
   const [cardTitleData, setCardTitleData] = useState<CardTitleFormat[]>([])
   const [cardTitleDataFiltered, setCardTitleDataFiltered] = useState<CardTitleFormat[]>([])
+  const [lastTouchItem, setLastTouchItem] = useState<{ id: string, type: string }>({ id: '', type: '' })
+  const [lastTouchData, setLastTouchData] = useState<{ id: string, navigateTo: string, process: number, length: number, title: string }>()
 
   // Local variable <<<<<<<<<<<<<<
   const CATEGORY_LIST = ['Tất cả', 'Mới', 'Chưa hoàn thành', 'Đã hoàn thành']
@@ -32,16 +34,35 @@ export default function Home() {
       const fetchInitialCardTitles = async () => {
         const initialCardTitles = await getInitialCardTitleList()
         setCardTitleData(initialCardTitles || [])
+
+        const lastTouch = await storageGetItem('lastTouchItem')
+        lastTouch && setLastTouchItem(lastTouch)
       }
       fetchInitialCardTitles()
     })
     return unsub
-  }, [])
+  }, [navigation])
 
   useEffect(() => {
     let cardTitleDataWithGrade = cardTitleData.filter((cardTitle) => cardTitle.grade === libGradeSelected)
     setCardTitleDataFiltered(cardTitleDataWithGrade)
-  }, [cardTitleData, libGradeSelected])
+  }, [cardTitleData, libGradeSelected, navigation])
+
+  useEffect(() => {
+    const fetchLastTouch = async () => {
+      if (lastTouchItem.type === 'cardTitle') {
+        const initLastTouchData = await storageGetItem('cardTitle', lastTouchItem.id)
+        initLastTouchData && setLastTouchData({
+          id: initLastTouchData.dataID,
+          navigateTo: 'FlashCard',
+          process: initLastTouchData.process,
+          length: initLastTouchData.length,
+          title: initLastTouchData.title
+        })
+      }
+    }
+    fetchLastTouch()
+  }, [lastTouchItem.id, navigation])
 
   // Render section <<<<<<<<<<<<<<
   const RenderHeaderSection = useMemo(() => {
@@ -50,7 +71,7 @@ export default function Home() {
         <CLASS.ViewCol style={[styles.justifyContentSpaceBetween, { minHeight: vw(30) }, styles.gap2vw, styles.flex1,]}>
           <CLASS.ViewRow style={[styles.gap2vw]}>
             <Progress.Circle
-              progress={0.5}
+              progress={((lastTouchData?.process || 0) / (lastTouchData?.length || 1))}
               size={vw(11)}
               borderWidth={0}
               thickness={vw(1.2)}
@@ -59,8 +80,8 @@ export default function Home() {
               color={NGHIASTYLE.NghiaBrand600 as string}
             />
             <CLASS.ViewCol style={[styles.flex1,]}>
-              <CTEXT.NGT_Inter_BodyMd_Reg >7/10 đã hoàn thành</CTEXT.NGT_Inter_BodyMd_Reg>
-              <CTEXT.NGT_Inter_BodyLg_SemiBold>Phương trình bậc nhất một ẩn</CTEXT.NGT_Inter_BodyLg_SemiBold>
+              <CTEXT.NGT_Inter_BodyMd_Reg>{(lastTouchData?.process || 0)}/{(lastTouchData?.length || 1)} Hoàn thành</CTEXT.NGT_Inter_BodyMd_Reg>
+              <CTEXT.NGT_Inter_BodyLg_SemiBold>{lastTouchData?.title}</CTEXT.NGT_Inter_BodyLg_SemiBold>
             </CLASS.ViewCol>
           </CLASS.ViewRow>
           <CLASS.RoundBtn
@@ -75,12 +96,12 @@ export default function Home() {
         <Image source={require('../assets/photos/home1.png')} resizeMethod='resize' resizeMode='contain' style={[styles.w30vw, styles.h30vw] as ImageStyle} />
       </CLASS.ViewRowBetweenCenter>
     )
-  }, [COLORSCHEME])
+  }, [COLORSCHEME, lastTouchData])
 
   const RenderLibChooseSection = useMemo(() => {
     return (
       <CLASS.ViewCol style={[styles.positionSticky, styles.top0, styles.gap4vw,]}>
-        <CTEXT.NGT_Inter_DispMd_SemiBold children={'Thư viện của bạn'} />
+        <CTEXT.NGT_Inter_DispMd_SemiBold children={'Flash card của bạn'} />
         <FlatList
           scrollEnabled={false}
           style={[styles.w100, componentStyleList.roundBorderGray200 as any, styles.padding1vw,]}
@@ -143,7 +164,11 @@ export default function Home() {
               }}
               selfRunFilterFnc
               renderFnc={(item: CardTitleFormat[]) => {
-                return <CLASS.CardTitleRenderWithColorScheme data={item} onPressFnc={(par: CardTitleFormat) => { navigation.navigate('FlashCard' as never, { item: par }) }} />
+                if (item.length > 0) {
+                  return <CLASS.CardTitleRenderWithColorScheme data={item} onPressFnc={(par: CardTitleFormat) => { navigation.navigate('FlashCard' as never, { item: par }) }} />
+                } else {
+                  return <CTEXT.NGT_Inter_HeaderMd_SemiBold children='Không có thẻ nào phù hợp' />
+                }
               }}
             /> :
             <CTEXT.NGT_Inter_HeaderMd_SemiBold children='Tải dữ liệu lỗi hoặc không có dữ liệu' />

@@ -4,7 +4,7 @@ export interface StorageItem {
     mindmapTitle: MindMapTitleFormat,
     cardTitle: CardTitleFormat,
     flashCard: FlashCardFormat,
-    lastTouchID: any,
+    lastTouchItem: {id: string, type: string, },
 }
 
 export interface UserFormat {

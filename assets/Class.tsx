@@ -1412,7 +1412,7 @@ export class CardTitleRender extends React.Component<{ data: FormatData.CardTitl
                         }
                     })();
                     return (
-                        <TouchableOpacity onPress={() => { onPressFnc && onPressFnc(item)}}>
+                        <TouchableOpacity onPress={() => { onPressFnc && onPressFnc(item) }}>
                             <ViewCol style={[styleC[kind].class as any, styles.gap2vw]}>
                                 <ViewRowBetweenCenter>
                                     <View style={styleC[kind].progressBorder ? { paddingHorizontal: vw(1.5), paddingVertical: vw(0.5), borderRadius: vw(1.5), backgroundColor: NGHIASTYLE.NghiaBrand600 as string } : null}>
@@ -1569,7 +1569,9 @@ export class SelectListAndCardRender extends React.Component<SelectListAndCardRe
 
     componentDidUpdate(prevProps: SelectListAndCardRenderProps) {
         if (prevProps.sourceData !== this.props.sourceData) {
-            this.setState({ afterFilterData: this.props.sourceData || [] });
+            this.setState({ afterFilterData: this.props.sourceData || [] }, () => {
+                this.runFilterFunction();
+            });
         }
     }
 
