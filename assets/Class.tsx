@@ -19,6 +19,7 @@ import * as CTEXT from './CustomText';
 import { SvgXml } from 'react-native-svg';
 import { ColorTheme } from './ColorTheme';
 import * as FactoryData from '../data/factoryData';
+import { storageGetItem } from '../data/storageFunc';
 
 // other import
 
@@ -1645,7 +1646,7 @@ export const NavigationButtonRowWithColorScheme = withColorScheme(NavigationButt
 
 export class ChapterCartRender extends React.Component<{ data: Array<FormatData.ChapterTitleFormat | FormatData.QuizFormat | FormatData.FillInTheBlankFormat>, colorScheme: ColorTheme, onPressFnc?: (value: any) => void }> {
     render(): React.ReactNode {
-        const { data, colorScheme, onPressFnc } = this.props
+        const { data, colorScheme, onPressFnc } = this.props;
 
         return (
             <FlatList
@@ -1653,30 +1654,52 @@ export class ChapterCartRender extends React.Component<{ data: Array<FormatData.
                 scrollEnabled={false}
                 keyExtractor={(item, index) => index.toString()}
                 contentContainerStyle={[styles.gap3vw]}
-                renderItem={({ item, index }) => {
+                renderItem={({ item, index }: { item: FormatData.ChapterTitleFormat | FormatData.QuizFormat | FormatData.FillInTheBlankFormat, index: number }) => {
                     let kind: 'chapter' | 'quiz' | 'blank' = 'chapter';
+                    let styletype: 'new' | 'progress' | 'done' = 'progress';
+                    let styleKind: keyof typeof componentStyleCardContainner = 'newLight';
+
+                    const getStatus = async (kind: FormatData.QuestTitleFormat['kind'], id: string): Promise<FormatData.QuestTitleFormat['status']> => {
+                        const res = await storageGetItem('questTitle', `${kind + id}`) as FormatData.QuestTitleFormat;
+                        return res?.status ?? 0;
+                    };
+
+                    const getStyleKind = (status: number, isDark: boolean): keyof typeof componentStyleCardContainner => {
+                        if (status === 0) return `new${isDark ? 'Dark' : 'Light'}`;
+                        if (status === 1) return `progress${isDark ? 'Dark' : 'Light'}`;
+                        return `done${isDark ? 'Dark' : 'Light'}`;
+                    };
 
                     if ('data' in item) {
                         kind = 'quiz';
+                        getStatus('quiz', item.label.id.toString()).then(stt => {
+                            styletype = stt === 0 ? 'new' : stt === 1 ? 'progress' : 'done';
+                            styleKind = getStyleKind(stt, colorScheme.type === 'dark');
+                        });
                     } else if (!('chapterTitle' in item)) {
                         kind = 'blank';
+                        getStatus('fillInTheBlank', item.label.id.toString()).then(stt => {
+                            styletype = stt === 0 ? 'new' : stt === 1 ? 'progress' : 'done';
+                            styleKind = getStyleKind(stt, colorScheme.type === 'dark');
+                        });
+                    } else {
+                        styletype = item.status === 0 ? 'new' : item.status === 1 ? 'progress' : 'done';
+                        styleKind = getStyleKind(item.status, colorScheme.type === 'dark');
                     }
 
-
                     return (
-                        <TouchableOpacity onPress={() => { onPressFnc && onPressFnc(item) }}>
-                            {/* <ViewCol style={[componentStyleCardContainner[kind].class as any, styles.gap2vw]}>
-                                <CTEXT.NGT_Inter_BodyLg_SemiBold color={componentStyleCardContainner[kind].textBoldColor as string}>{item.chapterTitle} </CTEXT.NGT_Inter_BodyLg_SemiBold>
-                                <CardCateRenderWithColorScheme type={item.type} />
-                                <ViewRowBetweenCenter style={[styles.flex1, styles.gap2vw]}>
-                                </ViewRowBetweenCenter>
-                            </ViewCol> */}
-                            <Text>{kind} - {'chapterTitle' in item ? item.chapterTitle : item.label.chapterTitle}</Text>
+                        <TouchableOpacity onPress={() => { onPressFnc && onPressFnc(item); }}>
+                            <ViewCol style={[componentStyleCardContainner[styleKind].class as any, styles.gap2vw]}>
+                                <CTEXT.NGT_Inter_BodyLg_SemiBold color={componentStyleCardContainner[styleKind].textBoldColor as string || 'black'}>
+                                    {kind === 'chapter' ? item.chapterTitle : item.label.chapterTitle}
+                                </CTEXT.NGT_Inter_BodyLg_SemiBold>
+                                <CardCateRenderWithColorScheme type={(kind === 'chapter' ? item.type : item.label.type) || [0]} />
+                            </ViewCol>
                         </TouchableOpacity>
-                    )
+                    );
                 }}
             />
-        )
+        );
     }
 }
 
