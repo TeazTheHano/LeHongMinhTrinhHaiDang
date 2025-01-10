@@ -1798,3 +1798,50 @@ export const fillInTheBlankList: FORMATDATA.FillInTheBlankFormat[] = [
         ]
     }
 ]
+
+export const chapterTitleList: FORMATDATA.ChapterTitleFormat[] = [
+    {
+        id: 1,
+        grade: 9,
+        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 9',
+        quizID: 17,
+        fillInTheBlankID: 6,
+        quizStatus: [0, quizDataList.filter(item => item.label.id == 17)[0].data.rightAns.length],
+        fillInTheBlankStatus: [0, fillInTheBlankList.filter(item => item.label.id == 6)[0].ans.length],
+        type: [0, 2],
+        status: 0,
+    },
+    {
+        id: 2,
+        grade: 9,
+        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 9',
+        quizID: 18,
+        fillInTheBlankID: 7,
+        quizStatus: [0, quizDataList.filter(item => item.label.id == 18)[0].data.rightAns.length],
+        fillInTheBlankStatus: [0, fillInTheBlankList.filter(item => item.label.id == 7)[0].ans.length],
+        type: [1, 2],
+        status: 0,
+    },
+    {
+        id: 3,
+        grade: 8,
+        chapterTitle: 'Tổng hợp kiến thức Hình học lớp 8',
+        quizID: 16,
+        fillInTheBlankID: 5,
+        quizStatus: [0, quizDataList.filter(item => item.label.id == 16)[0].data.rightAns.length],
+        fillInTheBlankStatus: [0, fillInTheBlankList.filter(item => item.label.id == 5)[0].ans.length],
+        type: [1, 2],
+        status: 0,
+    },
+    {
+        id: 4,
+        grade: 8,
+        chapterTitle: 'Tổng hợp kiến thức Đại số lớp 8',
+        quizID: 15,
+        fillInTheBlankID: 4,
+        quizStatus: [0, quizDataList.filter(item => item.label.id == 15)[0].data.rightAns.length],
+        fillInTheBlankStatus: [0, fillInTheBlankList.filter(item => item.label.id == 4)[0].ans.length],
+        type: [0, 2],
+        status: 0,
+    },
+]

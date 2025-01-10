@@ -20,7 +20,7 @@ import * as CUSTOMCACHE from '../data/store'
 import * as STORAGEFNC from '../data/storageFunc'
 import * as CLASS from "./Class";
 import * as CTEXT from "./CustomText";
-import { flashCardList } from "../data/factoryData";
+import { chapterTitleList, flashCardList } from "../data/factoryData";
 
 // font import 
 
@@ -494,3 +494,22 @@ export async function getInitialCardTitleList(): Promise<FORMATDATA.CardTitleFor
     }
 }
 
+
+export async function getInitialChapterTitleList(): Promise<Array<FORMATDATA.ChapterTitleFormat> | false> {
+    try {
+        const storedData = await STORAGEFNC.storageGetList('chapterTitle');
+
+        if (storedData && storedData.length > 0) {
+            return storedData;
+        } else {
+            chapterTitleList.map((item, index) => {
+                STORAGEFNC.storageSaveAndOverwrite('chapterTitle', item, item.id.toString())
+            })
+            return chapterTitleList;
+        }
+        return false
+    } catch (error) {
+        console.error('Error retrieving chapter title list:', error);
+        return false;
+    }
+}

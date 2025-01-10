@@ -6,6 +6,7 @@ export interface StorageItem {
     flashCard: FlashCardFormat,
     lastTouchItem: { id: string, type: string, },
     questTitle: QuestTitleFormat,
+    chapterTitle: ChapterTitleFormat,
 }
 
 export interface UserFormat {
@@ -77,13 +78,16 @@ export interface FillInTheBlankFormat {
     ans: string[],
 }
 
-export interface chapterTitleFormat {
+export interface ChapterTitleFormat {
     id: number,
+    grade: number,
     chapterTitle: string
     quizID?: number,
     fillInTheBlankID?: number
     quizStatus?: [number, number],
-    fillInTheBlankStatus?: [number, number]
+    fillInTheBlankStatus?: [number, number],
+    type: number[],
+    status: 0 | 1 | 2
 }
 
 export interface QuestTitleFormat {

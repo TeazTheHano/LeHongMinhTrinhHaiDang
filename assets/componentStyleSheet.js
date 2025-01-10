@@ -204,3 +204,48 @@ export const componentStyleList = {
         { backgroundColor: NGHIASTYLE.NghiaBrand100 }
     ],
 };
+
+export const componentStyleCardContainner = {
+    newLight: {
+        class: componentStyleList.roundFillBrand600,
+        textBoldColor: 'white',
+        textRegColor: 'white',
+        titleColor: 'white',
+        progressBorder: false,
+    },
+    progressLight: {
+        class: componentStyleList.roundFillBrand100,
+        textBoldColor: NGHIASTYLE.NghiaBrand600,
+        textRegColor: NGHIASTYLE.NghiaGray500,
+        titleColor: 'black',
+        progressBorder: false,
+    },
+    doneLight: {
+        class: componentStyleList.roundBorderGray200,
+        textBoldColor: 'white',
+        textRegColor: 'white',
+        titleColor: 'black',
+        progressBorder: true,
+    },
+    newDark: {
+        class: componentStyleList.roundFillBrand600,
+        textBoldColor: 'white',
+        textRegColor: 'white',
+        titleColor: 'white',
+        progressBorder: false,
+    },
+    progressDark: {
+        class: componentStyleList.roundFillBrand100,
+        textBoldColor: NGHIASTYLE.NghiaBrand600,
+        textRegColor: NGHIASTYLE.NghiaGray500,
+        titleColor: 'black',
+        progressBorder: false,
+    },
+    doneDark: {
+        class: componentStyleList.roundBorderGray200,
+        textBoldColor: 'white',
+        textRegColor: 'white',
+        titleColor: 'white',
+        progressBorder: true,
+    }
+}

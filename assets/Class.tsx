@@ -11,7 +11,7 @@ import { marginBottomForScrollView } from './component';
 
 // svg import
 import * as SVG from './svgXml';
-import clrStyle, { componentStyleList, NGHIASTYLE } from './componentStyleSheet';
+import clrStyle, { componentStyleCardContainner, componentStyleList, NGHIASTYLE } from './componentStyleSheet';
 import { useNavigation } from '@react-navigation/native';
 import { Action, CurrentCache, initialState, RootContext } from '../data/store';
 import * as FormatData from '../data/interfaceFormat';
@@ -1347,51 +1347,6 @@ export class CardTitleRender extends React.Component<{ data: FormatData.CardTitl
     render(): React.ReactNode {
         const { data, colorScheme, onPressFnc } = this.props
 
-        const styleC: { [key: string]: { class: any[], textBoldColor: string, textRegColor: string, titleColor: string, progressBorder: boolean } } = {
-            newLight: {
-                class: componentStyleList.roundFillBrand600,
-                textBoldColor: 'white',
-                textRegColor: 'white',
-                titleColor: 'white',
-                progressBorder: false,
-            },
-            progressLight: {
-                class: componentStyleList.roundFillBrand100,
-                textBoldColor: NGHIASTYLE.NghiaBrand600 as string,
-                textRegColor: NGHIASTYLE.NghiaGray500 as string,
-                titleColor: 'black',
-                progressBorder: false,
-            },
-            doneLight: {
-                class: componentStyleList.roundBorderGray200,
-                textBoldColor: 'white',
-                textRegColor: 'white',
-                titleColor: 'black',
-                progressBorder: true,
-            },
-            newDark: {
-                class: componentStyleList.roundFillBrand600,
-                textBoldColor: 'white',
-                textRegColor: 'white',
-                titleColor: 'white',
-                progressBorder: false,
-            },
-            progressDark: {
-                class: componentStyleList.roundFillBrand100,
-                textBoldColor: NGHIASTYLE.NghiaBrand600 as string,
-                textRegColor: NGHIASTYLE.NghiaGray500 as string,
-                titleColor: 'black',
-                progressBorder: false,
-            },
-            doneDark: {
-                class: componentStyleList.roundBorderGray200,
-                textBoldColor: 'white',
-                textRegColor: 'white',
-                titleColor: 'white',
-                progressBorder: true,
-            }
-        }
-
         return (
             <FlatList
                 data={data}
@@ -1413,14 +1368,14 @@ export class CardTitleRender extends React.Component<{ data: FormatData.CardTitl
                     })();
                     return (
                         <TouchableOpacity onPress={() => { onPressFnc && onPressFnc(item) }}>
-                            <ViewCol style={[styleC[kind].class as any, styles.gap2vw]}>
+                            <ViewCol style={[componentStyleCardContainner[kind].class as any, styles.gap2vw]}>
                                 <ViewRowBetweenCenter>
-                                    <View style={styleC[kind].progressBorder ? { paddingHorizontal: vw(1.5), paddingVertical: vw(0.5), borderRadius: vw(1.5), backgroundColor: NGHIASTYLE.NghiaBrand600 as string } : null}>
-                                        <CTEXT.NGT_Inter_BodyMd_SemiBold color={styleC[kind].textBoldColor}>{item.length} <CTEXT.NGT_Inter_BodyMd_Reg color={styleC[kind].textRegColor} children='thẻ | Tiến độ: ' />{item.process}/{item.length}</CTEXT.NGT_Inter_BodyMd_SemiBold>
+                                    <View style={componentStyleCardContainner[kind].progressBorder ? { paddingHorizontal: vw(1.5), paddingVertical: vw(0.5), borderRadius: vw(1.5), backgroundColor: NGHIASTYLE.NghiaBrand600 as string } : null}>
+                                        <CTEXT.NGT_Inter_BodyMd_SemiBold color={componentStyleCardContainner[kind].textBoldColor as string}>{item.length} <CTEXT.NGT_Inter_BodyMd_Reg color={componentStyleCardContainner[kind].textRegColor as string} children='thẻ | Tiến độ: ' />{item.process}/{item.length}</CTEXT.NGT_Inter_BodyMd_SemiBold>
                                     </View>
                                     <CardCateRenderWithColorScheme type={item.type} />
                                 </ViewRowBetweenCenter>
-                                <CTEXT.NGT_Inter_BodyLg_SemiBold color={styleC[kind].titleColor} children={item.title} />
+                                <CTEXT.NGT_Inter_BodyLg_SemiBold color={componentStyleCardContainner[kind].titleColor} children={item.title} />
                             </ViewCol>
                         </TouchableOpacity>
                     )
@@ -1687,3 +1642,42 @@ export class NavigationButtonRow extends React.Component<{ currentIndex: number,
 }
 
 export const NavigationButtonRowWithColorScheme = withColorScheme(NavigationButtonRow);
+
+export class ChapterCartRender extends React.Component<{ data: Array<FormatData.ChapterTitleFormat | FormatData.QuizFormat | FormatData.FillInTheBlankFormat>, colorScheme: ColorTheme, onPressFnc?: (value: any) => void }> {
+    render(): React.ReactNode {
+        const { data, colorScheme, onPressFnc } = this.props
+
+        return (
+            <FlatList
+                data={data}
+                scrollEnabled={false}
+                keyExtractor={(item, index) => index.toString()}
+                contentContainerStyle={[styles.gap3vw]}
+                renderItem={({ item, index }) => {
+                    let kind: 'chapter' | 'quiz' | 'blank' = 'chapter';
+
+                    if ('data' in item) {
+                        kind = 'quiz';
+                    } else if (!('chapterTitle' in item)) {
+                        kind = 'blank';
+                    }
+
+
+                    return (
+                        <TouchableOpacity onPress={() => { onPressFnc && onPressFnc(item) }}>
+                            {/* <ViewCol style={[componentStyleCardContainner[kind].class as any, styles.gap2vw]}>
+                                <CTEXT.NGT_Inter_BodyLg_SemiBold color={componentStyleCardContainner[kind].textBoldColor as string}>{item.chapterTitle} </CTEXT.NGT_Inter_BodyLg_SemiBold>
+                                <CardCateRenderWithColorScheme type={item.type} />
+                                <ViewRowBetweenCenter style={[styles.flex1, styles.gap2vw]}>
+                                </ViewRowBetweenCenter>
+                            </ViewCol> */}
+                            <Text>{kind} - {'chapterTitle' in item ? item.chapterTitle : item.label.chapterTitle}</Text>
+                        </TouchableOpacity>
+                    )
+                }}
+            />
+        )
+    }
+}
+
+export const ChapterCartRenderWithColorScheme = withColorScheme(ChapterCartRender)
