@@ -20,7 +20,7 @@ import * as CUSTOMCACHE from '../data/store'
 import * as STORAGEFNC from '../data/storageFunc'
 import * as CLASS from "./Class";
 import * as CTEXT from "./CustomText";
-import { chapterTitleList, flashCardList } from "../data/factoryData";
+import * as FactoryData from "../data/factoryData";
 
 // font import 
 
@@ -474,7 +474,7 @@ export async function getInitialCardTitleList(): Promise<FORMATDATA.CardTitleFor
         if (storedData && storedData.length > 0) {
             return storedData;
         } else {
-            flashCardList.forEach((flashCard) => {
+            FactoryData.flashCardList.forEach((flashCard) => {
                 const cardTitleData: FORMATDATA.CardTitleFormat = {
                     title: flashCard.label.chapterTitle,
                     type: flashCard.label.type || [],
@@ -502,10 +502,10 @@ export async function getInitialChapterTitleList(): Promise<Array<FORMATDATA.Cha
         if (storedData && storedData.length > 0) {
             return storedData;
         } else {
-            chapterTitleList.map((item, index) => {
+            FactoryData.chapterTitleList.map((item, index) => {
                 STORAGEFNC.storageSaveAndOverwrite('chapterTitle', item, item.id.toString())
             })
-            return chapterTitleList;
+            return FactoryData.chapterTitleList;
         }
         return false
     } catch (error) {
@@ -513,3 +513,51 @@ export async function getInitialChapterTitleList(): Promise<Array<FORMATDATA.Cha
         return false;
     }
 }
+
+
+export const fetchInitialData = async (setOutputFnc: (state: Array<FORMATDATA.ChapterTitleFormat | FORMATDATA.QuizFormat | FORMATDATA.FillInTheBlankFormat>) => void, setLastTouchItem: (item: { id: string, type: string }) => void) => {
+    let newSource: Array<FORMATDATA.ChapterTitleFormat | FORMATDATA.QuizFormat | FORMATDATA.FillInTheBlankFormat> = []
+    const initialCardTitles = await getInitialChapterTitleList();
+    if (initialCardTitles) {
+        const otherQuiz: FORMATDATA.QuizFormat[] = FactoryData.quizDataList.filter((item) =>
+            !initialCardTitles.some(initItem => initItem.quizID === item.label.id)
+        );
+
+        const otherBlank: FORMATDATA.FillInTheBlankFormat[] = FactoryData.fillInTheBlankList.filter((item) =>
+            !initialCardTitles.some(initItem => initItem.fillInTheBlankID === item.label.id)
+        );
+
+        newSource.push(...initialCardTitles, ...otherQuiz, ...otherBlank)
+        setOutputFnc(newSource || []);
+    }
+    const lastTouch = await STORAGEFNC.storageGetItem('lastTouchItem');
+    lastTouch && setLastTouchItem(lastTouch);
+};
+
+export const fetchLastTouchData = async (
+    lastTouchItem: { id: string, type: string },
+    setLastTouchData: (data: { id: string; navigateTo: string; process: number; length: number; title: string; data: any; }) => void,
+    navigation: any
+) => {
+    if (lastTouchItem.type === 'cardTitle') {
+        const initLastTouchData = await STORAGEFNC.storageGetItem('cardTitle', lastTouchItem.id);
+        initLastTouchData && setLastTouchData({
+            id: initLastTouchData.dataID,
+            navigateTo: 'FlashCard',
+            process: initLastTouchData.process,
+            length: initLastTouchData.length,
+            title: initLastTouchData.title,
+            data: initLastTouchData
+        });
+    } else {
+        const initLastTouchData = await STORAGEFNC.storageGetItem('questTitle', lastTouchItem.id);
+        initLastTouchData && setLastTouchData({
+            id: initLastTouchData.id,
+            navigateTo: lastTouchItem.type === 'quiz' ? 'Quiz' : 'FillInTheBlank',
+            process: initLastTouchData.process,
+            length: initLastTouchData.length,
+            title: initLastTouchData.chapterTitle,
+            data: { id: initLastTouchData.questID, title: initLastTouchData.chapterTitle }
+        });
+    }
+};

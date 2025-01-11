@@ -1403,7 +1403,6 @@ export class Selector extends React.Component<SelectorProps> {
     }
 
     render() {
-        console.log('render sel');
         const { isShowCategorySelection, selectedCategory, selectCateList, colorScheme, toggleCategorySelection, setSelectedCategory } = this.props;
 
         return (
@@ -1450,7 +1449,6 @@ export class ResultFiltedCard extends React.Component<ResultFiltedCardProps> {
     }
 
     render() {
-        console.log('render Res');
         const { afterFilterData, colorScheme } = this.props;
 
         return (
@@ -1659,7 +1657,7 @@ export class ChapterCartRender extends React.Component<{ data: Array<FormatData.
             const isDark = colorScheme.type === 'dark';
 
             const getStatus = async (kind: string, id: string): Promise<FormatData.QuestTitleFormat['status']> => {
-                const res = await storageGetItem('questTitle', `${kind + id}`) as FormatData.QuestTitleFormat;
+                const res = await storageGetItem('questTitle', `${kind + id}`, true) as FormatData.QuestTitleFormat;
                 return res?.status ?? 0;
             };
 
@@ -1673,7 +1671,6 @@ export class ChapterCartRender extends React.Component<{ data: Array<FormatData.
                 if ('data' in item) {
                     kind = 'quiz';
                     const status = await getStatus('quiz', item.label.id.toString());
-                    console.log(status);
                     styleKind = getStyleKind(status);
                 } else if (!('chapterTitle' in item)) {
                     kind = 'blank';

@@ -166,7 +166,7 @@ export const storageAddToList = async <K extends keyof FORMATDATA.StorageItem>(
  * @param id use if needed
  * @returns 
  */
-export const storageGetItem = async <K extends keyof FORMATDATA.StorageItem>(key: K, id?: string): Promise<FORMATDATA.StorageItem[K] | false> => {
+export const storageGetItem = async <K extends keyof FORMATDATA.StorageItem>(key: K, id?: string, notLog?: boolean): Promise<FORMATDATA.StorageItem[K] | false> => {
   try {
     const ret: FORMATDATA.StorageItem[K] = await storage.load({
       key,
@@ -174,7 +174,7 @@ export const storageGetItem = async <K extends keyof FORMATDATA.StorageItem>(key
     });
     return ret;
   } catch (error) {
-    console.log(`Failed to get ${key} - ${id ? id : ''}`, error);
+    notLog || console.log(`Failed to get ${key} - ${id ? id : ''}`, error);
     return false;
   }
 }

@@ -1,4 +1,4 @@
-import { View, Text, Animated, ScrollView, TouchableOpacity, Platform, Image, ImageStyle, FlatList, ImageSourcePropType } from 'react-native'
+import { View, Text, Animated, ScrollView, TouchableOpacity, Platform, Image, ImageStyle, FlatList, ImageSourcePropType, Alert } from 'react-native'
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { storageGetItem, storageGetList, storageSaveAndOverwrite } from '../data/storageFunc'
@@ -77,9 +77,6 @@ export default function Quiz({ route }: any) {
                         <CTEXT.NGT_Inter_BodyLg_SemiBold children={quizData?.label.chapterTitle || subTitle} color={COLORSCHEME.gray1} />
                     </CLASS.ViewColCenter>
                 }
-                style={{
-                    container: [styles.marginBottom4vw]
-                }}
             />
             <View style={[styles.paddingH4vw, styles.paddingBottom4vw]}>
                 {point && isDone ?
@@ -91,6 +88,7 @@ export default function Quiz({ route }: any) {
                 }
             </View>
             <ScrollView style={[styles.flex1, styles.flexCol, styles.paddingH4vw]} contentContainerStyle={[styles.gap4vw]}>
+                <CTEXT.NGT_Inter_HeaderLg_Bld children={`Câu ${currentIndex + 1}`} color={COLORSCHEME.gray1} />
                 <View style={[componentStyleList.roundFillBrand100 as any, { borderColor: NGHIASTYLE.NghiaBrand800, borderWidth: 4 }]}>
                     {
                         typeof quizData?.data.ques[currentIndex] === 'string' && !quizData?.data.ques[currentIndex].includes('asset') ?
@@ -140,6 +138,26 @@ export default function Quiz({ route }: any) {
                     LENGTH={quizData?.data.ques?.length || 1}
                     displayType='Thẻ'
                     onSubmit={() => {
+                        if (isDone === true) {
+                            Alert.alert('Bạn có muốn thực hiện lại bài kiểm tra không?', '', [
+                                {
+                                    text: 'Trở về',
+                                    onPress: () => { navigation.goBack() },
+                                    style: 'destructive',
+                                },
+                                {
+                                    text: 'Có',
+                                    onPress: () => {
+                                        setIsDone(false)
+                                        setCurrentIndex(0)
+                                        setCurrentChoice(undefined)
+                                        setPoint(undefined)
+                                    },
+                                },
+                            ])
+                            return
+                        }
+
                         setIsDone(true)
                         setCurrentIndex(0)
 

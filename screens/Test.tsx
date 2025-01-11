@@ -10,10 +10,10 @@ import * as SVG from '../assets/svgXml';
 import * as CTEXT from '../assets/CustomText';
 import * as Progress from 'react-native-progress';
 import { CardTitleFormat, ChapterTitleFormat, FillInTheBlankFormat, QuestTitleFormat, QuizFormat } from '../data/interfaceFormat';
-import { getInitialCardTitleList, getInitialChapterTitleList, marginBottomForScrollView } from '../assets/component';
+import { fetchInitialData, fetchLastTouchData, getInitialCardTitleList, getInitialChapterTitleList, marginBottomForScrollView } from '../assets/component';
 import { chapterTitleList, fillInTheBlankList, quizDataList } from '../data/factoryData';
 
-export default function Home() {
+export default function Test() {
   const navigation = useNavigation();
   const [CurrentCache, dispatch] = useContext(RootContext);
   const COLORSCHEME = CurrentCache.colorScheme;
@@ -22,31 +22,12 @@ export default function Home() {
   const [cardTitleData, setCardTitleData] = useState<Array<ChapterTitleFormat | QuizFormat | FillInTheBlankFormat>>([]);
   const [cardTitleDataFiltered, setCardTitleDataFiltered] = useState<Array<ChapterTitleFormat | QuizFormat | FillInTheBlankFormat>>([]);
   const [lastTouchItem, setLastTouchItem] = useState<{ id: string, type: string }>({ id: '', type: '' });
-  const [lastTouchData, setLastTouchData] = useState<{ id: string, navigateTo: string, process: number, length: number, title: string, data: CardTitleFormat | any }>();
+  const [lastTouchData, setLastTouchData] = useState<{ id: string; navigateTo: string; process: number; length: number; title: string; data: any }>();
 
   const CATEGORY_LIST = ['Tất cả', 'Mới', 'Chưa hoàn thành', 'Đã hoàn thành'];
 
   useEffect(() => {
-    const fetchInitialData = async () => {
-      let newSource: Array<ChapterTitleFormat | QuizFormat | FillInTheBlankFormat> = []
-      const initialCardTitles = await getInitialChapterTitleList();
-      if (initialCardTitles) {
-        const otherQuiz: QuizFormat[] = quizDataList.filter((item) =>
-          !initialCardTitles.some(initItem => initItem.quizID === item.label.id)
-        );
-
-        const otherBlank: FillInTheBlankFormat[] = fillInTheBlankList.filter((item) =>
-          !initialCardTitles.some(initItem => initItem.fillInTheBlankID === item.label.id)
-        );
-
-        newSource.push(...initialCardTitles, ...otherQuiz, ...otherBlank)
-        setCardTitleData(newSource || []);
-      }
-      const lastTouch = await storageGetItem('lastTouchItem');
-      lastTouch && setLastTouchItem(lastTouch);
-    };
-
-    const unsub = navigation.addListener('focus', fetchInitialData);
+    const unsub = navigation.addListener('focus', () => { fetchInitialData(setCardTitleData, setLastTouchItem) });
     return unsub;
   }, [navigation]);
 
@@ -59,32 +40,8 @@ export default function Home() {
   }, [cardTitleData, libGradeSelected]);
 
   useEffect(() => {
-    const fetchLastTouch = async () => {
-      if (lastTouchItem.type === 'cardTitle') {
-        const initLastTouchData = await storageGetItem('cardTitle', lastTouchItem.id);
-        initLastTouchData && setLastTouchData({
-          id: initLastTouchData.dataID,
-          navigateTo: 'FlashCard',
-          process: initLastTouchData.process,
-          length: initLastTouchData.length,
-          title: initLastTouchData.title,
-          data: initLastTouchData
-        });
-      } else {
-        const initLastTouchData = await storageGetItem('questTitle', lastTouchItem.id);
-        initLastTouchData && setLastTouchData({
-          id: initLastTouchData.id,
-          navigateTo: lastTouchItem.type === 'quiz' ? 'Quiz' : 'FillInTheBlank',
-          process: initLastTouchData.process,
-          length: initLastTouchData.length,
-          title: initLastTouchData.chapterTitle,
-          data: { id: initLastTouchData.questID, title: initLastTouchData.chapterTitle }
-        });
-      }
-    };
-
-    const unsub = navigation.addListener('focus', fetchLastTouch);
-    fetchLastTouch();
+    const unsub = navigation.addListener('focus', () => fetchLastTouchData(lastTouchItem, setLastTouchData, navigation));
+    fetchLastTouchData(lastTouchItem, setLastTouchData, navigation);
 
     return () => unsub();
   }, [lastTouchItem.id, navigation]);
@@ -93,9 +50,9 @@ export default function Home() {
     <CLASS.ViewRowBetweenCenter style={[componentStyleList.roundBorderBrand as any, styles.gap4vw, COLORSCHEME.type === 'dark' ? { backgroundColor: NGHIASTYLE.NghiaBrand900 } : null]}>
       <CLASS.ViewCol style={[styles.justifyContentSpaceBetween, { minHeight: vw(30) }, styles.gap2vw, styles.flex1]}>
         <CLASS.ViewRow style={[styles.gap2vw]}>
-          <CLASS.ViewCol style={[styles.flex1]}>
+          <View style={[componentStyleList.roundBorderGray200 as any, styles.padding1vw]}>
             <CTEXT.NGT_Inter_BodyMd_Reg>{(lastTouchData?.process || 0)}/{(lastTouchData?.length || 1)} Hoàn thành</CTEXT.NGT_Inter_BodyMd_Reg>
-          </CLASS.ViewCol>
+          </View>
         </CLASS.ViewRow>
         <CTEXT.NGT_Inter_BodyLg_SemiBold>{lastTouchData?.title}</CTEXT.NGT_Inter_BodyLg_SemiBold>
         <CLASS.RoundBtn

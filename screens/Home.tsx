@@ -10,7 +10,7 @@ import * as SVG from '../assets/svgXml';
 import * as CTEXT from '../assets/CustomText';
 import * as Progress from 'react-native-progress';
 import { CardTitleFormat, QuestTitleFormat } from '../data/interfaceFormat';
-import { getInitialCardTitleList, marginBottomForScrollView } from '../assets/component';
+import { fetchInitialData, fetchLastTouchData, getInitialCardTitleList, marginBottomForScrollView } from '../assets/component';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -43,32 +43,8 @@ export default function Home() {
   }, [cardTitleData, libGradeSelected]);
 
   useEffect(() => {
-    const fetchLastTouch = async () => {
-      if (lastTouchItem.type === 'cardTitle') {
-        const initLastTouchData = await storageGetItem('cardTitle', lastTouchItem.id);
-        initLastTouchData && setLastTouchData({
-          id: initLastTouchData.dataID,
-          navigateTo: 'FlashCard',
-          process: initLastTouchData.process,
-          length: initLastTouchData.length,
-          title: initLastTouchData.title,
-          data: initLastTouchData
-        });
-      } else {
-        const initLastTouchData = await storageGetItem('questTitle', lastTouchItem.id);
-        initLastTouchData && setLastTouchData({
-          id: initLastTouchData.id,
-          navigateTo: lastTouchItem.type === 'quiz' ? 'Quiz' : 'FillInTheBlank',
-          process: initLastTouchData.process,
-          length: initLastTouchData.length,
-          title: initLastTouchData.chapterTitle,
-          data: { id: initLastTouchData.questID, title: initLastTouchData.chapterTitle }
-        });
-      }
-    };
-
-    const unsub = navigation.addListener('focus', fetchLastTouch);
-    fetchLastTouch();
+    const unsub = navigation.addListener('focus', () => fetchLastTouchData(lastTouchItem, setLastTouchData, navigation));
+    fetchLastTouchData(lastTouchItem, setLastTouchData, navigation);
 
     return () => unsub();
   }, [lastTouchItem.id, navigation]);
