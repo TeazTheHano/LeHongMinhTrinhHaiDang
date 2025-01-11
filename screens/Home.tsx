@@ -54,11 +54,11 @@ export default function Home() {
           title: initLastTouchData.title,
           data: initLastTouchData
         });
-      } else if (lastTouchItem.type === 'quiz') {
+      } else {
         const initLastTouchData = await storageGetItem('questTitle', lastTouchItem.id);
         initLastTouchData && setLastTouchData({
           id: initLastTouchData.id,
-          navigateTo: 'Quiz',
+          navigateTo: lastTouchItem.type === 'quiz' ? 'Quiz' : 'FillInTheBlank',
           process: initLastTouchData.process,
           length: initLastTouchData.length,
           title: initLastTouchData.chapterTitle,

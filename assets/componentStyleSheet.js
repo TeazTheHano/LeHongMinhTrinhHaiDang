@@ -198,6 +198,11 @@ export const componentStyleList = {
         styles.borderRadius2vw,
         { backgroundColor: NGHIASTYLE.NghiaBrand600 }
     ],
+    roundFillBrand200: [
+        styles.padding3vw,
+        styles.borderRadius2vw,
+        { backgroundColor: NGHIASTYLE.NghiaBrand200 }
+    ],
     roundFillBrand100: [
         styles.padding3vw,
         styles.borderRadius2vw,
@@ -235,7 +240,7 @@ export const componentStyleCardContainner = {
         progressBorder: false,
     },
     progressDark: {
-        class: componentStyleList.roundFillBrand100,
+        class: componentStyleList.roundFillBrand200,
         textBoldColor: NGHIASTYLE.NghiaBrand600,
         textRegColor: NGHIASTYLE.NghiaGray500,
         titleColor: 'black',

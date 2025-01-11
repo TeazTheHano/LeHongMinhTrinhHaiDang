@@ -1644,9 +1644,70 @@ export class NavigationButtonRow extends React.Component<{ currentIndex: number,
 
 export const NavigationButtonRowWithColorScheme = withColorScheme(NavigationButtonRow);
 
-export class ChapterCartRender extends React.Component<{ data: Array<FormatData.ChapterTitleFormat | FormatData.QuizFormat | FormatData.FillInTheBlankFormat>, colorScheme: ColorTheme, onPressFnc?: (value: any) => void }> {
+export class ChapterCartRender extends React.Component<{ data: Array<FormatData.ChapterTitleFormat | FormatData.QuizFormat | FormatData.FillInTheBlankFormat>, colorScheme: ColorTheme, navigation: any, }> {
+
     render(): React.ReactNode {
-        const { data, colorScheme, onPressFnc } = this.props;
+        const { data, colorScheme, navigation } = this.props;
+
+        async function renderFNC({ item, index }: { item: FormatData.ChapterTitleFormat | FormatData.QuizFormat | FormatData.FillInTheBlankFormat, index: number }): Promise<React.ReactNode> {
+
+            type KindType = 'chapter' | 'quiz' | 'blank';
+            type StyleKind = keyof typeof componentStyleCardContainner;
+
+            let kind: KindType = 'chapter';
+            let styleKind: StyleKind = 'newLight';
+            const isDark = colorScheme.type === 'dark';
+
+            const getStatus = async (kind: string, id: string): Promise<FormatData.QuestTitleFormat['status']> => {
+                const res = await storageGetItem('questTitle', `${kind + id}`) as FormatData.QuestTitleFormat;
+                return res?.status ?? 0;
+            };
+
+            const getStyleKind = (status: number): StyleKind => {
+                if (status === 0) return isDark ? 'newDark' : 'newLight';
+                if (status === 1) return isDark ? 'progressDark' : 'progressLight';
+                return isDark ? 'doneDark' : 'doneLight';
+            };
+
+            const determineKindAndStyle = async (item: any) => {
+                if ('data' in item) {
+                    kind = 'quiz';
+                    const status = await getStatus('quiz', item.label.id.toString());
+                    console.log(status);
+                    styleKind = getStyleKind(status);
+                } else if (!('chapterTitle' in item)) {
+                    kind = 'blank';
+                    const status = await getStatus('fillInTheBlank', item.label.id.toString());
+                    styleKind = getStyleKind(status);
+                } else {
+                    kind = 'chapter';
+                    styleKind = getStyleKind(item.status);
+                }
+            };
+
+            await determineKindAndStyle(item);
+            return (
+                <TouchableOpacity onPress={() => {
+                    if (kind === 'chapter') {
+                    } else {
+                        navigation.navigate(kind === 'blank' ? 'FillInTheBlank' : 'Quiz', { item: { id: (item as FormatData.QuizFormat).label.id, title: (item as FormatData.QuizFormat).label.chapterTitle } });
+                    }
+                }}>
+                    <ViewCol style={[componentStyleCardContainner[styleKind].class as any, styles.gap2vw]}>
+                        {kind !== 'chapter' && (
+                            <View style={[styles.padding1vw, styles.borderRadius2vw, styles.border1, styles.alignSelfStart, { borderColor: NGHIASTYLE.NghiaSuccess900 as string, backgroundColor: NGHIASTYLE.NghiaWarning100 as string }]}>
+                                <CTEXT.NGT_Inter_BodyMd_Med children={kind == 'quiz' ? 'Trắc nghiệm' : 'Điền vào chỗ trống'} color='black' />
+                            </View>
+                        )}
+                        <CTEXT.NGT_Inter_BodyLg_SemiBold color={componentStyleCardContainner[styleKind].textBoldColor as string || 'black'}>
+                            {kind === 'chapter' ? (item as FormatData.ChapterTitleFormat).chapterTitle : (item as FormatData.QuizFormat).label.chapterTitle}
+                        </CTEXT.NGT_Inter_BodyLg_SemiBold>
+                        <CardCateRenderWithColorScheme type={(kind === 'chapter' ? (item as FormatData.ChapterTitleFormat).type : (item as FormatData.QuizFormat).label.type) || [0]} />
+                    </ViewCol>
+                </TouchableOpacity>
+            );
+        }
+
 
         return (
             <FlatList
@@ -1654,50 +1715,7 @@ export class ChapterCartRender extends React.Component<{ data: Array<FormatData.
                 scrollEnabled={false}
                 keyExtractor={(item, index) => index.toString()}
                 contentContainerStyle={[styles.gap3vw]}
-                renderItem={({ item, index }: { item: FormatData.ChapterTitleFormat | FormatData.QuizFormat | FormatData.FillInTheBlankFormat, index: number }) => {
-                    let kind: 'chapter' | 'quiz' | 'blank' = 'chapter';
-                    let styletype: 'new' | 'progress' | 'done' = 'progress';
-                    let styleKind: keyof typeof componentStyleCardContainner = 'newLight';
-
-                    const getStatus = async (kind: FormatData.QuestTitleFormat['kind'], id: string): Promise<FormatData.QuestTitleFormat['status']> => {
-                        const res = await storageGetItem('questTitle', `${kind + id}`) as FormatData.QuestTitleFormat;
-                        return res?.status ?? 0;
-                    };
-
-                    const getStyleKind = (status: number, isDark: boolean): keyof typeof componentStyleCardContainner => {
-                        if (status === 0) return `new${isDark ? 'Dark' : 'Light'}`;
-                        if (status === 1) return `progress${isDark ? 'Dark' : 'Light'}`;
-                        return `done${isDark ? 'Dark' : 'Light'}`;
-                    };
-
-                    if ('data' in item) {
-                        kind = 'quiz';
-                        getStatus('quiz', item.label.id.toString()).then(stt => {
-                            styletype = stt === 0 ? 'new' : stt === 1 ? 'progress' : 'done';
-                            styleKind = getStyleKind(stt, colorScheme.type === 'dark');
-                        });
-                    } else if (!('chapterTitle' in item)) {
-                        kind = 'blank';
-                        getStatus('fillInTheBlank', item.label.id.toString()).then(stt => {
-                            styletype = stt === 0 ? 'new' : stt === 1 ? 'progress' : 'done';
-                            styleKind = getStyleKind(stt, colorScheme.type === 'dark');
-                        });
-                    } else {
-                        styletype = item.status === 0 ? 'new' : item.status === 1 ? 'progress' : 'done';
-                        styleKind = getStyleKind(item.status, colorScheme.type === 'dark');
-                    }
-
-                    return (
-                        <TouchableOpacity onPress={() => { onPressFnc && onPressFnc(item); }}>
-                            <ViewCol style={[componentStyleCardContainner[styleKind].class as any, styles.gap2vw]}>
-                                <CTEXT.NGT_Inter_BodyLg_SemiBold color={componentStyleCardContainner[styleKind].textBoldColor as string || 'black'}>
-                                    {kind === 'chapter' ? item.chapterTitle : item.label.chapterTitle}
-                                </CTEXT.NGT_Inter_BodyLg_SemiBold>
-                                <CardCateRenderWithColorScheme type={(kind === 'chapter' ? item.type : item.label.type) || [0]} />
-                            </ViewCol>
-                        </TouchableOpacity>
-                    );
-                }}
+                renderItem={({ item, index }) => renderFNC({ item, index })}
             />
         );
     }

@@ -58,7 +58,7 @@ export default function Quiz({ route }: any) {
                     questID: quizData.label.id
                 }
 
-                storageSaveAndOverwrite('questTitle', saveQuizTitle, saveLastTouch.id);
+                storageSaveAndOverwrite('questTitle', saveQuizTitle, `quiz${saveLastTouch.id}`);
             }
         })
         return unsub

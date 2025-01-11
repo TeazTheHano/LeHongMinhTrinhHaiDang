@@ -70,11 +70,11 @@ export default function Home() {
           title: initLastTouchData.title,
           data: initLastTouchData
         });
-      } else if (lastTouchItem.type === 'quiz') {
+      } else {
         const initLastTouchData = await storageGetItem('questTitle', lastTouchItem.id);
         initLastTouchData && setLastTouchData({
           id: initLastTouchData.id,
-          navigateTo: 'Quiz',
+          navigateTo: lastTouchItem.type === 'quiz' ? 'Quiz' : 'FillInTheBlank',
           process: initLastTouchData.process,
           length: initLastTouchData.length,
           title: initLastTouchData.chapterTitle,
@@ -169,8 +169,8 @@ export default function Home() {
               }
             }}
             selfRunFilterFnc
-            renderFnc={(item: ChapterTitleFormat[]) => (
-              item.length > 0 ? <CLASS.ChapterCartRenderWithColorScheme data={item} onPressFnc={(par: ChapterTitleFormat) => navigation.navigate('FlashCard' as never, { item: par })} />
+            renderFnc={(item: Array<ChapterTitleFormat | QuizFormat | FillInTheBlankFormat>) => (
+              item.length > 0 ? <CLASS.ChapterCartRenderWithColorScheme data={item} navigation={navigation} />
                 : <CTEXT.NGT_Inter_HeaderMd_SemiBold>Không có thẻ nào phù hợp</CTEXT.NGT_Inter_HeaderMd_SemiBold>
             )}
           />
