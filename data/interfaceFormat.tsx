@@ -7,6 +7,7 @@ export interface StorageItem {
     lastTouchItem: { id: string, type: string, },
     questTitle: QuestTitleFormat,
     chapterTitle: ChapterTitleFormat,
+    darkMode: boolean,
 }
 
 export interface UserFormat {

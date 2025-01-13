@@ -1647,6 +1647,18 @@ export class ChapterCartRender extends React.Component<{ data: Array<FormatData.
     render(): React.ReactNode {
         const { data, colorScheme, navigation } = this.props;
 
+        function renderQuizStateFnc(status: [number, number], itemID: number, kind: 'quiz' | 'fillInTheBlank'): React.ReactNode {
+            const outputStatus: number = (status[0] || 0) / (status[1] || 1)
+            return (
+                <TouchableOpacity
+                    onPress={() => { navigation.navigate(kind == 'quiz' ? 'Quiz' : 'FillInTheBlank', { item: { id: itemID, title: '' } }) }}
+                    style={[styles.padding2vw, styles.bgcolorWhite, styles.flex1, styles.borderRadius2vw, styles.marginTop2vw]}
+                >
+                    <CTEXT.NGT_Inter_BodyMd_SemiBold color='black'>{kind == 'quiz' ? 'Trắc nghiệm' : 'Điền vào ô trống'}: <CTEXT.NGT_Inter_BodyMd_Bld color={NGHIASTYLE.NghiaBrand800 as string} children={outputStatus === 1 ? 'Xong' : `${status[0] || 0}/${status[1] || 'null'}`} /></CTEXT.NGT_Inter_BodyMd_SemiBold>
+                </TouchableOpacity>
+            )
+        }
+
         async function renderFNC({ item, index }: { item: FormatData.ChapterTitleFormat | FormatData.QuizFormat | FormatData.FillInTheBlankFormat, index: number }): Promise<React.ReactNode> {
 
             type KindType = 'chapter' | 'quiz' | 'blank';
@@ -1700,6 +1712,25 @@ export class ChapterCartRender extends React.Component<{ data: Array<FormatData.
                             {kind === 'chapter' ? (item as FormatData.ChapterTitleFormat).chapterTitle : (item as FormatData.QuizFormat).label.chapterTitle}
                         </CTEXT.NGT_Inter_BodyLg_SemiBold>
                         <CardCateRenderWithColorScheme type={(kind === 'chapter' ? (item as FormatData.ChapterTitleFormat).type : (item as FormatData.QuizFormat).label.type) || [0]} />
+                        {kind === 'chapter' ?
+                            <ViewRowBetweenCenter style={[styles.gap2vw]}>
+                                {(item as FormatData.ChapterTitleFormat).quizID !== undefined &&
+                                    (item as FormatData.ChapterTitleFormat).quizStatus &&
+                                    renderQuizStateFnc(
+                                        (item as FormatData.ChapterTitleFormat).quizStatus as any,
+                                        (item as FormatData.ChapterTitleFormat).quizID as any,
+                                        'quiz'
+                                    )}
+                                {(item as FormatData.ChapterTitleFormat).fillInTheBlankID !== undefined &&
+                                    (item as FormatData.ChapterTitleFormat).fillInTheBlankStatus &&
+                                    renderQuizStateFnc(
+                                        (item as FormatData.ChapterTitleFormat).fillInTheBlankStatus as any,
+                                        (item as FormatData.ChapterTitleFormat).fillInTheBlankID as any,
+                                        'fillInTheBlank'
+                                    )}
+                            </ViewRowBetweenCenter>
+                            : null
+                        }
                     </ViewCol>
                 </TouchableOpacity>
             );

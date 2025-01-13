@@ -25,3 +25,11 @@ export const currentSetColorScheme = (colorScheme: object) => {
         payload: colorScheme
     }
 }
+
+export const SET_IS_FORCE_DARK = `SET_IS_FORCE_DARK`;
+export const currentSetIsForceDark = (isForceDark: boolean) => {
+    return {
+        type: SET_IS_FORCE_DARK,
+        payload: isForceDark
+    }
+}

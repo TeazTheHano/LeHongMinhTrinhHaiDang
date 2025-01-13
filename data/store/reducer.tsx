@@ -35,6 +35,12 @@ export default function setReducer(state = initialState, action: Action): Curren
             };
         }
 
+        case TYPE.SET_IS_FORCE_DARK: {
+            return {
+                ...state,
+                isForceDark: action.payload
+            };
+        }
         
         default:
             return state;

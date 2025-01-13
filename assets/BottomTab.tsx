@@ -88,8 +88,8 @@ const BottomTab = () => {
     const insets = useSafeAreaInsets();
     const Tab = createBottomTabNavigator();
     const [CurrentCache, dispatch] = React.useContext(CUSTOMCACHE.RootContext);
-
     const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
+    const [isForceDark, setIsForceDark] = useState<boolean>(false)
 
     useEffect(() => {
         const subscription = Appearance.addChangeListener(({ colorScheme: newColorScheme }) => {
@@ -101,9 +101,11 @@ const BottomTab = () => {
     }, []);
 
     useEffect(() => {
-        const newColorTheme = colorScheme === 'dark' ? defaultColorTheme.dark : defaultColorTheme.light
-        dispatch(CUSTOMCACHE.currentSetColorScheme(newColorTheme));
-    }, [colorScheme]);
+        (async () => {
+            const newColorTheme = colorScheme === 'dark' || isForceDark ? defaultColorTheme.dark : defaultColorTheme.light
+            dispatch(CUSTOMCACHE.currentSetColorScheme(newColorTheme));
+        })();
+    }, [colorScheme, isForceDark]);
 
     useEffect(() => {
         const unsubscribe = navigation.addListener('focus', () => {
@@ -117,6 +119,14 @@ const BottomTab = () => {
         });
         return unsubscribe;
     }, [navigation]);
+
+    useEffect(() => {
+        (async () => {
+            const isDarkModeEnabled = await STORAGEFNC.storageGetItem('darkMode');
+            setIsForceDark(isDarkModeEnabled)
+        })();
+        setIsForceDark(CurrentCache.isForceDark)
+    }, [CurrentCache.isForceDark])
 
     return (
         <Tab.Navigator

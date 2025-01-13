@@ -18,6 +18,7 @@ export interface CurrentCache {
     user: UserFormat;
     colorScheme: ColorTheme;
     mindmapTitle: MindMapTitleFormat[];
+    isForceDark: boolean;
 }
 
 export interface Action {
@@ -32,4 +33,5 @@ export const initialState: CurrentCache = {
     },
     colorScheme: defaultColorTheme.light,
     mindmapTitle: [],
+    isForceDark: false,
 };
