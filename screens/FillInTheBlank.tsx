@@ -12,6 +12,7 @@ import * as Progress from 'react-native-progress'
 import { FillInTheBlankFormat, QuestTitleFormat, QuizFormat } from '../data/interfaceFormat'
 import { getInitialCardTitleList, marginBottomForScrollView } from '../assets/component'
 import { fillInTheBlankList } from '../data/factoryData'
+import { useInitializeQuizData, useSaveQuizDataBeforeLeave } from '../assets/reUseHook'
 
 export default function FillInTheBlank({ route }: any) {
     // Sentinal variable <<<<<<<<<<<<<<
@@ -30,39 +31,9 @@ export default function FillInTheBlank({ route }: any) {
     const [isDone, setIsDone] = useState<boolean>(false)
 
     // Effect <<<<<<<<<<<<<<
-    useEffect(() => {
-        if (routeParamsItem) {
-            setSubTitle(routeParamsItem.title)
-            setQuizData(fillInTheBlankList.find((item) => item.label.id.toString() === routeParamsItem.id.toString()))
-            storageSaveAndOverwrite('lastTouchItem', { id: routeParamsItem.id, type: 'blank' })
-            setCurrentIndex(0)
-            setCurrentChoice(undefined)
-            setPoint(undefined)
-            setIsDone(false)
-        }
-    }, [routeParamsItem])
 
-    useEffect(() => {
-        const unsub = navigation.addListener('beforeRemove', () => {
-            if (quizData) {
-                let saveLastTouch: { id: string, title: string } = { id: quizData.label.id.toString(), title: quizData.label.chapterTitle }
-                storageSaveAndOverwrite('lastTouchItem', { id: saveLastTouch.id, type: 'blank' })
-
-                let saveQuizTitle: QuestTitleFormat = {
-                    id: saveLastTouch.id,
-                    chapterTitle: saveLastTouch.title,
-                    length: quizData.ques.length,
-                    process: currentIndex,
-                    status: (point?.reduce((a, b) => a + b, 0) || 0) == quizData.ques.length ? 2 : 1,
-                    kind: 'fillInTheBlank',
-                    questID: quizData.label.id
-                }
-
-                storageSaveAndOverwrite('questTitle', saveQuizTitle, `blank${saveLastTouch.id}`);
-            }
-        })
-        return unsub
-    }, [navigation, currentIndex, quizData, routeParamsItem])
+    useInitializeQuizData(routeParamsItem, setSubTitle, setQuizData, fillInTheBlankList, setCurrentIndex, setCurrentChoice, setPoint, setIsDone, 'fillInTheBlank');
+    useSaveQuizDataBeforeLeave(navigation, quizData, isDone ? (quizData as FillInTheBlankFormat).ques.length : currentIndex, point, 'fillInTheBlank', route.params.chapterID);
 
     return (
         <CLASS.SSBarWithSaveAreaWithColorScheme>
@@ -107,7 +78,7 @@ export default function FillInTheBlank({ route }: any) {
                             return updatedChoices;
                         });
                     }}
-                    style={[componentStyleList.roundBorderGray200 as any, styles.textCenter, isDone ? { borderWidth: 3, borderColor: currentChoice?.[currentIndex] === quizData?.ans[currentIndex] ? NGHIASTYLE.NghiaSuccess500 : NGHIASTYLE.NghiaError500 } : { borderColor: NGHIASTYLE.NghiaWarning500, borderWidth: 2 }]}
+                    style={[componentStyleList.roundBorderGray200 as any, styles.textCenter, { color: COLORSCHEME.text }, isDone ? { borderWidth: 3, borderColor: currentChoice?.[currentIndex] === quizData?.ans[currentIndex] ? NGHIASTYLE.NghiaSuccess500 : NGHIASTYLE.NghiaError500 } : { borderColor: NGHIASTYLE.NghiaWarning500, borderWidth: 2 }]}
                     placeholder={`Đáp án của bạn`}
                     autoFocus
                 />
@@ -117,7 +88,7 @@ export default function FillInTheBlank({ route }: any) {
                             <CTEXT.NGT_Inter_HeaderLg_Bld children={`Đáp án`} color={COLORSCHEME.gray1} />
                             {
                                 typeof quizData?.ques[currentIndex] === 'string' && !quizData?.ques[currentIndex].includes('asset') ?
-                                    <CTEXT.NGT_Inter_HeaderMd_Med style={[styles.textCenter]} color='black' children={quizData?.ans[currentIndex] || ''} />
+                                    <CTEXT.NGT_Inter_HeaderMd_Med style={[styles.textCenter]} children={quizData?.ans[currentIndex] || ''} />
                                     :
                                     <Image source={quizData?.ans[currentIndex] as any} resizeMethod='resize' resizeMode='contain' style={[styles.w100, styles.h60vw] as ImageStyle} />
                             }

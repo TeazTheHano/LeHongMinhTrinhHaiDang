@@ -12,6 +12,7 @@ import * as Progress from 'react-native-progress'
 import { QuestTitleFormat, QuizFormat } from '../data/interfaceFormat'
 import { getInitialCardTitleList, marginBottomForScrollView } from '../assets/component'
 import { quizDataList } from '../data/factoryData'
+import { useInitializeQuizData, useSaveQuizDataBeforeLeave } from '../assets/reUseHook'
 
 export default function Quiz({ route }: any) {
     // Sentinal variable <<<<<<<<<<<<<<
@@ -30,39 +31,8 @@ export default function Quiz({ route }: any) {
     const [isDone, setIsDone] = useState<boolean>(false)
 
     // Effect <<<<<<<<<<<<<<
-    useEffect(() => {
-        if (routeParamsItem) {
-            setSubTitle(routeParamsItem.title)
-            setQuizData(quizDataList.find((item) => item.label.id.toString() === routeParamsItem.id.toString()))
-            storageSaveAndOverwrite('lastTouchItem', { id: routeParamsItem.id, type: 'quiz' })
-            setCurrentIndex(0)
-            setCurrentChoice(undefined)
-            setPoint(undefined)
-            setIsDone(false)
-        }
-    }, [routeParamsItem])
-
-    useEffect(() => {
-        const unsub = navigation.addListener('beforeRemove', () => {
-            if (quizData) {
-                let saveLastTouch: { id: string, title: string } = { id: quizData.label.id.toString(), title: quizData.label.chapterTitle }
-                storageSaveAndOverwrite('lastTouchItem', { id: saveLastTouch.id, type: 'quiz' })
-
-                let saveQuizTitle: QuestTitleFormat = {
-                    id: saveLastTouch.id,
-                    chapterTitle: saveLastTouch.title,
-                    length: quizData.data.ques.length,
-                    process: currentIndex,
-                    status: (point?.reduce((a, b) => a + b, 0) || 0) == quizData.data.ques.length ? 2 : 1,
-                    kind: 'quiz',
-                    questID: quizData.label.id
-                }
-
-                storageSaveAndOverwrite('questTitle', saveQuizTitle, `quiz${saveLastTouch.id}`);
-            }
-        })
-        return unsub
-    }, [navigation, currentIndex, quizData, routeParamsItem])
+    useInitializeQuizData(routeParamsItem, setSubTitle, setQuizData, quizDataList, setCurrentIndex, setCurrentChoice, setPoint, setIsDone, 'quiz');
+    useSaveQuizDataBeforeLeave(navigation, quizData, isDone ? (quizData as QuizFormat).data.ques.length : currentIndex, point, 'quiz', route.params.chapterID);
 
     return (
         <CLASS.SSBarWithSaveAreaWithColorScheme>

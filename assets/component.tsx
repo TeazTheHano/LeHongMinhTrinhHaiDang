@@ -550,7 +550,7 @@ export const fetchLastTouchData = async (
             data: initLastTouchData
         });
     } else {
-        const initLastTouchData = await STORAGEFNC.storageGetItem('questTitle', lastTouchItem.id);
+        const initLastTouchData = await STORAGEFNC.storageGetItem('questTitle', `${lastTouchItem.type}${lastTouchItem.id}`);
         initLastTouchData && setLastTouchData({
             id: initLastTouchData.id,
             navigateTo: lastTouchItem.type === 'quiz' ? 'Quiz' : 'FillInTheBlank',

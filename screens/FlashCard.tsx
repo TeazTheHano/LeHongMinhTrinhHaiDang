@@ -11,6 +11,7 @@ import { RootContext } from '../data/store'
 import * as Progress from 'react-native-progress'
 import { CardTitleFormat, FlashCardFormat } from '../data/interfaceFormat'
 import { flashCardList } from '../data/factoryData'
+import { useInitializeFlashCardData, useSaveFlashCardDataBeforeLeave } from '../assets/reUseHook'
 
 export default function FlashCard({ route }: any) {
     // Sentinal variable <<<<<<<<<<<<<<
@@ -27,34 +28,8 @@ export default function FlashCard({ route }: any) {
     const [isFront, setIsFront] = useState<boolean>(true)
 
     // Effect <<<<<<<<<<<<<<
-    useEffect(() => {
-        if (routeParamsItem) {
-            setSubTitle(routeParamsItem.title)
-            setFlashCardData(flashCardList.find((item) => item.label.chapterTitle === routeParamsItem.title))
-            storageSaveAndOverwrite('lastTouchItem', { id: routeParamsItem.dataID, type: 'cardTitle' })
-            setCurrentIndex(route.params?.current || 0)
-        }
-    }, [routeParamsItem])
-
-    useEffect(() => {
-        const unsub = navigation.addListener('beforeRemove', () => {
-            if (routeParamsItem && flashCardData) {
-                let saveCartTitleData: CardTitleFormat = { ...routeParamsItem }
-                saveCartTitleData.process = Number(currentIndex) + 1
-
-                if (saveCartTitleData.process === saveCartTitleData.length) {
-                    saveCartTitleData.status = 2
-                } else if (saveCartTitleData.process === 0) {
-                    saveCartTitleData.status = 0
-                } else {
-                    saveCartTitleData.status = 1
-                }
-
-                storageSaveAndOverwrite('cardTitle', saveCartTitleData, saveCartTitleData.dataID)
-            }
-        })
-        return unsub
-    }, [navigation, currentIndex, flashCardData, routeParamsItem])
+    useInitializeFlashCardData(routeParamsItem, setSubTitle, setFlashCardData, flashCardList, setCurrentIndex, route);
+    useSaveFlashCardDataBeforeLeave(navigation, routeParamsItem, currentIndex, flashCardData);
 
     return (
         <SSBarWithSaveAreaWithColorScheme>
