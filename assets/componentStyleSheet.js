@@ -227,7 +227,7 @@ export const componentStyleCardContainner = {
     },
     doneLight: {
         class: componentStyleList.roundBorderGray200,
-        textBoldColor: NGHIASTYLE.NghiaBrand700,
+        textBoldColor: 'white',
         textRegColor: 'white',
         titleColor: 'black',
         progressBorder: true,

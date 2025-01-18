@@ -89,7 +89,7 @@ export default function Quiz({ route }: any) {
                                 typeof ans === 'string' && !ans?.includes('asset') ?
                                     <CTEXT.NGT_Inter_HeaderMd_Med style={[styles.textCenter]} children={ans || ''} />
                                     :
-                                    <Image source={ans as any} resizeMethod='resize' resizeMode='cover' style={[styles.w100, styles.h40vw] as ImageStyle} />
+                                    <Image source={ans as any} resizeMethod='resize' resizeMode='contain' style={[styles.w100, styles.h40vw] as ImageStyle} />
                             }
                         </TouchableOpacity>
                     )
