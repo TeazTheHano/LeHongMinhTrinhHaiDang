@@ -1708,7 +1708,7 @@ export class ChapterCartRender extends React.Component<{ data: Array<FormatData.
                                 <CTEXT.NGT_Inter_BodyMd_Med children={kind == 'quiz' ? 'Trắc nghiệm' : 'Điền vào chỗ trống'} color='black' />
                             </View>
                         )}
-                        <CTEXT.NGT_Inter_BodyLg_SemiBold color={componentStyleCardContainner[styleKind].textBoldColor as string || 'black'}>
+                        <CTEXT.NGT_Inter_BodyLg_SemiBold color={kind==='chapter'? componentStyleCardContainner[styleKind].titleColor as string : componentStyleCardContainner[styleKind].textBoldColor as string || 'black'}>
                             {kind === 'chapter' ? (item as FormatData.ChapterTitleFormat).chapterTitle : (item as FormatData.QuizFormat).label.chapterTitle}
                         </CTEXT.NGT_Inter_BodyLg_SemiBold>
                         <CardCateRenderWithColorScheme type={(kind === 'chapter' ? (item as FormatData.ChapterTitleFormat).type : (item as FormatData.QuizFormat).label.type) || [0]} />

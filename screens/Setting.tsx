@@ -70,6 +70,7 @@ export default function Setting() {
                 storageClearList('mindmapTitle')
                 storageClearList('questTitle')
                 storageClearList('flashCard')
+                
                 navigation.reset({
                   index: 0,
                   routes: [{ name: 'NameCollect' as never }]
